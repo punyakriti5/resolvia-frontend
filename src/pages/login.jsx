@@ -1,28 +1,30 @@
 import React from 'react';
-//import { Dropdown } from '../components/Select';
-import { Textinput } from '../components/Input';
 import './login.css';
-import { Button, Typography, Box, Stack, Divider } from '@mui/material';
-import logo from '../assests/logo.png';
-function Login() {
-  const loginDetails = {
-    username: '',
-    password: '',
+import { Textinput } from '../components/Input';
+import logo from '../assets/app-logo.png';
+import { Button, Typography, Stack, Box, Container } from '@mui/material';
+
+export function Login() {
+  const LoginDetails = {
+    UserName: '',
+    Password: '',
   };
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(loginDetails);
+    console.log(LoginDetails);
+    //console.log(UserDetails);
   };
   const updateDetails = (name, value) => {
-    loginDetails[name] = value;
+    LoginDetails[name] = value;
   };
   return (
     <>
       <main>
-        <div className='App'>
-          <form className='form'>
-            <Typography variant='p' id='register'>
-              Register ->
+        <Container className='App'>
+          <div className='form'>
+            <Typography variant='h6' id='register'>
+              {' '}
+              Register ->{' '}
             </Typography>
             <Box
               component='img'
@@ -35,35 +37,19 @@ function Login() {
             />
             <Stack spacing={2}>
               <Typography variant='h5' id='logo-name'>
-                RESOLVIA
+                {' '}
+                Register ->{' '}
               </Typography>
-              <Textinput
-                name='username'
-                placeholder='Username'
-                details={updateDetails}
-              />
-              <Textinput
-                name='password'
-                placeholder='Password'
-                details={updateDetails}
-              />
-              <Typography variant='p'>Forgot Password?</Typography>
-              <div>
-                <Button
-                  variant='contained'
-                  type='submit'
-                  onClick={handleSubmit}
-                >
-                  Login
-                </Button>
-              </div>
+              <Textinput name='UserName' details={updateDetails} />
+              <Textinput name='Password' details={updateDetails} />
+              <Typography variant='p'> Forgot Password? </Typography>
+              <Button variant='contained' type='submit' onClick={handleSubmit}>
+                Login
+              </Button>
             </Stack>
-          </form>
-          <Divider margin-top='auto'> OR</Divider>
-        </div>
+          </div>
+        </Container>
       </main>
     </>
   );
 }
-
-export default Login;
