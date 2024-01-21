@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Goldman:wght@400;700&family=Roboto:ital,wght@0,100;0,300;1,100&display=swap');
+
+.App {
+  font-family: 'Open Sans';
+  text-align: center;
+}
+
+.form {
+  max-width: 50%;
+  height: 50vh;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #e2f3ff;
+  padding: 20px;
+  margin-top: 30px;
+  border-radius: 5;
+}
+
+#logo-name {
+  font-family: 'Goldman';
+  margin-top: 30px;
+}
+
+#register {
+  margin-left: auto;
+}
