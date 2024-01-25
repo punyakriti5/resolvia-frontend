@@ -9,6 +9,7 @@ export function Textinput(props) {
   return (
     <div>
       <TextField
+      size='small'
         name={name}
         label={name}
         variant='outlined'
@@ -16,6 +17,7 @@ export function Textinput(props) {
         fullwidth
         value={input}
         onChange={handleInput}
+        
       />
       {details(name, input)}
     </div>

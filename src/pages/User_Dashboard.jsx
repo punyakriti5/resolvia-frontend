@@ -8,7 +8,7 @@ import SortingComp from "../components/SortingComp";
 import { useParams } from "react-router-dom";
 
 const drawerWidth = 300;
-export function User_Home() {
+function User_Dashboard() {
   const params = useParams();
 
   return (
@@ -47,3 +47,4 @@ export function User_Home() {
     </>
   );
 }
+export default User_Dashboard;

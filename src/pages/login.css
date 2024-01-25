@@ -6,22 +6,26 @@
 }
 
 .form {
-  max-width: 50%;
-  height: 50vh;
+  max-width: 40%;
+  height: 85vh;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: #e2f3ff;
+  background: #bed8ec;
   padding: 20px;
-  margin-top: 30px;
-  border-radius: 5;
+  margin-top: 4vh;
+  border: black 1px solid;
+  border-radius: 10px;
 }
 
 #logo-name {
   font-family: 'Goldman';
-  margin-top: 30px;
+  margin-top: 10px;
+  text-decoration: none;
+ font-size: 20px;
+ color: black;
 }
 
 #register {

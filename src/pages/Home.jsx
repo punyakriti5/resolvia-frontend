@@ -1,27 +1,17 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { Box, Container,  Stack, Typography } from "@mui/material";
+import { Box, Container,  Stack } from "@mui/material";
 import question from "../assets/query.jpg";
 import ask from "../assets/discussions.jpg";
 import resolution from "../assets/resolution.jpg";
-import { fontWeight } from "@mui/system";
 
 
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
 
-
-export function Home() {
+function Home() {
   return (
     <>
       <Navbar />
-      <Container component="div" sx={{ mt: 12 ,  borderRadius :5 , p:5 ,background:"#cfe0e8"}}  >
+      <Container component="div" sx={{ mt: 12 ,  borderRadius :5 , p:5 ,background:"#bed8ec"}}  >
         <Stack
           direction="row"
           justifyContent="center"
@@ -54,3 +44,4 @@ export function Home() {
          </>
   )
 }
+export default Home;
