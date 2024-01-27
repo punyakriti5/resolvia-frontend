@@ -3,18 +3,26 @@
 .App {
   font-family: 'Open Sans';
   text-align: center;
+  position: absolute;
+ 
+
+ 
+  /* background-image: url('C:\Users\PUNRANI\OneDrive - Capgemini\Desktop\Resolvia\resolvia-ui\src\assets\discussions.jpg'); */
+ 
+  background: linear-gradient(to right, rgb(233, 233, 234), rgb(140, 140, 141));
 }
 
 .form {
-  max-width: 40%;
+  position: relative;
+  
   height: 85vh;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: #bed8ec;
+  background: transparent;
   padding: 20px;
+  margin: auto;
   margin-top: 4vh;
   border: black 1px solid;
   border-radius: 10px;
@@ -28,6 +36,6 @@
  color: black;
 }
 
-#register {
+/* #register {
   margin-left: auto;
-}
+} */
