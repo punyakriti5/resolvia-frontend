@@ -19,7 +19,7 @@ function CardComp() {
     <>
       <Card
         sx={{
-          maxWidth: 500,
+          maxWidth: 700,
           my: 4,
           mx: "auto",
           border: 1,
@@ -53,18 +53,19 @@ function CardComp() {
 
         <CardMedia
           component="img"
-          height="200"
+          height="300"
+          sx={{ px : 2,}}
           image="https://www.simplilearn.com/ice9/free_resources_article_thumb/Types_of_Artificial_Intelligence.jpg"
           alt="Artificial Intelligence"
         />
         <CardActions>
-          <Button size="small" variant="outlined" sx={{ height: 30 }}>
+          <Button size="small" variant="outlined" sx={{ height: 30 , margin:1}}>
             <IconButton aria-label="upvote" sx={{ cursor: "pointer" }}>
               <ThumbUpOutlinedIcon />
             </IconButton>
             <Typography textTransform={"lowercase"}>2k</Typography>
           </Button>
-          <Button size="small" variant="outlined" sx={{ height: 30 }}>
+          <Button size="small" variant="outlined" sx={{ height: 30 ,  margin:1}}>
             <IconButton aria-label="downvote" sx={{ cursor: "pointer" }}>
               <ThumbDownOutlinedIcon />
             </IconButton>
