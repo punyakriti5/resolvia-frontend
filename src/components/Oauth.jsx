@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../features/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 
-function Oauth() {
+function Oauth(props) {
+  const { text } = props;
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ function Oauth() {
       startIcon={<GoogleIcon />}
       onClick={handleGoogleClick}
     >
-      Signup with Google
+      {text}
     </Button>
   );
 }
