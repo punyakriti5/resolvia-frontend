@@ -1,50 +1,56 @@
 import React from "react";
-import { Box, Container, Drawer } from "@mui/material";
+import { Box, Container, Grid, Typography,useMediaQuery } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "../components/Navbar";
 import CardComp from "../components/CardComp";
 import MyResolveComp from "../components/MyResolveComp";
 import SortingComp from "../components/SortingComp";
-import { useParams } from "react-router-dom";
 
-const drawerWidth = 300;
 function User_Dashboard() {
-  const params = useParams();
+  const matches = useMediaQuery("(min-width:960px)");
 
   return (
-    <>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Navbar />
-
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-        >
-          <Navbar />
-          <Box sx={{ overflow: "auto" }}>
-            <MyResolveComp />
-          </Box>
-        </Drawer>
-
-        <Container sx={{ mt: 10 }}>
-          <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-            <Navbar />
+    <> 
+    <Box sx={{ display: "flex" }}>
+    <CssBaseline />
+    <Navbar />
+    <Box
+      sx={{
+        // width: matches ? 400 : "100%",
+        maxWidth: 400,
+        minWidth: 200,
+        height: "100vh",
+        position: "sticky",
+        top: 0, 
+        overflowY: "auto",
+        boxShadow: 3,
+      }}
+    >
+      <MyResolveComp />
+    </Box>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        p: 3,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={4}>
             <SortingComp />
+          </Grid>
+          <Grid item xs={12}>
             <CardComp />
-          </Box>
-        </Container>
-      </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  </Box>
 
-      {/* <h6>{params.userName}</h6> */}
     </>
   );
 }
+
 export default User_Dashboard;
+
