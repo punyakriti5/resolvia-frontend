@@ -21,7 +21,7 @@ function App() {
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="about" element={<About />} />
-            <Route path="setupProfile" element={<SetupProfile />} />
+            <Route path="setup-profile" element={<SetupProfile />} />
 
             <Route
               path="user/:username"
@@ -32,8 +32,8 @@ function App() {
               }
             />
            
-            <Route path="createResolve" element={ <CreateResolve />}/>
-            <Route path="resolvePage" element={<ResolvePage/>}/>
+            <Route path="create-resolve" element={ <CreateResolve />}/>
+            <Route path="resolve-page" element={<ResolvePage/>}/>
             <Route path="*" element={<h2>Page not found</h2>} />
           </Route>
         </Routes>

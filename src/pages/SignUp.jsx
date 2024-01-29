@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import './login.css';
 import logo from '../assets/app-logo.png';
-import GoogleIcon from '@mui/icons-material/Google';
+import img from '../assets/discussions.jpg';
+
 import {
-  Button,
-  Typography,
-  Stack,
+  Alert,
   Box,
+  Button,
   Container,
+  Grid,
   TextField,
+  Typography,
+  Snackbar,
+  Stack,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Oauth from '../components/Oauth';
@@ -49,10 +53,22 @@ function SignUp() {
   };
   return (
     <>
-      <main>
-        <Container className='App'>
-          <div className='form'>
-            <form onSubmit={handleSubmit}>
+    <Grid container spacing={2}>
+        <Grid item xs={8}>
+          <Box
+            component='img'
+            sx={{
+              width: '67vw',
+              height: '100vh',
+            }}
+            alt='img'
+            src={img}
+          />
+        </Grid>
+        <Grid item xs={4}>
+        <Container className='App'  sx={{ height: '100vh', width: '32vw' }}>
+        
+            <form onSubmit={handleSubmit} className='form'>
               <Box
                 component='img'
                 sx={{
@@ -66,7 +82,7 @@ function SignUp() {
                 <Link to='/' id='logo-name'>
                   RESOLVIA
                 </Link>
-                <Typography variant='body1'>
+                <Typography variant='h6'>
                   {' '}
                   Create your account here
                 </Typography>
@@ -118,9 +134,21 @@ function SignUp() {
                 </Typography>
               </Stack>
             </form>
-          </div>
+            {errorMessage && (
+            <Snackbar autoHideDuration={6000}>
+            <Alert
+              severity="error"
+              variant="filled"
+              sx={{ width: '100%' }}
+            >
+             {errorMessage}
+            </Alert>
+          </Snackbar>
+          )}
         </Container>
-      </main>
+        </Grid>
+      </Grid>
+     
     </>
   );
 }

@@ -16,9 +16,10 @@ function User_Dashboard() {
     <Navbar />
     <Box
       sx={{
-        // width: matches ? 400 : "100%",
-        maxWidth: 400,
-        minWidth: 200,
+       
+        maxWidth: 450,
+        minWidth: 350,
+        width:"45vw",
         height: "100vh",
         position: "sticky",
         top: 0, 

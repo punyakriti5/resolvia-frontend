@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import logo from '../assets/app-logo.png';
 import img from '../assets/discussions.jpg';
-import GoogleIcon from '@mui/icons-material/Google';
+
 import Oauth from '../components/Oauth';
 import {
   Button,
@@ -70,7 +70,7 @@ function Login() {
           />
         </Grid>
         <Grid item xs={4}>
-          <Container className='App' sx={{ height: '100vh', width: '32vw' }}>
+          <Container className='App' sx={{ height: '100vh', width: '33vw' }}>
             <form onSubmit={handleSubmit} className='form'>
               <Box
                 component='img'
@@ -103,7 +103,7 @@ function Login() {
                   required
                   onChange={handleChange}
                 />
-                <Typography variant='p'> Forgot Password? </Typography>
+                <Typography variant='p' sx={{cursor: "pointer"}}> Forgot Password? </Typography>
                 <Button
                   variant='contained'
                   type='submit'
