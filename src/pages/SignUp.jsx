@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import logo from '../assets/app-logo.png';
 import img from '../assets/discussions.jpg';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Alert,
   Box,
@@ -11,11 +11,11 @@ import {
   Grid,
   TextField,
   Typography,
-  Snackbar,
   Stack,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Oauth from '../components/Oauth';
+import { padding } from '@mui/system';
 
 function SignUp() {
   const [formData, setFormData] = useState({});
@@ -124,8 +124,16 @@ function SignUp() {
                   variant='contained'
                   type='submit'
                   sx={{ textTransform: 'capitalize' }}
-                >
-                  Signup
+                  disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <CircularProgress size={20} />
+                        <span style={{ paddingLeft: '10px' }}>Loading...</span>
+                      </>
+                    ) : (
+                      'Sign Up'
+                    )}
                 </Button>
                 <Oauth text={'Signup with Google'} />
                 <Typography variant='body2'>
@@ -133,18 +141,17 @@ function SignUp() {
                   Already have an account ? <Link to='/login'>Login</Link>
                 </Typography>
               </Stack>
-            </form>
-            {errorMessage && (
-            <Snackbar autoHideDuration={6000}>
+               {errorMessage && (
             <Alert
               severity="error"
               variant="filled"
-              sx={{ width: '100%' }}
+              sx={{ width: '68%' }}
             >
              {errorMessage}
             </Alert>
-          </Snackbar>
-          )}
+          )} 
+            </form>
+           
         </Container>
         </Grid>
       </Grid>

@@ -5,6 +5,7 @@ import img from '../assets/discussions.jpg';
 
 import Oauth from '../components/Oauth';
 import {
+  Alert,
   Button,
   Typography,
   Stack,
@@ -117,6 +118,15 @@ function Login() {
                   Don't have an account ? <Link to='/signup'>Sign Up</Link>
                 </Typography>
               </Stack>
+              {errorMessage && (
+            <Alert
+              severity="error"
+              variant="filled"
+              sx={{ width: '63%' }}
+            >
+             {errorMessage}
+            </Alert>
+          )} 
             </form>
           </Container>
         </Grid>

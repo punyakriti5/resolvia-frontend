@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -70,9 +71,11 @@ function CardComp() {
               <ThumbDownOutlinedIcon />
             </IconButton>
           </Button>
+          <Link to="/resolve-page">
           <Button variant="contained" sx={{ height: 30, cursor: "pointer" }}>
             learn more
           </Button>
+          </Link>
         </CardActions>
       </Card>
     </>
