@@ -1,11 +1,9 @@
 import React from "react";
-import "./ResolvePage.css";
 import Navbar from "../components/Navbar";
-import AddMedia from "../components/AddMedia";
 
 import {
   Avatar,
-  Box,
+ 
   Button,
   Card,
   CardActions,
@@ -13,14 +11,15 @@ import {
   CardHeader,
   CardMedia,
   IconButton,
-  TextField,
+ 
   Typography,
-  Stack
+ 
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
-import SendIcon from '@mui/icons-material/Send';
+import Comment from "../components/Comment";
+
 import { Carousel} from "react-bootstrap";
 
 function ResolvePage() {
@@ -99,25 +98,7 @@ function ResolvePage() {
             </IconButton>
           </Button>
         </CardActions>
-        <Stack spacing={2} direction="row" p={2}>
-        <Avatar sx={{bgcolor: blue[100]}}>A</Avatar>
-        <TextField
-      label="Be a part of discussion, add your comment..."
-      variant="outlined"
-      size="small"
-      fullWidth
-      InputProps={{
-        endAdornment: (
-          <Box sx={{ display: "flex" }}>
-            <AddMedia />
-            <IconButton >
-              <SendIcon />
-            </IconButton>
-          </Box>
-        )
-      }}
-    />
-        </Stack>
+       <Comment />
       </Card>
     </>
   );

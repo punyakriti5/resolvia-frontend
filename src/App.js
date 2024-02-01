@@ -9,6 +9,7 @@ import About from "./pages/About";
 import SetupProfile from "./pages/SetupProfile";
 import CreateResolve from "./pages/CreateResolve";
 import ResolvePage from "./pages/ResolvePage";
+import UserProfile from "./pages/UserProfile";
 const User_Dashboard = lazy(() => import("./pages/User_Dashboard"));
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
             <Route path="login" element={<Login />} />
             <Route path="about" element={<About />} />
             <Route path="setup-profile" element={<SetupProfile />} />
-
+            <Route path="user-profile" element={<UserProfile/>}/>
             <Route
               path="user/:username"
               element={

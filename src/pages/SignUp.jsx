@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './login.css';
 import logo from '../assets/app-logo.png';
 import img from '../assets/discussions.jpg';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import {
   Alert,
   Box,
@@ -11,8 +11,9 @@ import {
   Grid,
   TextField,
   Typography,
-  Snackbar,
   Stack,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Oauth from '../components/Oauth';
@@ -22,6 +23,9 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const theme=useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.up("md"));
+  
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -54,30 +58,33 @@ function SignUp() {
   };
   return (
     <>
-      <Grid container spacing={2}>
+    <Grid container spacing={2}>
+     
         <Grid item xs={8}>
           <Box
             component='img'
             sx={{
-              width: '67vw',
+              width:'68vw',
               height: '100vh',
             }}
             alt='img'
             src={img}
           />
         </Grid>
-        <Grid item xs={4}>
-          <Container className='App' sx={{ height: '100vh', width: '32vw' }}>
+        <Grid item xs={4} >
+        <Container className='App'  sx={{ height: '100vh', width:'32vw' }}>
+       
             <form onSubmit={handleSubmit} className='form'>
+            {isLarge ? (
               <Box
                 component='img'
                 sx={{
-                  height: 65,
-                  width: 65,
+                  height: 60,
+                  width: 60,
                 }}
                 alt='Logo'
                 src={logo}
-              />
+              />):null}
               <Stack spacing={2}>
                 <Link to='/' id='logo-name'>
                   RESOLVIA
@@ -121,8 +128,16 @@ function SignUp() {
                   variant='contained'
                   type='submit'
                   sx={{ textTransform: 'capitalize' }}
-                >
-                  Signup
+                  disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <CircularProgress size={20} />
+                        <span style={{ paddingLeft: '10px' }}>Loading...</span>
+                      </>
+                    ) : (
+                      'Sign Up'
+                    )}
                 </Button>
                 <Oauth text={'Signup with Google'} />
                 <Typography variant='body2'>
@@ -143,6 +158,7 @@ function SignUp() {
       </Grid>
     </>
   );
-}
+  }
+
 
 export default SignUp;

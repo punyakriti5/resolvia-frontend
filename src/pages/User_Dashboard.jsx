@@ -20,7 +20,7 @@ function User_Dashboard() {
         maxWidth: 450,
         minWidth: 350,
         width:"45vw",
-        height: "100vh",
+       
         position: "sticky",
         top: 0, 
         overflowY: "auto",
