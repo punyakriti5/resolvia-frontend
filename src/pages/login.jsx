@@ -7,9 +7,11 @@ import Oauth from '../components/Oauth';
 import {
   Button,
   Typography,
+  Alert,
   Stack,
   Box,
   Container,
+  Snackbar,
   Grid,
   TextField,
 } from '@mui/material';
@@ -31,12 +33,13 @@ function Login() {
   };
   const handleSubmit = async e => {
     e.preventDefault();
+    //console.log(errorMessage);
     if (!formData.username || !formData.password) {
       return dispatch(signInFailure('Please fill all the fields'));
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('http://localhost:3001/api/auth/signin', {
+      const res = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -103,7 +106,10 @@ function Login() {
                   required
                   onChange={handleChange}
                 />
-                <Typography variant='p' sx={{cursor: "pointer"}}> Forgot Password? </Typography>
+                <Typography variant='p' sx={{ cursor: 'pointer' }}>
+                  {' '}
+                  Forgot Password?{' '}
+                </Typography>
                 <Button
                   variant='contained'
                   type='submit'
@@ -118,6 +124,13 @@ function Login() {
                 </Typography>
               </Stack>
             </form>
+            {/* {errorMessage && (
+              <Snackbar autoHideDuration={6000}>
+                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
+                  {errorMessage}
+                </Alert>
+              </Snackbar>
+            )} */}
           </Container>
         </Grid>
       </Grid>

@@ -27,13 +27,14 @@ function SignUp() {
   };
   const handleSubmit = async e => {
     e.preventDefault();
+    //console.log(formData);
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage('Please fill out all fields.');
     }
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('http://localhost:3001/api/auth/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -53,7 +54,7 @@ function SignUp() {
   };
   return (
     <>
-    <Grid container spacing={2}>
+      <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box
             component='img'
@@ -66,8 +67,7 @@ function SignUp() {
           />
         </Grid>
         <Grid item xs={4}>
-        <Container className='App'  sx={{ height: '100vh', width: '32vw' }}>
-        
+          <Container className='App' sx={{ height: '100vh', width: '32vw' }}>
             <form onSubmit={handleSubmit} className='form'>
               <Box
                 component='img'
@@ -82,10 +82,7 @@ function SignUp() {
                 <Link to='/' id='logo-name'>
                   RESOLVIA
                 </Link>
-                <Typography variant='h6'>
-                  {' '}
-                  Create your account here
-                </Typography>
+                <Typography variant='h6'> Create your account here</Typography>
 
                 <TextField
                   id='username'
@@ -135,20 +132,15 @@ function SignUp() {
               </Stack>
             </form>
             {errorMessage && (
-            <Snackbar autoHideDuration={6000}>
-            <Alert
-              severity="error"
-              variant="filled"
-              sx={{ width: '100%' }}
-            >
-             {errorMessage}
-            </Alert>
-          </Snackbar>
-          )}
-        </Container>
+              <Snackbar autoHideDuration={6000}>
+                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
+                  {errorMessage}
+                </Alert>
+              </Snackbar>
+            )}
+          </Container>
         </Grid>
       </Grid>
-     
     </>
   );
 }
