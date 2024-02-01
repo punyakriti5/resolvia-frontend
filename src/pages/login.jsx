@@ -13,6 +13,8 @@ import {
   Container,
   Grid,
   TextField,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,6 +27,8 @@ import {
 function Login() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector(state => state.user);
+  const theme=useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleChange = e => {
@@ -63,7 +67,7 @@ function Login() {
           <Box
             component='img'
             sx={{
-              width: '67vw',
+              width: '68vw',
               height: '100vh',
             }}
             alt='img'
@@ -71,17 +75,18 @@ function Login() {
           />
         </Grid>
         <Grid item xs={4}>
-          <Container className='App' sx={{ height: '100vh', width: '33vw' }}>
+          <Container className='App' sx={{ height: '100vh', width: '34.5vw' }}>
             <form onSubmit={handleSubmit} className='form'>
+              {isMatch ? (
               <Box
                 component='img'
                 sx={{
-                  height: 65,
-                  width: 65,
+                  height: 60,
+                  width: 60,
                 }}
                 alt='Logo'
                 src={logo}
-              />
+              />):null}
               <Stack spacing={2}>
                 <Link to='/' id='logo-name'>
                   RESOLVIA

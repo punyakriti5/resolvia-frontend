@@ -12,16 +12,20 @@ import {
   TextField,
   Typography,
   Stack,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import Oauth from '../components/Oauth';
-import { padding } from '@mui/system';
 
 function SignUp() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const theme=useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.up("md"));
+  
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -54,30 +58,32 @@ function SignUp() {
   return (
     <>
     <Grid container spacing={2}>
+     
         <Grid item xs={8}>
           <Box
             component='img'
             sx={{
-              width: '67vw',
+              width:'68vw',
               height: '100vh',
             }}
             alt='img'
             src={img}
           />
         </Grid>
-        <Grid item xs={4}>
-        <Container className='App'  sx={{ height: '100vh', width: '32vw' }}>
-        
+        <Grid item xs={4} >
+        <Container className='App'  sx={{ height: '100vh', width:'32vw' }}>
+       
             <form onSubmit={handleSubmit} className='form'>
+            {isLarge ? (
               <Box
                 component='img'
                 sx={{
-                  height: 65,
-                  width: 65,
+                  height: 60,
+                  width: 60,
                 }}
                 alt='Logo'
                 src={logo}
-              />
+              />):null}
               <Stack spacing={2}>
                 <Link to='/' id='logo-name'>
                   RESOLVIA

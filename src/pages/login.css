@@ -4,18 +4,12 @@
   font-family: 'Open Sans';
   text-align: center;
   position: absolute;
- 
-
- 
-  /* background-image: url('C:\Users\PUNRANI\OneDrive - Capgemini\Desktop\Resolvia\resolvia-ui\src\assets\discussions.jpg'); */
- 
   background: linear-gradient(to right, rgb(233, 233, 234), rgb(140, 140, 141));
 }
 
 .form {
   position: relative;
-  
-  height: 85vh;
+  height: 95vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +17,7 @@
   background: transparent;
   padding: 20px;
   margin: auto;
-  margin-top: 4vh;
+  margin-top: 2.5vh;
   border: black 1px solid;
   border-radius: 10px;
 }
@@ -33,7 +27,7 @@
   margin-top: 10px;
   text-decoration: none;
  font-size: 20px;
- color: black;
+ color: inherit;
 }
 
 /* #register {

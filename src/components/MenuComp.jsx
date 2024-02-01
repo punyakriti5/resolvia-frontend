@@ -49,10 +49,11 @@ function MenuComp() {
       </MenuItem>
     </Link>
   )}
-
+  <Link to="/about">
   <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
     <Typography> About Us </Typography>
   </MenuItem>
+  </Link>
 
   {currentUser && (
     <Link to="/user-profile">
