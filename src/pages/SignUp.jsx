@@ -31,13 +31,14 @@ function SignUp() {
   };
   const handleSubmit = async e => {
     e.preventDefault();
+    //console.log(formData);
     if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage('Please fill out all fields.');
     }
     try {
       setLoading(true);
       setErrorMessage(null);
-      const res = await fetch('http://localhost:3001/api/auth/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -88,10 +89,7 @@ function SignUp() {
                 <Link to='/' id='logo-name'>
                   RESOLVIA
                 </Link>
-                <Typography variant='h6'>
-                  {' '}
-                  Create your account here
-                </Typography>
+                <Typography variant='h6'> Create your account here</Typography>
 
                 <TextField
                   id='username'
@@ -147,23 +145,20 @@ function SignUp() {
                   Already have an account ? <Link to='/login'>Login</Link>
                 </Typography>
               </Stack>
-               {errorMessage && (
-            <Alert
-              severity="error"
-              variant="filled"
-              sx={{ width: '68%' }}
-            >
-             {errorMessage}
-            </Alert>
-          )} 
             </form>
-           
-        </Container>
+            {errorMessage && (
+              <Snackbar autoHideDuration={6000}>
+                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
+                  {errorMessage}
+                </Alert>
+              </Snackbar>
+            )}
+          </Container>
         </Grid>
       </Grid>
-     
     </>
   );
-}
+  }
+
 
 export default SignUp;
