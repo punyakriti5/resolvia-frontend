@@ -8,7 +8,6 @@ import {
   Alert,
   Button,
   Typography,
-  Alert,
   Stack,
   Box,
   Container,
@@ -29,8 +28,8 @@ import {
 function Login() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector(state => state.user);
-  const theme=useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.up("md"));
+  const theme = useTheme();
+  const isMatch = useMediaQuery(theme.breakpoints.up('md'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleChange = e => {
@@ -81,15 +80,16 @@ function Login() {
           <Container className='App' sx={{ height: '100vh', width: '34.5vw' }}>
             <form onSubmit={handleSubmit} className='form'>
               {isMatch ? (
-              <Box
-                component='img'
-                sx={{
-                  height: 60,
-                  width: 60,
-                }}
-                alt='Logo'
-                src={logo}
-              />):null}
+                <Box
+                  component='img'
+                  sx={{
+                    height: 60,
+                    width: 60,
+                  }}
+                  alt='Logo'
+                  src={logo}
+                />
+              ) : null}
               <Stack spacing={2}>
                 <Link to='/' id='logo-name'>
                   RESOLVIA
@@ -130,14 +130,10 @@ function Login() {
                 </Typography>
               </Stack>
               {errorMessage && (
-            <Alert
-              severity="error"
-              variant="filled"
-              sx={{ width: '63%' }}
-            >
-             {errorMessage}
-            </Alert>
-          )} 
+                <Alert severity='error' variant='filled' sx={{ width: '63%' }}>
+                  {errorMessage}
+                </Alert>
+              )}
             </form>
             {/* {errorMessage && (
               <Snackbar autoHideDuration={6000}>

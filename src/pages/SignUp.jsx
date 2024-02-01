@@ -23,9 +23,9 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const theme=useTheme();
-  const isLarge = useMediaQuery(theme.breakpoints.up("md"));
-  
+  const theme = useTheme();
+  const isLarge = useMediaQuery(theme.breakpoints.up('md'));
+
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -58,33 +58,32 @@ function SignUp() {
   };
   return (
     <>
-    <Grid container spacing={2}>
-     
+      <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box
             component='img'
             sx={{
-              width:'68vw',
+              width: '68vw',
               height: '100vh',
             }}
             alt='img'
             src={img}
           />
         </Grid>
-        <Grid item xs={4} >
-        <Container className='App'  sx={{ height: '100vh', width:'32vw' }}>
-       
+        <Grid item xs={4}>
+          <Container className='App' sx={{ height: '100vh', width: '32vw' }}>
             <form onSubmit={handleSubmit} className='form'>
-            {isLarge ? (
-              <Box
-                component='img'
-                sx={{
-                  height: 60,
-                  width: 60,
-                }}
-                alt='Logo'
-                src={logo}
-              />):null}
+              {isLarge ? (
+                <Box
+                  component='img'
+                  sx={{
+                    height: 60,
+                    width: 60,
+                  }}
+                  alt='Logo'
+                  src={logo}
+                />
+              ) : null}
               <Stack spacing={2}>
                 <Link to='/' id='logo-name'>
                   RESOLVIA
@@ -129,15 +128,15 @@ function SignUp() {
                   type='submit'
                   sx={{ textTransform: 'capitalize' }}
                   disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <CircularProgress size={20} />
-                        <span style={{ paddingLeft: '10px' }}>Loading...</span>
-                      </>
-                    ) : (
-                      'Sign Up'
-                    )}
+                >
+                  {loading ? (
+                    <>
+                      <CircularProgress size={20} />
+                      <span style={{ paddingLeft: '10px' }}>Loading...</span>
+                    </>
+                  ) : (
+                    'Sign Up'
+                  )}
                 </Button>
                 <Oauth text={'Signup with Google'} />
                 <Typography variant='body2'>
@@ -145,20 +144,17 @@ function SignUp() {
                   Already have an account ? <Link to='/login'>Login</Link>
                 </Typography>
               </Stack>
-            </form>
-            {errorMessage && (
-              <Snackbar autoHideDuration={6000}>
-                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
+              {errorMessage && (
+                <Alert severity='error' variant='filled' sx={{ width: '63%' }}>
                   {errorMessage}
                 </Alert>
-              </Snackbar>
-            )}
+              )}
+            </form>
           </Container>
         </Grid>
       </Grid>
     </>
   );
-  }
-
+}
 
 export default SignUp;
