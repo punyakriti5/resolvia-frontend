@@ -34,7 +34,7 @@ function App() {
             />
            
             <Route path="create-resolve" element={ <CreateResolve />}/>
-            <Route path="resolve-page" element={<ResolvePage/>}/>
+            <Route path="resolve/:resolveSlug" element={<ResolvePage/>}/>
             <Route path="*" element={<h2>Page not found</h2>} />
           </Route>
         </Routes>

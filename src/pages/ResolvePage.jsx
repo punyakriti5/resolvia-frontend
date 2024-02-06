@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-
+import { useParams } from "react-router-dom";
 import {
   Avatar,
- 
   Button,
   Card,
   CardActions,
@@ -11,16 +10,14 @@ import {
   CardHeader,
   CardMedia,
   IconButton,
- 
   Typography,
- 
 } from "@mui/material";
-import { blue } from "@mui/material/colors";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import Comment from "../components/Comment";
 
-import { Carousel} from "react-bootstrap";
+import { Carousel } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 function ResolvePage() {
   const images = [
@@ -29,7 +26,38 @@ function ResolvePage() {
     { id: 3, src: "https://picsum.photos/id/1018/1000/600" },
   ];
 
+  const { resolveSlug } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [resolve, setResolve] = useState(null);
+  const { currentUser } = useSelector((state) => state.user);
 
+  useEffect(() => {
+    const fetchResolve = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/resolve/getresolves?slug=${resolveSlug}`);
+        const data = await res.json();
+
+        if (!res.ok) {
+          setError(true);
+
+          setLoading(false);
+          return;
+        }
+        if (res.ok) {
+          setResolve(data.resolves[0]);
+          console.log("resolve", resolve);
+          setLoading(false);
+          setError(false);
+        }
+      } catch (error) {
+        setError(true);
+        setLoading(false);
+      }
+    };
+    fetchResolve();
+  }, [resolveSlug]);
 
   return (
     <>
@@ -46,37 +74,46 @@ function ResolvePage() {
       >
         <CardHeader
           avatar={
-            <Avatar sx={{ bgcolor: blue[100] }} aria-label="resolve">
-              A
-            </Avatar>
+            <Avatar alt="user" img={resolve && resolve.post_as === 'anonymous' ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png' : currentUser.profilePicture} rounded /> 
           }
-          title="Abishek"
-          subheader="September 14, 2016"
+          title={resolve && resolve.post_as === 'anonymous' ? 'anonymous' : currentUser.username}
+          subheader={
+            resolve &&
+            new Date(resolve.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })
+          }
         />
         <CardContent>
           <Typography variant="body2" color="text.primary">
-            Artificial Intelligence scope in future
+            {resolve && resolve.title}
           </Typography>
           <Typography sx={{ my: 1 }} variant="body2" color="text.secondary">
             #artificialintelligence #artificialIntelligencedevelopment{" "}
           </Typography>
           <Typography variant="body2" color="text.primary">
-            How do you envision the responsible integration of artificial
-            intelligence in the society, considering both its potential benefits
-            and the ethical challenges it may pose? What kind of principles
-            should guide the development and deployment of AI technologies?
+            {resolve && resolve.content}
           </Typography>
         </CardContent>
-       
-<CardMedia sx={{ p: 2, height: "300px", position: "relative" }}>
-    <Carousel style={{ width: "96%", height: "100%", position: "absolute",marginLeft:"14px", marginRight:"14px"}}>
-      {images.map((image) => (
-        <Carousel.Item key={image.id}>
-          <img src={image.src} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }}  />
-        </Carousel.Item>
-      ))}
-    </Carousel>
-  </CardMedia>
+
+        <CardMedia sx={{ p: 2, height: "415px", position: "relative" }}>
+          <Carousel
+            style={{ width: "95%", height: "100%", position: "absolute" }}
+          >
+            {images.map((image) => (
+              <Carousel.Item key={image.id}>
+                <img
+                  src={image.src}
+                  alt=""
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
+        </CardMedia>
+
         <CardActions>
           <Button
             size="small"
@@ -98,7 +135,7 @@ function ResolvePage() {
             </IconButton>
           </Button>
         </CardActions>
-       <Comment />
+        <Comment  resolveId={resolve && resolve._id}/>
       </Card>
     </>
   );
