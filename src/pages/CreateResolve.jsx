@@ -41,7 +41,7 @@ function CreateResolve() {
         return setErrorMessage(data.message);
       }
       if (res.ok) {
-        navigate(`/resolve/${data.post_as}/${data.slug}`);
+        navigate(`/resolve/${data.slug}`);
       }
     } catch (error) {
       setErrorMessage(error.message);

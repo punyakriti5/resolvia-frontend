@@ -49,7 +49,7 @@ function SignUp() {
       }
       setLoading(false);
       if (res.ok) {
-        navigate('/about');
+        navigate('/setup-profile');
       }
     } catch (error) {
       setErrorMessage(error.message);

@@ -44,15 +44,24 @@ function Navbar() {
       console.log(error.message);
     }
   };
+
+  const handleDashboard = () => {
+    {
+      currentUser ? navigate("/user/:username") : navigate("/");
+    }
+  };
   return (
     <>
       <AppBar sx={{ background: "#034f84" }}>
         <Toolbar>
+         
           <Box
+            onClick={handleDashboard}
             component="img"
             sx={{
               height: 45,
               width: 45,
+              cursor: "pointer",
             }}
             alt="Logo"
             src={logo}
