@@ -52,7 +52,7 @@ function CreateResolve() {
       <Navbar />
       <Grid container spacing={2}>
         <Grid item xs={8} sx={{ mt: 10 }}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} encType='multipart/form-data'>
             <Typography
               variant='body1'
               paddingLeft='15px'
@@ -88,7 +88,7 @@ function CreateResolve() {
                   <MenuItem value='anonymous'>Anonymous</MenuItem>
                 </Select>
               </FormControl>
-              <AddMedia />
+              <AddMedia formData={resolveData} setformData={setResolveData} />
             </Stack>
             <TextField
               type='text'
