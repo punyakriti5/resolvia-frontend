@@ -10,6 +10,7 @@ import {
   Typography,
   Alert,
   Stack,
+  Input,
 } from '@mui/material';
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
@@ -24,17 +25,24 @@ function CreateResolve() {
   const [resolveData, setResolveData] = useState({
     post_as: currentUser.username,
   });
+  const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const handleChange = e => {
     setResolveData({ ...resolveData, post_as: e.target.value });
   };
   const handleSubmit = async e => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append('document', file);
+    formData.append('title', resolveData.title);
+    formData.append('category', resolveData.category);
+    formData.append('content', resolveData.content);
+    formData.append('post_as', resolveData.post_as);
+
     try {
       const res = await fetch('/api/resolve/create', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(resolveData),
+        body: formData,
       });
       const data = await res.json();
       if (data.success === false) {
@@ -88,7 +96,8 @@ function CreateResolve() {
                   <MenuItem value='anonymous'>Anonymous</MenuItem>
                 </Select>
               </FormControl>
-              <AddMedia formData={resolveData} setformData={setResolveData} />
+              {/* <AddMedia formData={resolveData} setformData={setResolveData} /> */}
+              <Input type='file' onChange={e => setFile(e.target.files[0])} />
             </Stack>
             <TextField
               type='text'

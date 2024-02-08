@@ -25,25 +25,6 @@ function AddMedia(props) {
   const handleClose = () => {
     setOpenDialog(false);
   };
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        if (file) {
-          console.log(fs.createReadStream(file.name));
-          const res = await fetch('/api/resolve/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ document: fs.createReadStream(file) }),
-          });
-          let data = await res.text();
-          console.log(data);
-        }
-      } catch (error) {
-        return error;
-      }
-    }
-    fetchData();
-  }, [file]);
 
   return (
     <>
