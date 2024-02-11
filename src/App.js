@@ -6,7 +6,8 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/login";
 import About from "./pages/About";
-import SetupProfile from "./pages/SetupProfile";
+
+import UpdateProfile from "./pages/UpdateProfile";
 import CreateResolve from "./pages/CreateResolve";
 import ResolvePage from "./pages/ResolvePage";
 import UserProfile from "./pages/UserProfile";
@@ -22,19 +23,19 @@ function App() {
             <Route path="signup" element={<SignUp />} />
             <Route path="login" element={<Login />} />
             <Route path="about" element={<About />} />
-            <Route path="setup-profile" element={<SetupProfile />} />
-            <Route path="user-profile" element={<UserProfile/>}/>
+            <Route path="update-profile" element={<UpdateProfile />} />
+            <Route path="user-profile" element={<UserProfile />} />
             <Route
-              path="user/:username"
+              path="user/:userId"
               element={
                 <Suspense fallback={<LoadingSkeleton />}>
                   <User_Dashboard />
                 </Suspense>
               }
             />
-           
-            <Route path="create-resolve" element={ <CreateResolve />}/>
-            <Route path="resolve/:resolveSlug" element={<ResolvePage/>}/>
+
+            <Route path="create-resolve" element={<CreateResolve />} />
+            <Route path="resolve/:resolveSlug" element={<ResolvePage />} />
             <Route path="*" element={<h2>Page not found</h2>} />
           </Route>
         </Routes>

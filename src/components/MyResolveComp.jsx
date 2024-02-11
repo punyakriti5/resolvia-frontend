@@ -7,7 +7,6 @@ import {
   Button,
   Container,
   InputBase,
-  Tooltip,
   Typography,
   Stack,
 } from "@mui/material";
@@ -31,13 +30,14 @@ function MyResolveComp() {
       try {
         setLoading(true);
         const res = await fetch(
-          `/api/resolve/getresolves?userId=${currentUser._id}`
+          `/api/resolve/getresolves?userId=${currentUser && currentUser._id}`
         );
+        console.log('response my resolve:', res);
         const data = await res.json();
+        console.log('data my resolve:', data);
         if (res.ok) {
           setLoading(false);
           setUserResolves(data.resolves);
-          console.log("userResolves", userResolves)
           if (data.resolves.length < 10) {
             setShowMore(false);
           }
@@ -47,9 +47,10 @@ function MyResolveComp() {
         setErrorMessage(error.message);
       }
     };
-
+    
     fetchResolves();
-  }, [currentUser._id]);
+  }, []);
+  console.log("userResolves", userResolves)
 
   const handleShowMore = async () => {
     const startIndex = userResolves.length;

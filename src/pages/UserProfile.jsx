@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import {Link} from "react-router-dom";
 import {
   Avatar,
   Box,
   Divider,
   Grid,
-  IconButton,
   Paper,
   Tooltip,
   Typography,
@@ -16,9 +16,28 @@ import SchoolIcon from "@mui/icons-material/School";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BadgeIcon from "@mui/icons-material/Badge";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import { Button } from "react-bootstrap";
 
 function UserProfile() {
   const { currentUser } = useSelector((state) => state.user);
+  const [userData, setUserData] = useState({});
+  console.log("currentUser", currentUser);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await fetch(`/api/user/getUser/${currentUser._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setUserData(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getUserData();
+  }, []);
+
+  console.log("userData", userData);
   return (
     <>
       <Navbar />
@@ -34,87 +53,117 @@ function UserProfile() {
               }}
               aria-label="resolve"
             >
-              A
+              {userData && (
+                <img
+                  src={userData.profilePicture}
+                  alt="profile-picture"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              )}
             </Avatar>
             <Typography sx={{ fontWeight: "medium", mt: 2 }}>
-              username
+              {userData && userData.username}
             </Typography>
-            <Typography>user email id</Typography>
+            <Typography> {userData && userData.email}</Typography>
+            <Link to='/update-profile'>
+            <Button variant="contained"> Update your profile</Button>
+            </Link>
           </Box>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-            <Paper>
-          <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-            <Typography
-              variant="body1"
-              color="#034f84"
-              sx={{
-                textAlign: "center",
-                textTransform: "capitalize",
-                fontWeight: "bold",
-                mb: 2,
-              }}
+          <Paper>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              p={2}
             >
-              Highlights
-            </Typography>
-            <Divider />
-            <Box display="flex" flexDirection="row" alignItems="center">
-              <Tooltip title="Fullname" placement="left-start" arrow>
-                <BadgeIcon fontSize="medium" sx={{color: (theme) => theme.palette.grey[500],}}/>
-              </Tooltip>
-              {/* <Typography>`${currentUser.firstName} ${currentUser.lastName}`</Typography> */}
-             
-              <Typography > FullName</Typography>
-             
-          </Box>
+              <Typography
+                variant="body1"
+                color="#034f84"
+                sx={{
+                  textAlign: "center",
+                  textTransform: "capitalize",
+                  fontWeight: "bold",
+                  mb: 2,
+                }}
+              >
+                Highlights
+              </Typography>
+              <Divider />
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Tooltip title="Fullname" placement="left-start" arrow>
+                  <BadgeIcon
+                    fontSize="medium"
+                    sx={{ color: (theme) => theme.palette.grey[500] }}
+                  />
+                </Tooltip>
+                {/* <Typography>`${currentUser.firstName} ${currentUser.lastName}`</Typography> */}
 
-            <Box display="flex" flexDirection="row" alignItems="center">
-              <Tooltip title="Education" placement="left-start" arrow>
-                <SchoolIcon fontSize="medium" sx={{color: (theme) => theme.palette.grey[500],}} />
-              </Tooltip>
-              {/* <Typography>{currentUser.education}</Typography> */}
-            
-              <Typography > Education</Typography>
-             
-            </Box>
+                <Typography>
+                  {" "}
+                  {userData && userData.firstname}{" "}
+                  {userData && userData.lastname}
+                </Typography>
+              </Box>
 
-            <Box display="flex" flexDirection="row" alignItems="center">
-              <Tooltip title="Profession" placement="left-start" arrow>
-                <BusinessCenterIcon fontSize="medium" sx={{color: (theme) => theme.palette.grey[500],}}/>
-              </Tooltip>
-              
-              <Typography > Profession</Typography>
-             
-            </Box>
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Tooltip title="Education" placement="left-start" arrow>
+                  <SchoolIcon
+                    fontSize="medium"
+                    sx={{ color: (theme) => theme.palette.grey[500] }}
+                  />
+                </Tooltip>
+                {/* <Typography>{currentUser.education}</Typography> */}
 
-            <Box display="flex" flexDirection="row" alignItems="center"  >
-            
-              <Tooltip title="Country" placement="left-start" arrow>
-                <LocationOnIcon fontSize="medium" sx={{color: (theme) => theme.palette.grey[500],}}/>
-              </Tooltip>
-             
-              <Typography > Country</Typography>
-            
+                <Typography> {userData && userData.education}</Typography>
+              </Box>
+
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Tooltip title="Profession" placement="left-start" arrow>
+                  <BusinessCenterIcon
+                    fontSize="medium"
+                    sx={{ color: (theme) => theme.palette.grey[500] }}
+                  />
+                </Tooltip>
+
+                <Typography> {userData && userData.profession}</Typography>
+              </Box>
+
+              <Box display="flex" flexDirection="row" alignItems="center">
+                <Tooltip title="Country" placement="left-start" arrow>
+                  <LocationOnIcon
+                    fontSize="medium"
+                    sx={{ color: (theme) => theme.palette.grey[500] }}
+                  />
+                </Tooltip>
+
+                <Typography> {userData && userData.country}</Typography>
+              </Box>
             </Box>
-          </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-            <Paper>
-          <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-            <Typography
-              variant="body1"
-              color="#034f84"
-              sx={{
-                textAlign: "center",
-                textTransform: "capitalize",
-                fontWeight: "bold",
-              }}
+          <Paper>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              p={2}
             >
-              Your interests
-            </Typography>
-            <Divider />
-          </Box>
+              <Typography
+                variant="body1"
+                color="#034f84"
+                sx={{
+                  textAlign: "center",
+                  textTransform: "capitalize",
+                  fontWeight: "bold",
+                }}
+              >
+                Your interests
+              </Typography>
+              <Divider />
+            </Box>
           </Paper>
         </Grid>
       </Grid>

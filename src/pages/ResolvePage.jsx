@@ -67,6 +67,7 @@ function ResolvePage() {
           boxShadow: 3,
         }}
       >
+        {currentUser ? (
         <CardHeader
           avatar={
             <Avatar
@@ -92,7 +93,7 @@ function ResolvePage() {
               year: 'numeric',
             })
           }
-        />
+        />):null}
         <CardContent>
           <Typography variant='body2' color='text.primary'>
             {resolve && resolve.title}
