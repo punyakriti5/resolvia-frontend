@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import Navbar from '../components/Navbar';
+import { useParams } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -11,27 +11,21 @@ import {
   CardMedia,
   IconButton,
   Typography,
-} from "@mui/material";
-import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
-import Comment from "../components/Comment";
-
-import { Carousel } from "react-bootstrap";
-import { useSelector } from "react-redux";
+} from '@mui/material';
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
+import Comment from '../components/Comment';
+import docImage from '../assets/doc_image.png';
+import { Carousel } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 function ResolvePage() {
-  const images = [
-    { id: 1, src: "https://picsum.photos/id/1015/1000/600" },
-    { id: 2, src: "https://picsum.photos/id/1016/1000/600" },
-    { id: 3, src: "https://picsum.photos/id/1018/1000/600" },
-  ];
-
   const { resolveSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [resolve, setResolve] = useState(null);
-  const { currentUser } = useSelector((state) => state.user);
-
+  const { currentUser } = useSelector(state => state.user);
+  //console.log(resolve);
   useEffect(() => {
     const fetchResolve = async () => {
       try {
@@ -47,7 +41,7 @@ function ResolvePage() {
         }
         if (res.ok) {
           setResolve(data.resolves[0]);
-          console.log("resolve", resolve);
+          //console.log('resolve', resolve);
           setLoading(false);
           setError(false);
         }
@@ -58,7 +52,8 @@ function ResolvePage() {
     };
     fetchResolve();
   }, [resolveSlug]);
-
+  const images = resolve ? resolve.media_content : [];
+  console.log(images[0]);
   return (
     <>
       <Navbar />
@@ -66,49 +61,97 @@ function ResolvePage() {
         sx={{
           maxWidth: 700,
           mt: 10,
-          mx: "auto",
+          mx: 'auto',
           border: 1,
-          borderColor: "primary.main",
+          borderColor: 'primary.main',
           boxShadow: 3,
         }}
       >
         <CardHeader
           avatar={
-            <Avatar alt="user" img={resolve && resolve.post_as === 'anonymous' ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png' : currentUser.profilePicture} rounded /> 
+            <Avatar
+              alt='user'
+              img={
+                resolve && resolve.post_as === 'anonymous'
+                  ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png'
+                  : currentUser.profilePicture
+              }
+              rounded
+            />
           }
-          title={resolve && resolve.post_as === 'anonymous' ? 'anonymous' : currentUser.username}
+          title={
+            resolve && resolve.post_as === 'anonymous'
+              ? 'anonymous'
+              : currentUser.username
+          }
           subheader={
             resolve &&
-            new Date(resolve.createdAt).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
+            new Date(resolve.createdAt).toLocaleDateString('en-US', {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
             })
           }
         />
         <CardContent>
-          <Typography variant="body2" color="text.primary">
+          <Typography variant='body2' color='text.primary'>
             {resolve && resolve.title}
           </Typography>
-          <Typography sx={{ my: 1 }} variant="body2" color="text.secondary">
-            #artificialintelligence #artificialIntelligencedevelopment{" "}
+          <Typography sx={{ my: 1 }} variant='body2' color='text.secondary'>
+            #artificialintelligence #artificialIntelligencedevelopment{' '}
           </Typography>
-          <Typography variant="body2" color="text.primary">
+          <Typography variant='body2' color='text.primary'>
             {resolve && resolve.content}
           </Typography>
         </CardContent>
 
-        <CardMedia sx={{ p: 2, height: "415px", position: "relative" }}>
+        <CardMedia sx={{ p: 2, height: '415px', position: 'relative' }}>
           <Carousel
-            style={{ width: "95%", height: "100%", position: "absolute" }}
+            style={{
+              width: '95%',
+              height: '100%',
+              position: 'absolute',
+              overflow: 'hidden',
+            }}
           >
-            {images.map((image) => (
-              <Carousel.Item key={image.id}>
-                <img
-                  src={image.src}
-                  alt=""
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
+            {images.map((image, i) => (
+              <Carousel.Item key={`image-${i}`}>
+                {image.substr(1 + image.lastIndexOf('.')) === 'png' ||
+                image.substr(1 + image.lastIndexOf('.')) === 'jpg' ||
+                image.substr(1 + image.lastIndexOf('.')) === 'jpeg' ? (
+                  <img
+                    src={image}
+                    alt=''
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                    }}
+                  />
+                ) : (
+                  <a href={image} target='_blank' rel='noreferrer'>
+                    <img
+                      src={docImage}
+                      alt=''
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        objectFit: 'cover',
+                        display: 'block',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                      }}
+                    />
+                    <Carousel.Caption>
+                      <p style={{ color: 'black' }}>
+                        {image.substr(1 + image.lastIndexOf('/'))}
+                      </p>
+                    </Carousel.Caption>
+                  </a>
+                )}
               </Carousel.Item>
             ))}
           </Carousel>
@@ -116,26 +159,26 @@ function ResolvePage() {
 
         <CardActions>
           <Button
-            size="small"
-            variant="outlined"
+            size='small'
+            variant='outlined'
             sx={{ height: 30, margin: 1 }}
           >
-            <IconButton aria-label="upvote" sx={{ cursor: "pointer" }}>
+            <IconButton aria-label='upvote' sx={{ cursor: 'pointer' }}>
               <ThumbUpOutlinedIcon />
             </IconButton>
-            <Typography textTransform={"lowercase"}>2k</Typography>
+            <Typography textTransform={'lowercase'}>2k</Typography>
           </Button>
           <Button
-            size="small"
-            variant="outlined"
+            size='small'
+            variant='outlined'
             sx={{ height: 30, margin: 1 }}
           >
-            <IconButton aria-label="downvote" sx={{ cursor: "pointer" }}>
+            <IconButton aria-label='downvote' sx={{ cursor: 'pointer' }}>
               <ThumbDownOutlinedIcon />
             </IconButton>
           </Button>
         </CardActions>
-        <Comment  resolveId={resolve && resolve._id}/>
+        <Comment resolveId={resolve && resolve._id} />
       </Card>
     </>
   );
