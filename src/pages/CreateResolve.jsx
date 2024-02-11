@@ -25,20 +25,29 @@ function CreateResolve() {
   const [resolveData, setResolveData] = useState({
     post_as: currentUser.username,
   });
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleFileUpload = e => {
+    setFile(e.target.files);
+  };
   const handleChange = e => {
     setResolveData({ ...resolveData, post_as: e.target.value });
   };
   const handleSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('document', file);
+    files.forEach((newfile, i) => {
+      formData.append(`document`, newfile);
+    });
     formData.append('title', resolveData.title);
     formData.append('category', resolveData.category);
     formData.append('content', resolveData.content);
     formData.append('post_as', resolveData.post_as);
-
+    if (file.length > 3) {
+      return setErrorMessage('No more than 3 files can be uploaded');
+    }
+    console.log(formData);
     try {
       const res = await fetch('/api/resolve/create', {
         method: 'POST',
@@ -55,6 +64,7 @@ function CreateResolve() {
       setErrorMessage(error.message);
     }
   };
+  const files = file ? [...file] : [];
   return (
     <>
       <Navbar />
@@ -97,7 +107,7 @@ function CreateResolve() {
                 </Select>
               </FormControl>
               {/* <AddMedia formData={resolveData} setformData={setResolveData} /> */}
-              <Input type='file' onChange={e => setFile(e.target.files[0])} />
+              <input type='file' multiple onChange={handleFileUpload} />
             </Stack>
             <TextField
               type='text'
