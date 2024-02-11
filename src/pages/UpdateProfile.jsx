@@ -10,38 +10,60 @@ import {
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Navbar from "../components/Navbar";
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from '../features/user/userSlice';
 import TileComp from "../components/TileComp";
 
-function SetupProfile() {
+function UpdateProfile() {
   const [profileData, setProfileData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loading, error: errorMessage } = useSelector(state => state.user);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
+  const [updateUserError, setUpdateUserError] = useState(null);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
-    setProfileData({ ...profileData, [e.target.id]: e.target.value.trim() });
+    setProfileData({...currentUser, ...profileData, [e.target.id]: e.target.value, });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setUpdateUserError(null);
+    setUpdateUserSuccess(null);
+    if (Object.keys(profileData).length === 0) {
+      setUpdateUserError('No changes made');
+      return;
+    }
+   console.log("userId", currentUser._id)
     try {
-      setLoading(true);
-      setErrorMessage(null);
-      const res = await fetch("http://localhost:3001/user", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(profileData),
       });
       const data = await res.json();
-      if (data.success === false) {
-        return setErrorMessage(data.message);
+      console.log("data",data);
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+        setUpdateUserError(data.message);
+      } else {
+        dispatch(updateSuccess(data));
+        setUpdateUserSuccess("User's profile updated successfully");
       }
-      setLoading(false);
     } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(updateFailure(error.message));
+      setUpdateUserError(error.message);
     }
   };
-
+ console.log("profiledata",profileData)
   return (
     <>
       <Navbar />
@@ -56,13 +78,13 @@ function SetupProfile() {
                 mt: 1,
               }}
               aria-label="resolve"
-            >
-              A
+            > A
             </Avatar>
             <Typography sx={{ fontWeight: "medium", mt: 2 }}>
-              username
+              {currentUser.username}
+             
             </Typography>
-            <Typography>user email id</Typography>
+            <Typography>{currentUser.email}</Typography>
           </Box>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -90,7 +112,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.firstname}
                   sx={{ my: 2 }}
                 />
 
@@ -100,7 +124,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.lastname}
                   sx={{ mb: 2 }}
                 />
 
@@ -110,7 +136,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.age}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -119,7 +147,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.gender}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -128,7 +158,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.education}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -137,7 +169,9 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.profession}
                   sx={{ mb: 2 }}
                 />
                 <TextField
@@ -146,10 +180,12 @@ function SetupProfile() {
                   type="text"
                   size="small"
                   required
-                  onChange={handleChange}
+                  onChange={handleChange
+                  }
+                  value={profileData.country}
                   sx={{ mb: 2 }}
                 />
-                <Button variant="contained" sx={{ m: 1 }}>
+                <Button type="submit" variant="contained" sx={{ m: 1 }}>
                   {" "}
                   save
                 </Button>
@@ -185,4 +221,4 @@ function SetupProfile() {
   );
 }
 
-export default SetupProfile;
+export default UpdateProfile;

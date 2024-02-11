@@ -3,13 +3,14 @@ import SendIcon from "@mui/icons-material/Send";
 import AddMedia from "../components/AddMedia";
 import { useSelector } from "react-redux";
 import { Avatar, Box, IconButton, TextField, Stack } from "@mui/material";
+import CommentSection from "./CommentSection";
 
 function Comment({ resolveId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState({ content: "" });
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
-
+ 
   console.log("commentss", comments);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +38,7 @@ function Comment({ resolveId }) {
         setComment({ content: "" });
         setCommentError(null);
 
-        setComments([...comments, data]);
+        setComments([data,...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
@@ -51,6 +52,7 @@ function Comment({ resolveId }) {
         const data = await res.json();
         if (res.ok) {
           setComments(data);
+          
         } else {
           console.log("Error:", res.statusText);
         }
@@ -65,7 +67,7 @@ function Comment({ resolveId }) {
     <>
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} direction="row" p={2}>
-          <Avatar alt="user" img={currentUser.profilePicture} rounded />
+          <Avatar alt={currentUser && currentUser.username} img={currentUser && currentUser.profilePicture} rounded />
           <TextField
             onChange={(e) =>
               setComment({ ...comment, content: e.target.value })
@@ -89,7 +91,11 @@ function Comment({ resolveId }) {
         </Stack>
       </form>
       {comments.map((comment) => (
-<p>{comment.content} wth</p>))}
+         <CommentSection
+         key={comment._id}
+         comment={comment}
+         /> 
+))}
     </>
   );
 }

@@ -1,5 +1,9 @@
-import React from "react";
-import { Box, Container, Grid, Typography,useMediaQuery } from "@mui/material";
+import React,{useState,useEffect} from "react";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Box, Container, Grid, useMediaQuery } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "../components/Navbar";
 import CardComp from "../components/CardComp";
@@ -8,7 +12,77 @@ import SortingComp from "../components/SortingComp";
 
 function User_Dashboard() {
   const matches = useMediaQuery("(min-width:960px)");
+  const {userId} = useParams();
+  const { currentUser } = useSelector((state) => state.user);
+  const [feedResolve, setFeedResolve] = useState([]);
+  const navigate = useNavigate();
+  const [errorFeed,setErrorFeed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showMore, setShowMore] = useState(true);
 
+
+  useEffect(() => {
+    const fetchAllResolve = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `/api/resolve/getresolves`
+        );
+        const data = await res.json();
+        if (res.ok) {
+          setLoading(false);
+          setFeedResolve(data.resolves);
+          console.log("feedResolve", feedResolve)
+          if (data.feedResolve.length < 10) {
+            setShowMore(false);
+          }
+        }
+      } catch (error) {
+        setLoading(false);
+        setErrorFeed(error.message);
+      }
+    };
+
+    fetchAllResolve();
+  }, []);
+
+  const handleLike = async (resolveId) => {
+    try {
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
+
+      console.log('currentUser:', currentUser);
+      console.log('resolveId:', resolveId);
+
+      const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
+        method: 'PUT',
+      });
+      console.log('response:', res);
+      const data = await res.json();
+      console.log('likesData', data);
+
+      if (res.ok) {
+        setFeedResolve(
+          feedResolve.map((resolve) =>
+            resolve._id === resolveId
+              ? {
+                  ...resolve,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : resolve
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
+  console.log("feedResolve", feedResolve)
   return (
     <> 
     <Box sx={{ display: "flex" }}>
@@ -42,7 +116,10 @@ function User_Dashboard() {
             <SortingComp />
           </Grid>
           <Grid item xs={12}>
-            <CardComp />
+          {feedResolve.map((resolve) => (
+            <CardComp   key={resolve._id}
+            resolve={resolve} onLike={handleLike}/>
+            ))}
           </Grid>
         </Grid>
       </Container>

@@ -30,7 +30,7 @@ function Navbar() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/user/signout", {
+      const res = await fetch("/api/user/signout", {
         method: "POST",
       });
       const data = await res.json();
@@ -47,7 +47,7 @@ function Navbar() {
 
   const handleDashboard = () => {
     {
-      currentUser ? navigate("/user/:username") : navigate("/");
+      currentUser ? navigate("/user/:userId") : navigate("/");
     }
   };
   return (
@@ -114,12 +114,18 @@ function Navbar() {
                 <Link to="/user-profile">
                   <Tooltip title={`${currentUser.username}'s profile`} arrow>
                     <Avatar
-                      alt="user"
-                      img={currentUser.profilePicture}
-                      rounded
+                     
                       sx={{ height: "25px", width: "25px" }}
-                    />
-                    {/* <AccountCircleIcon sx={{ mx: 3 }} aria-label="User Profile" /> */}
+                    >
+                    {currentUser && (
+    <img
+      src={currentUser.profilePicture}
+      alt="profile-picture"
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+  )}
+</Avatar>
+                   
                   </Tooltip>
                 </Link>
               ) : null}

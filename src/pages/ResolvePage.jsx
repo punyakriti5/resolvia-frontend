@@ -72,6 +72,7 @@ function ResolvePage() {
           boxShadow: 3,
         }}
       >
+        {currentUser ? (
         <CardHeader
           avatar={
             <Avatar alt="user" img={resolve && resolve.post_as === 'anonymous' ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png' : currentUser.profilePicture} rounded /> 
@@ -85,7 +86,7 @@ function ResolvePage() {
               year: "numeric",
             })
           }
-        />
+        />):null}
         <CardContent>
           <Typography variant="body2" color="text.primary">
             {resolve && resolve.title}
