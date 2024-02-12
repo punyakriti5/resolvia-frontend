@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,6 +20,30 @@ function User_Dashboard() {
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(true);
 
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          console.log("before set", isIntersecting)
+          setIsIntersecting(entry.isIntersecting)
+          console.log("after set", isIntersecting)
+          if (entry.isIntersecting) {
+            // Handle the entry, e.g., trigger rendering
+            entry.target.dataset.visible = true;
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger when 20% of the element is visible
+    );
+
+    return () => {
+      observerRef.current.disconnect();
+    };
+  }, []);
+
 
   useEffect(() => {
     const fetchAllResolve = async () => {
@@ -32,10 +56,25 @@ function User_Dashboard() {
         if (res.ok) {
           setLoading(false);
           setFeedResolve(data.resolves);
-          console.log("feedResolve", feedResolve)
-          if (data.feedResolve.length < 10) {
-            setShowMore(false);
-          }
+        
+          // if (data.feedResolve.length < 10) {
+          //   setShowMore(false);
+          // }
+
+          // Connect intersection observer to CardComp elements
+
+          const observeCard = (cardRef) => {
+            if (cardRef) {
+              observerRef.current.observe(cardRef);
+            }
+          };
+
+          feedResolve.forEach((resolve) => {
+            const cardRef =  document.getElementById(`card-${resolve._id}`);
+            console.log("cardREf",cardRef)
+            observeCard(cardRef);
+          });
+
         }
       } catch (error) {
         setLoading(false);
@@ -81,7 +120,6 @@ function User_Dashboard() {
     }
   };
 
-
   console.log("feedResolve", feedResolve)
   return (
     <> 
@@ -118,14 +156,14 @@ function User_Dashboard() {
           <Grid item xs={12}>
           {feedResolve.map((resolve) => (
             <CardComp   key={resolve._id}
-            resolve={resolve} onLike={handleLike}/>
+            resolve={resolve} onLike={handleLike} observerRef={observerRef}
+            isIntersecting={isIntersecting}/>
             ))}
           </Grid>
         </Grid>
       </Container>
     </Box>
   </Box>
-
     </>
   );
 }

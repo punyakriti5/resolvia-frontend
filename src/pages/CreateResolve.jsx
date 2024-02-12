@@ -47,7 +47,7 @@ function CreateResolve() {
     if (file.length > 3) {
       return setErrorMessage('No more than 3 files can be uploaded');
     }
-    console.log(formData);
+    
     try {
       const res = await fetch('/api/resolve/create', {
         method: 'POST',
