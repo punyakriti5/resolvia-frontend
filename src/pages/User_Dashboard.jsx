@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 import { Box, Container, Grid, useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/Navbar';
@@ -21,31 +20,93 @@ function User_Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [sortOrder, setSortOrder] = useState('desc');
-  const location = useLocation();
-  useEffect(() => {
-    const fetchAllResolve = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
-        );
-        const data = await res.json();
-        if (res.ok) {
-          setLoading(false);
-          setFeedResolve(data.resolves);
-          //console.log('feedResolve', feedResolve);
-          if (data.feedResolve.length < 10) {
-            setShowMore(false);
-          }
-        }
-      } catch (error) {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const observerRef = useRef(null);
+  const [page, setPage] = useState(1);
+  const resolvePerPage = 2;
+  // useEffect(() => {
+  //   const fetchResolves = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         `/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+  //       );
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         setFeedResolve(data.resolves);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
+
+  //   fetchResolves();
+  // }, [sortBy, sortOrder, searchTerm]);
+  const fetchInitialResolve = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+      );
+      const data = await res.json();
+      //console.log('response data', data);
+      if (res.ok) {
         setLoading(false);
-        setErrorFeed(error.message);
+        setFeedResolve(data.resolves);
+      }
+    } catch (error) {
+      setLoading(false);
+      setErrorFeed(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchInitialResolve();
+
+    observerRef.current = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const fetchNextResolve = async () => {
+              setPage(prevPage => prevPage + 1);
+              const startIndex = page * resolvePerPage;
+
+              setLoading(true);
+              try {
+                const res = await fetch(
+                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}`
+                );
+                const data = await res.json();
+                if (res.ok) {
+                  setLoading(false);
+                  //setFeedResolve(data.resolves);
+                  setFeedResolve(prevFeedResolve => [
+                    ...prevFeedResolve,
+                    ...data.resolves,
+                  ]);
+                }
+              } catch (error) {
+                setLoading(false);
+                setErrorFeed(error.message);
+              }
+            };
+            fetchNextResolve();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const card = document.getElementById('cardEnd');
+    if (card) {
+      observerRef.current.observe(card);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
       }
     };
+  }, []);
 
-    fetchAllResolve();
-  }, [sortBy, sortOrder, searchTerm]);
   const handleSearch = e => {
     setSearchTerm(e.target.value);
   };
@@ -67,15 +128,12 @@ function User_Dashboard() {
         return;
       }
 
-      console.log('currentUser:', currentUser);
-      console.log('resolveId:', resolveId);
-
       const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
         method: 'PUT',
       });
-      console.log('response:', res);
+      //console.log('response:', res);
       const data = await res.json();
-      console.log('likesData', data);
+      //console.log('likesData', data);
 
       if (res.ok) {
         setFeedResolve(
@@ -95,7 +153,7 @@ function User_Dashboard() {
     }
   };
 
-  console.log('feedResolve', feedResolve);
+  //console.log('feedResolve', feedResolve);
   return (
     <>
       <Box sx={{ display: 'flex' }}>
@@ -138,8 +196,11 @@ function User_Dashboard() {
                     key={resolve._id}
                     resolve={resolve}
                     onLike={handleLike}
+                    observerRef={observerRef}
+                    isIntersecting={isIntersecting}
                   />
                 ))}
+                <div id='cardEnd'></div>
               </Grid>
             </Grid>
           </Container>

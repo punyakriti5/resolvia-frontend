@@ -129,7 +129,7 @@ function SignUp() {
                   sx={{ textTransform: 'capitalize' }}
                   disabled={loading}
                 >
-                  {loading ? (
+                  {!errorMessage && loading ? (
                     <>
                       <CircularProgress size={20} />
                       <span style={{ paddingLeft: '10px' }}>Loading...</span>

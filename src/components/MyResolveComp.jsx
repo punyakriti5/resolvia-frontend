@@ -25,23 +25,21 @@ function MyResolveComp() {
   const [mySearch, setMySearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 6;
 
   useEffect(() => {
     const fetchResolves = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const res = await fetch(
-          `/api/resolve/getresolves?userId=${
-            currentUser && currentUser._id
-          }&mySearch=${mySearch}`
+          `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`
         );
-        console.log('response my resolve:', res);
         const data = await res.json();
-        console.log('data my resolve:', data);
         if (res.ok) {
           setLoading(false);
           setUserResolves(data.resolves);
-          if (data.resolves.length < 10) {
+          if (data.resolves.length < rowsPerPage) {
             setShowMore(false);
           }
         }
@@ -58,17 +56,22 @@ function MyResolveComp() {
     setMySearch(e.target.value);
   };
   const handleShowMore = async () => {
-    const startIndex = userResolves.length;
+    setPage(prevPage => prevPage + 1);
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await fetch(
-        `/api/post/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&mySearch=${mySearch}`
+        `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`
       );
       const data = await res.json();
       if (res.ok) {
         setLoading(false);
-        setUserResolves(prev => [...prev, ...data.resolves]);
-        if (data.resolves.length < 9) {
+        setUserResolves(prevUserResolves => [
+          ...prevUserResolves,
+          ...data.resolves,
+        ]);
+        if (data.resolves.length < rowsPerPage) {
           setShowMore(false);
         }
       }
@@ -160,6 +163,11 @@ function MyResolveComp() {
               </Link>
             </Accordion>
           ))}
+          {showMore ? (
+            <Button onClick={handleShowMore}> Show more</Button>
+          ) : (
+            <Typography variant='body1'>No more Resolve</Typography>
+          )}
         </Stack>
       </Container>
     </>
