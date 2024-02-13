@@ -33,7 +33,7 @@ function MyResolveComp() {
         const res = await fetch(
           `/api/resolve/getresolves?userId=${
             currentUser && currentUser._id
-          }&searchTerm=${mySearch}`
+          }&mySearch=${mySearch}`
         );
         console.log('response my resolve:', res);
         const data = await res.json();
@@ -62,7 +62,7 @@ function MyResolveComp() {
     try {
       setLoading(true);
       const res = await fetch(
-        `/api/post/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&searchTerm=${mySearch}`
+        `/api/post/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&mySearch=${mySearch}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -105,6 +105,13 @@ function MyResolveComp() {
             </Button>
           ) : (
             <>
+              <Button variant='outlined' endIcon={<SearchIcon />}>
+                <InputBase
+                  placeholder=' My resolves'
+                  value={mySearch}
+                  onChange={handleSearch}
+                />
+              </Button>
               <Stack spacing={2} direction='row'>
                 <Typography
                   variant='body1'

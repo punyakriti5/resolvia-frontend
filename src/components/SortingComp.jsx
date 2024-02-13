@@ -5,6 +5,7 @@ import {
   InputLabel,
   Select,
   Stack,
+  Tooltip,
   MenuItem,
   Typography,
 } from '@mui/material';
@@ -34,7 +35,15 @@ function SortingComp({ sortBy, sortOrder, handleSortBy, handleSortOrder }) {
           </FormControl>
         </Box>
         <Button sx={{ mt: 7, ml: 3 }} onClick={handleSortOrder}>
-          {sortOrder === 'desc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />}
+          {sortOrder === 'desc' ? (
+            <Tooltip title='Sort Ascending' arrow>
+              <ArrowUpwardIcon />{' '}
+            </Tooltip>
+          ) : (
+            <Tooltip title='Sort Descending' arrow>
+              <ArrowDownwardIcon />
+            </Tooltip>
+          )}
         </Button>
       </Stack>
     </>
@@ -42,19 +51,3 @@ function SortingComp({ sortBy, sortOrder, handleSortBy, handleSortOrder }) {
 }
 
 export default SortingComp;
-
-// <Button
-//   variant="outlined"
-//   size="medium"
-//   sx={{ height: 40, bgcolor: "#bed8ec",borderRadius: 2, mt :9, ml :80 }}
-//   startIcon={<SwapVertOutlinedIcon />}
-//   className="top-right-button"
-// >
-//   <Typography
-//     variant="body2"
-//     color="text.primary"
-//     textTransform={"lowercase"}
-//   >
-//     sort by categories
-//   </Typography>
-// </Button>
