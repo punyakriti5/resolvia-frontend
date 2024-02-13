@@ -41,7 +41,6 @@ function ResolvePage() {
         }
         if (res.ok) {
           setResolve(data.resolves[0]);
-          //console.log('resolve', resolve);
           setLoading(false);
           setError(false);
         }
@@ -99,7 +98,7 @@ function ResolvePage() {
             {resolve && resolve.title}
           </Typography>
           <Typography sx={{ my: 1 }} variant='body2' color='text.secondary'>
-            #artificialintelligence #artificialIntelligencedevelopment{' '}
+           {resolve && resolve.category}
           </Typography>
           <Typography variant='body2' color='text.primary'>
             {resolve && resolve.content}

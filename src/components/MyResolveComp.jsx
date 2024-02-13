@@ -13,32 +13,32 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DrawIcon from "@mui/icons-material/Draw";
-import myResolve from '../assets/myResolvee.jpg';
+import myResolve from "../assets/myResolvee.jpg";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function MyResolveComp() {
   const { currentUser } = useSelector((state) => state.user);
   const [userResolves, setUserResolves] = useState([]);
-  const [errorMessage,setErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(true);
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 6;
 
   useEffect(() => {
     const fetchResolves = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
         const res = await fetch(
-          `/api/resolve/getresolves?userId=${currentUser && currentUser._id}`
+          `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}`
         );
-        console.log('response my resolve:', res);
         const data = await res.json();
-        console.log('data my resolve:', data);
         if (res.ok) {
           setLoading(false);
           setUserResolves(data.resolves);
-          if (data.resolves.length < 10) {
+          if (data.resolves.length < rowsPerPage) {
             setShowMore(false);
           }
         }
@@ -47,23 +47,27 @@ function MyResolveComp() {
         setErrorMessage(error.message);
       }
     };
-    
+
     fetchResolves();
   }, []);
-  console.log("userResolves", userResolves)
 
   const handleShowMore = async () => {
-    const startIndex = userResolves.length;
+    setPage((prevPage) => prevPage + 1);
+    const startIndex = page * rowsPerPage;
+    const endIndex = startIndex + rowsPerPage;
+    setLoading(true);
     try {
-      setLoading(true);
       const res = await fetch(
-        `/api/post/getresolves?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}`
       );
       const data = await res.json();
       if (res.ok) {
         setLoading(false);
-        setUserResolves((prev) => [...prev, ...data.resolves]);
-        if (data.resolves.length < 9) {
+        setUserResolves((prevUserResolves) => [
+          ...prevUserResolves,
+          ...data.resolves,
+        ]);
+        if (data.resolves.length < rowsPerPage) {
           setShowMore(false);
         }
       }
@@ -76,7 +80,6 @@ function MyResolveComp() {
   return (
     <>
       <Container sx={{ mt: 10 }}>
-     
         <Stack spacing={2}>
           <Typography
             variant="body1"
@@ -97,30 +100,38 @@ function MyResolveComp() {
             </Button>
           ) : (
             <>
-            <Stack spacing={2} direction="row">
-            <Typography variant="body1"  sx={{
-              textAlign: "center",
-              fontWeight: "medium",}}>Not created any resolve yet?</Typography>
-            <Link to="/create-resolve">
-            <Button variant="contained"  size="small" sx={{ backgroundColor: "#034f84",
-        width: '90%', }} startIcon={<DrawIcon />}>
-      Create Resolve
-    </Button>
+              <Stack spacing={2} direction="row">
+                <Typography
+                  variant="body1"
+                  sx={{
+                    textAlign: "center",
+                    fontWeight: "medium",
+                  }}
+                >
+                  Not created any resolve yet?
+                </Typography>
+                <Link to="/create-resolve">
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{ backgroundColor: "#034f84", width: "90%" }}
+                    startIcon={<DrawIcon />}
+                  >
+                    Create Resolve
+                  </Button>
                 </Link>
-                </Stack>
-            <Box
-            component='img'
-            sx={{
-              alignSelf:"center",
-              width: '320px',
-              height: '420px',
-            }}
-            alt='create my resolves'
-            src={myResolve}
-          />
-        
+              </Stack>
+              <Box
+                component="img"
+                sx={{
+                  alignSelf: "center",
+                  width: "320px",
+                  height: "420px",
+                }}
+                alt="create my resolves"
+                src={myResolve}
+              />
             </>
-            
           )}
           {userResolves.map((resolve) => (
             <Accordion key={resolve.slug}>
@@ -137,6 +148,11 @@ function MyResolveComp() {
               </Link>
             </Accordion>
           ))}
+          {showMore ? (
+            <Button onClick={handleShowMore}> Show more</Button>
+          ) : (
+            <Typography variant="body1">No more Resolve</Typography>
+          )}
         </Stack>
       </Container>
     </>
