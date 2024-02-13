@@ -1,39 +1,55 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-
-import { Box, Container, Grid, useMediaQuery } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
-import Navbar from "../components/Navbar";
-import CardComp from "../components/CardComp";
-import MyResolveComp from "../components/MyResolveComp";
-import SortingComp from "../components/SortingComp";
-
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Box, Container, Grid, useMediaQuery } from '@mui/material';
+import CssBaseline from '@mui/material/CssBaseline';
+import Navbar from '../components/Navbar';
+import CardComp from '../components/CardComp';
+import MyResolveComp from '../components/MyResolveComp';
+import SortingComp from '../components/SortingComp';
 function User_Dashboard() {
-  const matches = useMediaQuery("(min-width:960px)");
+  const matches = useMediaQuery('(min-width:960px)');
   const { userId } = useParams();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector(state => state.user);
   const [feedResolve, setFeedResolve] = useState([]);
   const navigate = useNavigate();
   const [errorFeed, setErrorFeed] = useState(false);
   const [loading, setLoading] = useState(true);
-  //const [startIndex, setStartIndex]=useState(0);
-  //const [isIntersecting, setIsIntersecting] = useState(false);
-  //const [page, setPage] = useState(0);
+  const [showMore, setShowMore] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState('latest');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [isIntersecting, setIsIntersecting] = useState(false);
   const observerRef = useRef(null);
   const resolvePerPage = 2;
   let startIndex=0;
+  // useEffect(() => {
+  //   const fetchResolves = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         `/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+  //       );
+  //       const data = await res.json();
+  //       if (res.ok) {
+  //         setFeedResolve(data.resolves);
+  //       }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   };
 
+  //   fetchResolves();
+  // }, [sortBy, sortOrder, searchTerm]);
   useEffect(() => {
     const fetchInitialResolve = async () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}`
+          `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
         );
         const data = await res.json();
-        console.log("response initialdata", data);
+        //console.log('response initialdata', data);
         if (res.ok) {
           setLoading(false);
           setFeedResolve(data.resolves);
@@ -45,13 +61,13 @@ function User_Dashboard() {
       }
     };
     fetchInitialResolve();
-  }, []);
+  }, [sortBy, sortOrder, searchTerm]);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
-      (entries) => {
+      entries => {
         console.log("entries", entries);
-        entries.forEach((entry) => {
+        entries.forEach(entry => {
           console.log("entry", entry);
           if (entry.isIntersecting) {
             const fetchNextResolve = async () => {
@@ -61,12 +77,13 @@ function User_Dashboard() {
               setLoading(true);
               try {
                 const res = await fetch(
-                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}`
+                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
                 );
                 const data = await res.json();
                 if (res.ok) {
                   setLoading(false);
-                  setFeedResolve((prevFeedResolve) => [
+                  //setFeedResolve(data.resolves);
+                  setFeedResolve(prevFeedResolve => [
                     ...prevFeedResolve,
                     ...data.resolves,
                   ]);
@@ -83,7 +100,7 @@ function User_Dashboard() {
       { threshold: 0.5 }
     );
 
-    const card = document.getElementById("cardEnd");
+    const card = document.getElementById('cardEnd');
     if (card) {
       observerRef.current.observe(card);
     }
@@ -93,25 +110,39 @@ function User_Dashboard() {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [sortBy, sortOrder, searchTerm]);
 
-  const handleLike = async (resolveId) => {
+  const handleSearch = e => {
+    setSearchTerm(e.target.value);
+  };
+  const handleSortBy = e => {
+    setSortBy(e.target.value);
+  };
+  const handleSortOrder = () => {
+    // console.log('Clicking this button');
+    if (sortOrder === 'desc') {
+      setSortOrder('asc');
+    } else {
+      setSortOrder('desc');
+    }
+  };
+  const handleLike = async resolveId => {
     try {
       if (!currentUser) {
-        navigate("/login");
+        navigate('/login');
         return;
       }
 
       const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
-        method: "PUT",
+        method: 'PUT',
       });
-      console.log("response:", res);
+      //console.log('response:', res);
       const data = await res.json();
-      console.log("likesData", data);
+      //console.log('likesData', data);
 
       if (res.ok) {
         setFeedResolve(
-          feedResolve.map((resolve) =>
+          feedResolve.map(resolve =>
             resolve._id === resolveId
               ? {
                   ...resolve,
@@ -127,39 +158,45 @@ function User_Dashboard() {
     }
   };
 
+  //console.log('feedResolve', feedResolve);
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <Navbar />
+        <Navbar searchTerm={searchTerm} handleSearch={handleSearch} />
         <Box
           sx={{
             maxWidth: 450,
             minWidth: 350,
-            width: "45vw",
+            width: '45vw',
 
-            position: "sticky",
+            position: 'sticky',
             top: 0,
-            overflowY: "auto",
+            overflowY: 'auto',
             boxShadow: 3,
           }}
         >
           <MyResolveComp />
         </Box>
         <Box
-          component="main"
+          component='main'
           sx={{
             flexGrow: 1,
             p: 3,
           }}
         >
-          <Container maxWidth="lg">
+          <Container maxWidth='lg'>
             <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               <Grid item xs={4}>
-                <SortingComp />
+                <SortingComp
+                  sortBy={sortBy}
+                  sortOrder={sortOrder}
+                  handleSortBy={handleSortBy}
+                  handleSortOrder={handleSortOrder}
+                />
               </Grid>
               <Grid item xs={12}>
-                {feedResolve.map((resolve) => (
+                {feedResolve.map(resolve => (
                   <CardComp
                     id="card"
                     key={resolve._id}
@@ -168,7 +205,7 @@ function User_Dashboard() {
                     observerRef={observerRef}
                   />
                 ))}
-                <div id="cardEnd"></div>
+                <div id='cardEnd'></div>
               </Grid>
             </Grid>
           </Container>

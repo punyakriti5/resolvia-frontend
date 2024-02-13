@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate} from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -25,6 +25,7 @@ function ResolvePage() {
   const [error, setError] = useState(false);
   const [resolve, setResolve] = useState(null);
   const { currentUser } = useSelector(state => state.user);
+  const navigate = useNavigate();
   //console.log(resolve);
   useEffect(() => {
     const fetchResolve = async () => {
@@ -51,8 +52,43 @@ function ResolvePage() {
     };
     fetchResolve();
   }, [resolveSlug]);
+
   const images = resolve ? resolve.media_content : [];
   console.log(images[0]);
+
+  const handleLike = async resolveId => {
+    try {
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
+
+      const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
+        method: 'PUT',
+      });
+      console.log('response:', res);
+      const data = await res.json();
+      console.log('likesData', data);
+
+      if (res.ok) {
+        setResolve(
+          resolve.map(resolve =>
+            resolve._id === resolveId
+              ? {
+                  ...resolve,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : resolve
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
   return (
     <>
       <Navbar />
@@ -163,10 +199,10 @@ function ResolvePage() {
             variant='outlined'
             sx={{ height: 30, margin: 1 }}
           >
-            <IconButton aria-label='upvote' sx={{ cursor: 'pointer' }}>
+            <IconButton aria-label='upvote' sx={{ cursor: 'pointer' }} onClick={() => handleLike(resolve._id)}>
               <ThumbUpOutlinedIcon />
             </IconButton>
-            <Typography textTransform={'lowercase'}>2k</Typography>
+            <Typography textTransform={'lowercase'}>{resolve && resolve.numberOfLikes}</Typography>
           </Button>
           <Button
             size='small'

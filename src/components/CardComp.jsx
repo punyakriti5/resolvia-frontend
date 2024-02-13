@@ -77,7 +77,7 @@ function CardComp({resolve, onLike}) {
             {resolve.title}
           </Typography>
           <Typography sx={{ my: 1 }} variant="body2" color="text.secondary">
-            #artificialintelligence #artificialIntelligencedevelopment{" "}
+           {resolve.category}
           </Typography>
           <Typography variant="body2" color="text.primary">
             {resolve.content}

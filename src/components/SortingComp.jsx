@@ -1,51 +1,53 @@
-import { Button,Box, FormControl, InputLabel, Select, MenuItem, Typography } from "@mui/material";
-import SwapVertOutlinedIcon from "@mui/icons-material/SwapVertOutlined";
-import React,{useState} from "react";
+import {
+  Button,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  Stack,
+  Tooltip,
+  MenuItem,
+  Typography,
+} from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import React, { useState } from 'react';
 
-function SortingComp() {
-  const [sort, setSort]= useState('');
-  const handleChange = (e) => {
-    setSort(e.target.value);
-  };
+function SortingComp({ sortBy, sortOrder, handleSortBy, handleSortOrder }) {
+  console.log('props ', { sortBy, sortOrder, handleSortBy, handleSortOrder });
+
   return (
-  <>
- <Box sx={{ minWidth: 200 , mt :7, ml:67}}>
- 
-      <FormControl variant="standard" fullWidth>
-        <InputLabel id="sortBy">Sort By : </InputLabel>
-        <Select
-          labelId="sortBy"
-          id="sortingOptions"
-          value={sort}
-          onChange={handleChange}
-        >
-          <MenuItem value="">
-            <em>default</em>
-          </MenuItem>
-          <MenuItem  value={"latest"}>latest</MenuItem>
-          <MenuItem value={"popularity"}>popularity</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-  </>
-   
+    <>
+      <Stack direction='row'>
+        <Box sx={{ minWidth: 200, mt: 7, ml: 67 }}>
+          <FormControl variant='standard' fullWidth>
+            <InputLabel id='sortBy'>Sort By : </InputLabel>
+            <Select
+              labelId='sortBy'
+              id='sortingOptions'
+              value={sortBy}
+              defaultValue={sortBy}
+              onChange={handleSortBy}
+            >
+              <MenuItem value={'latest'}>latest</MenuItem>
+              <MenuItem value={'popularity'}>popularity</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Button sx={{ mt: 7, ml: 3 }} onClick={handleSortOrder}>
+          {sortOrder === 'desc' ? (
+            <Tooltip title='Sort Ascending' arrow>
+              <ArrowUpwardIcon />{' '}
+            </Tooltip>
+          ) : (
+            <Tooltip title='Sort Descending' arrow>
+              <ArrowDownwardIcon />
+            </Tooltip>
+          )}
+        </Button>
+      </Stack>
+    </>
   );
 }
 
 export default SortingComp;
-
- // <Button
-    //   variant="outlined"
-    //   size="medium"
-    //   sx={{ height: 40, bgcolor: "#bed8ec",borderRadius: 2, mt :9, ml :80 }}
-    //   startIcon={<SwapVertOutlinedIcon />}
-    //   className="top-right-button"
-    // >
-    //   <Typography
-    //     variant="body2"
-    //     color="text.primary"
-    //     textTransform={"lowercase"}
-    //   >
-    //     sort by categories
-    //   </Typography>
-    // </Button>
