@@ -1,29 +1,34 @@
-import { Button, InputBase, useMediaQuery, useTheme } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
+import { Button, InputBase, useMediaQuery, useTheme } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
-function SearchComp() {
+function SearchComp(props) {
+  const { searchTerm, handleSearch } = props;
+  console.log(searchTerm);
   const theme = useTheme();
-  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  const isMatch = useMediaQuery(theme.breakpoints.down('md'));
   return (
     <>
       {isMatch ? (
-        <Button color="inherit"
-        variant="outlined"
-        size="medium">
+        <Button color='inherit' variant='outlined' size='medium'>
           <SearchIcon />
         </Button>
       ) : (
         <Button
-          color="inherit"
-          variant="outlined"
-          size="medium"
+          color='inherit'
+          variant='outlined'
+          size='medium'
           endIcon={<SearchIcon />}
         >
           <InputBase
-            color="inherit"
-            placeholder="Search Resolve"
-            inputProps={{ sx: { "&::placeholder": { color: "white" } } }}
+            color='inherit'
+            placeholder='Search Resolve'
+            defaultValue={searchTerm}
+            type='string'
+            value={searchTerm}
+            onChange={handleSearch}
+            inputProps={{
+              sx: { '&::placeholder': { color: 'white' }, color: 'white' },
+            }}
           />
         </Button>
       )}

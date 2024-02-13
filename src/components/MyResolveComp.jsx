@@ -9,19 +9,20 @@ import {
   InputBase,
   Typography,
   Stack,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DrawIcon from "@mui/icons-material/Draw";
-import myResolve from "../assets/myResolvee.jpg";
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import DrawIcon from '@mui/icons-material/Draw';
+import myResolve from '../assets/myResolvee.jpg';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function MyResolveComp() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector(state => state.user);
   const [userResolves, setUserResolves] = useState([]);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [mySearch, setMySearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [showMore, setShowMore] = useState(true);
   const [page, setPage] = useState(1);
@@ -32,7 +33,7 @@ function MyResolveComp() {
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}`
+          `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`
         );
         const data = await res.json();
         if (res.ok) {
@@ -49,21 +50,24 @@ function MyResolveComp() {
     };
 
     fetchResolves();
-  }, []);
-
+  }, [mySearch]);
+  //console.log("userResolves", userResolves)
+  const handleSearch = e => {
+    setMySearch(e.target.value);
+  };
   const handleShowMore = async () => {
-    setPage((prevPage) => prevPage + 1);
+    setPage(prevPage => prevPage + 1);
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}`
+        `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`
       );
       const data = await res.json();
       if (res.ok) {
         setLoading(false);
-        setUserResolves((prevUserResolves) => [
+        setUserResolves(prevUserResolves => [
           ...prevUserResolves,
           ...data.resolves,
         ]);
@@ -82,39 +86,50 @@ function MyResolveComp() {
       <Container sx={{ mt: 10 }}>
         <Stack spacing={2}>
           <Typography
-            variant="body1"
-            color="#034f84"
+            variant='body1'
+            color='#034f84'
             sx={{
-              textAlign: "center",
-              textTransform: "capitalize",
-              fontWeight: "bold",
+              textAlign: 'center',
+              textTransform: 'capitalize',
+              fontWeight: 'bold',
               borderBottom: 1.5,
-              borderColor: "#034f84",
+              borderColor: '#034f84',
             }}
           >
             My Resolves
           </Typography>
           {currentUser && userResolves.length > 0 ? (
-            <Button variant="outlined" endIcon={<SearchIcon />}>
-              <InputBase placeholder=" My resolves" />
+            <Button variant='outlined' endIcon={<SearchIcon />}>
+              <InputBase
+                placeholder=' My resolves'
+                value={mySearch}
+                onChange={handleSearch}
+              />
             </Button>
           ) : (
             <>
-              <Stack spacing={2} direction="row">
+              <Button variant='outlined' endIcon={<SearchIcon />}>
+                <InputBase
+                  placeholder=' My resolves'
+                  value={mySearch}
+                  onChange={handleSearch}
+                />
+              </Button>
+              <Stack spacing={2} direction='row'>
                 <Typography
-                  variant="body1"
+                  variant='body1'
                   sx={{
-                    textAlign: "center",
-                    fontWeight: "medium",
+                    textAlign: 'center',
+                    fontWeight: 'medium',
                   }}
                 >
                   Not created any resolve yet?
                 </Typography>
-                <Link to="/create-resolve">
+                <Link to='/create-resolve'>
                   <Button
-                    variant="contained"
-                    size="small"
-                    sx={{ backgroundColor: "#034f84", width: "90%" }}
+                    variant='contained'
+                    size='small'
+                    sx={{ backgroundColor: '#034f84', width: '90%' }}
                     startIcon={<DrawIcon />}
                   >
                     Create Resolve
@@ -122,18 +137,18 @@ function MyResolveComp() {
                 </Link>
               </Stack>
               <Box
-                component="img"
+                component='img'
                 sx={{
-                  alignSelf: "center",
-                  width: "320px",
-                  height: "420px",
+                  alignSelf: 'center',
+                  width: '320px',
+                  height: '420px',
                 }}
-                alt="create my resolves"
+                alt='create my resolves'
                 src={myResolve}
               />
             </>
           )}
-          {userResolves.map((resolve) => (
+          {userResolves.map(resolve => (
             <Accordion key={resolve.slug}>
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                 {resolve.title}
@@ -141,7 +156,7 @@ function MyResolveComp() {
               <AccordionDetails>{resolve.content}</AccordionDetails>
               <Link to={`/resolve/${resolve.slug}`}>
                 <AccordionActions>
-                  <Button variant="contained" sx={{ height: 30 }}>
+                  <Button variant='contained' sx={{ height: 30 }}>
                     learn more
                   </Button>
                 </AccordionActions>
@@ -151,7 +166,7 @@ function MyResolveComp() {
           {showMore ? (
             <Button onClick={handleShowMore}> Show more</Button>
           ) : (
-            <Typography variant="body1">No more Resolve</Typography>
+            <Typography variant='body1'>No more Resolve</Typography>
           )}
         </Stack>
       </Container>
