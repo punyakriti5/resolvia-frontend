@@ -17,7 +17,7 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 
 function CardComp({resolve, onLike}) {
-  console.log("resolve in card comp",resolve)
+  
   const { currentUser } = useSelector((state) => state.user);
   const [showMore, setShowMore] = useState(true);
   const [feedResolve, setFeedResolve] = useState([]);
@@ -43,11 +43,12 @@ function CardComp({resolve, onLike}) {
   }, [feedResolve]);
 
 
-   console.log('feedResolve', feedResolve)
+   
   return (
     <>
     
       <Card
+        
         sx={{
           maxWidth: 700,
           my: 4,
