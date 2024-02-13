@@ -18,41 +18,46 @@ function User_Dashboard() {
   const navigate = useNavigate();
   const [errorFeed, setErrorFeed] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  //const [startIndex, setStartIndex]=useState(0);
+  //const [isIntersecting, setIsIntersecting] = useState(false);
+  //const [page, setPage] = useState(0);
   const observerRef = useRef(null);
-  const [page, setPage] = useState(1);
   const resolvePerPage = 2;
-
-  const fetchInitialResolve = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}`
-      );
-      const data = await res.json();
-      console.log("response data", data);
-      if (res.ok) {
-        setLoading(false);
-        setFeedResolve(data.resolves);
-      }
-    } catch (error) {
-      setLoading(false);
-      setErrorFeed(error.message);
-    }
-  };
+  let startIndex=0;
 
   useEffect(() => {
+    const fetchInitialResolve = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}`
+        );
+        const data = await res.json();
+        console.log("response initialdata", data);
+        if (res.ok) {
+          setLoading(false);
+          setFeedResolve(data.resolves);
+          console.log("initialdata", feedResolve);
+        }
+      } catch (error) {
+        setLoading(false);
+        setErrorFeed(error.message);
+      }
+    };
     fetchInitialResolve();
+  }, []);
 
+  useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
+        console.log("entries", entries);
         entries.forEach((entry) => {
+          console.log("entry", entry);
           if (entry.isIntersecting) {
             const fetchNextResolve = async () => {
-              setPage((prevPage) => prevPage + 1);
-              const startIndex = page * resolvePerPage;
-
+              //setStartIndex(startIndex+ 2);
+              startIndex +=2;
+              console.log("startIndex", startIndex);
               setLoading(true);
               try {
                 const res = await fetch(
@@ -156,11 +161,11 @@ function User_Dashboard() {
               <Grid item xs={12}>
                 {feedResolve.map((resolve) => (
                   <CardComp
+                    id="card"
                     key={resolve._id}
                     resolve={resolve}
                     onLike={handleLike}
                     observerRef={observerRef}
-                    isIntersecting={isIntersecting}
                   />
                 ))}
                 <div id="cardEnd"></div>
@@ -174,3 +179,20 @@ function User_Dashboard() {
 }
 
 export default User_Dashboard;
+
+// useEffect(() => {
+//   const fetchResolves = async () => {
+//     try {
+//       const res = await fetch(`/api/resolve/getresolves`);
+//       const data = await res.json();
+//       if (res.ok) {
+//         setFeedResolve(data.resolves);
+//       }
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+
+//     fetchResolves();
+
+// }, []);

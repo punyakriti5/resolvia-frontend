@@ -21,7 +21,7 @@ import { Button } from "react-bootstrap";
 function UserProfile() {
   const { currentUser } = useSelector((state) => state.user);
   const [userData, setUserData] = useState({});
-  console.log("currentUser", currentUser);
+ 
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -37,7 +37,7 @@ function UserProfile() {
     getUserData();
   }, []);
 
-  console.log("userData", userData);
+  
   return (
     <>
       <Navbar />
