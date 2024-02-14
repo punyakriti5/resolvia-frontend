@@ -68,7 +68,7 @@ function CardComp({ resolve, onLike }) {
 
   return (
     <>
-      {console.log('Profile Picture', user, user.profilePicture)}
+
       <Card
         sx={{
           maxWidth: 700,
