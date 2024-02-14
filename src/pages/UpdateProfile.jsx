@@ -19,6 +19,7 @@ import {
   updateFailure,
 } from "../features/user/userSlice";
 import dataTags from "../data/tags.json";
+import FooterComp from "../components/FooterComp";
 
 
 function UpdateProfile() {
@@ -35,48 +36,47 @@ function UpdateProfile() {
   const [selectedTags, setSelectedTags] = useState([]);
   const dispatch = useDispatch();
 
- 
- 
- useEffect(() => {
-   const getProfileData = async () => {
-     try {
-       const res = await fetch(`/api/user/getUser/${currentUser._id}`);
-       const data = await res.json();
-       if (res.ok) {
-         setProfileData(data);
-       }
-     } catch (error) {
-       console.log(error.message);
-     }
-   };
-   getProfileData();
- }, []);
 
+
+
+  useEffect(() => {
+    const getProfileData = async () => {
+      try {
+        const res = await fetch(`/api/user/getUser/${currentUser._id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setProfileData(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getProfileData();
+  }, []);
 
   const handleChange = (e) => {
     setProfileData({
-      
       ...profileData,
       [e.target.id]: e.target.value,
     });
   };
 
   const handleClick = (tag) => {
-    
     const selectedIndex = selectedTags.indexOf(tag);
     let newSelectedTags = [];
-  
+
     if (selectedIndex === -1) {
       newSelectedTags = [...selectedTags, tag];
     } else {
-      newSelectedTags = [...selectedTags.slice(0, selectedIndex), ...selectedTags.slice(selectedIndex + 1)];
+      newSelectedTags = [
+        ...selectedTags.slice(0, selectedIndex),
+        ...selectedTags.slice(selectedIndex + 1),
+      ];
     }
-  
+
     setSelectedTags(newSelectedTags);
-    setProfileData({...profileData,
-      category: newSelectedTags,
-  });
-    console.log("profiledata after click",profileData);
+    setProfileData({ ...profileData, category: newSelectedTags });
+    console.log("profiledata after click", profileData);
   };
 
   const handleSubmit = async (e) => {
@@ -90,7 +90,7 @@ function UpdateProfile() {
 
     try {
       dispatch(updateStart());
-      console.log("update starting...")
+      console.log("update starting...");
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
@@ -120,7 +120,7 @@ function UpdateProfile() {
       <Grid container spacing={2} sx={{ mt: 8 }}>
         <Grid item xs={12} md={4} lg={4}>
           <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-          <Avatar
+            <Avatar
               sx={{
                 bgcolor: blue[100],
                 height: "120px",
@@ -164,7 +164,7 @@ function UpdateProfile() {
                 </Typography>
                 <TextField
                   id="firstname"
-                  label={profileData.firstname==="" ? "Firstname" : ""}
+                  label={profileData.firstname === "" ? "Firstname" : ""}
                   type="text"
                   size="small"
                   required
@@ -175,7 +175,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="lastname"
-                  label={profileData.firstname==="" ? "Lastname" : ""}
+                  label={profileData.firstname === "" ? "Lastname" : ""}
                   type="text"
                   size="small"
                   required
@@ -186,7 +186,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="age"
-                  label={profileData.age==="" ? "Age" : ""}
+                  label={profileData.age === "" ? "Age" : ""}
                   type="text"
                   size="small"
                   required
@@ -197,7 +197,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="gender"
-                  label={profileData.gender==="" ? "Gender" : ""}
+                  label={profileData.gender === "" ? "Gender" : ""}
                   type="text"
                   size="small"
                   required
@@ -208,7 +208,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="education"
-                  label={profileData.education==="" ? "Education" : ""}
+                  label={profileData.education === "" ? "Education" : ""}
                   type="text"
                   size="small"
                   required
@@ -219,7 +219,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="profession"
-                  label={profileData.profession==="" ? "Profession" : ""}
+                  label={profileData.profession === "" ? "Profession" : ""}
                   type="text"
                   size="small"
                   required
@@ -230,7 +230,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="country"
-                  label={profileData.country==="" ? "Country" : ""}
+                  label={profileData.country === "" ? "Country" : ""}
                   type="text"
                   size="small"
                   required
@@ -251,7 +251,7 @@ function UpdateProfile() {
         <Grid item xs={12} md={4} lg={4}>
           <Paper>
             <form onSubmit={handleSubmit}>
-            <Box
+              <Box
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
@@ -267,19 +267,31 @@ function UpdateProfile() {
                 >
                   Add your interests
                 </Typography>
-               
-                {dataTags.tags.map((tagObject, index) => {
-                  const tagLabel = Object.values(tagObject)[0];
-                  return (
-                    <Chip
-                      key={index}
-                      label={tagLabel}
-                      id="category"
-                      onClick={() => handleClick(tagLabel)}
-                      color={selectedTags.includes(tagLabel) ? 'primary' : 'default'}
-                    />
-                  );
-                })}
+
+                <Grid
+                  container
+                  spacing={{ xs: 2, md: 3 }}
+                  columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                  {dataTags.tags.map((tagObject, index) => {
+                    const tagLabel = Object.values(tagObject)[0];
+                    return (
+                      <Grid item xs={2} sm={4} md={4}>
+                        <Chip
+                          key={index}
+                          label={tagLabel}
+                          id="category"
+                          onClick={() => handleClick(tagLabel)}
+                          color={
+                            selectedTags.includes(tagLabel)
+                              ? "primary"
+                              : "default"
+                          }
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
 
                 <Button type="submit" variant="contained" sx={{ m: 1 }}>
                   {" "}
@@ -290,6 +302,7 @@ function UpdateProfile() {
           </Paper>
         </Grid>
       </Grid>
+      <FooterComp />
     </>
   );
 }

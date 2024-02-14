@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
 import { Box, Container, Stack } from '@mui/material';
 import question from '../assets/query.jpg';
 import ask from '../assets/discussions.jpg';
@@ -7,6 +6,8 @@ import resolution from '../assets/resolution.jpg';
 import { Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../features/user/userSlice';
+import Navbar from '../components/Navbar';
+import FooterComp from '../components/FooterComp';
 
 function Home() {
   const { currentUser } = useSelector(state => state.user);
@@ -77,6 +78,7 @@ function Home() {
               </h1>
             </Stack>
           </Container>
+          <FooterComp/>
         </>
       )}
     </>

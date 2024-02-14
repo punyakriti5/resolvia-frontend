@@ -18,6 +18,7 @@ import Comment from '../components/Comment';
 import docImage from '../assets/doc_image.png';
 import { Carousel } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import FooterComp from '../components/FooterComp';
 
 function ResolvePage() {
   const { resolveSlug } = useParams();
@@ -238,6 +239,7 @@ function ResolvePage() {
         </CardActions>
         <Comment resolveId={resolve && resolve._id} />
       </Card>
+      <FooterComp/>
     </>
   );
 }
