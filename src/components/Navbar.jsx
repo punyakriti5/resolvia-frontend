@@ -76,12 +76,14 @@ function Navbar(props) {
             RESOLVIA
           </Typography>
 
-          {currentUser ? (
+          {currentUser && props.handleSearch ? (
             <SearchComp
               searchTerm={props.searchTerm}
               handleSearch={props.handleSearch}
             />
-          ) : null}
+          ) : (
+            <SearchComp />
+          )}
 
           {isMatch ? (
             <MenuComp />
