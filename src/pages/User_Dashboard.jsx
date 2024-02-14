@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 import CardComp from '../components/CardComp';
 import MyResolveComp from '../components/MyResolveComp';
 import SortingComp from '../components/SortingComp';
+import FooterComp from '../components/FooterComp';
 function User_Dashboard() {
   const matches = useMediaQuery('(min-width:960px)');
   const { userId } = useParams();
@@ -211,6 +212,7 @@ function User_Dashboard() {
           </Container>
         </Box>
       </Box>
+      <FooterComp/>
     </>
   );
 }

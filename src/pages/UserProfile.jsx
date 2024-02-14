@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Navbar from "../components/Navbar";
+import FooterComp from "../components/FooterComp";
 import { blue } from "@mui/material/colors";
 import SchoolIcon from "@mui/icons-material/School";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -41,7 +42,7 @@ function UserProfile() {
   return (
     <>
       <Navbar />
-      <Grid container spacing={2} sx={{ mt: 8 }}>
+      <Grid container spacing={2} sx={{ mt: 8, mb:22 }}>
         <Grid item xs={12} md={4} lg={4}>
           <Box display="flex" flexDirection="column" alignItems="center" p={2}>
             <Avatar
@@ -170,6 +171,7 @@ function UserProfile() {
   </Paper>
 </Grid>
       </Grid>
+      <FooterComp/>
     </>
   );
 }

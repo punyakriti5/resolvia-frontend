@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import dataTags from "../data/tags.json";
 import Navbar from "../components/Navbar";
+import FooterComp from "../components/FooterComp";
 import imgMen from "../assets/workingMen.webp";
 import AddMedia from "../components/AddMedia";
 import { useSelector } from "react-redux";
@@ -211,6 +212,7 @@ function CreateResolve() {
           </Stack>
         </Grid>
       </Grid>
+      <FooterComp/>
     </>
   );
 }
