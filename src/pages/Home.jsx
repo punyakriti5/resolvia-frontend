@@ -5,15 +5,34 @@ import question from '../assets/query.jpg';
 import ask from '../assets/discussions.jpg';
 import resolution from '../assets/resolution.jpg';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signoutSuccess } from '../features/user/userSlice';
 
 function Home() {
   const { currentUser } = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const [isCurrentUser, setCurrentUser] = useState(false);
   useEffect(() => {
-    if (currentUser) {
-      setCurrentUser(true);
+    async function fetchUser() {
+      if (currentUser) {
+        try {
+          const res = await fetch('/api/auth/refresh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(currentUser),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            dispatch(signoutSuccess());
+          } else {
+            setCurrentUser(true);
+          }
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
     }
+    fetchUser();
   }, []);
   return (
     <>
