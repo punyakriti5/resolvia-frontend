@@ -37,7 +37,7 @@ function UserProfile() {
     getUserData();
   }, []);
 
-  
+  console.log(userData,"userData");
   return (
     <>
       <Navbar />
@@ -144,28 +144,31 @@ function UserProfile() {
           </Paper>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
-          <Paper>
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              p={2}
-            >
-              <Typography
-                variant="body1"
-                color="#034f84"
-                sx={{
-                  textAlign: "center",
-                  textTransform: "capitalize",
-                  fontWeight: "bold",
-                }}
-              >
-                Your interests
-              </Typography>
-              <Divider />
-            </Box>
-          </Paper>
-        </Grid>
+  <Paper>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      p={2}
+    >
+      <Typography
+        variant="body1"
+        color="#034f84"
+        sx={{
+          textAlign: "center",
+          textTransform: "capitalize",
+          fontWeight: "bold",
+        }}
+      >
+        Your interests
+      </Typography>
+      <Divider />
+      {userData && userData.category && userData.category.map(category => (
+        <p key={category}>{category}</p>
+      ))}
+    </Box>
+  </Paper>
+</Grid>
       </Grid>
     </>
   );

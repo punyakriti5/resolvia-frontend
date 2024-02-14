@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -20,49 +20,63 @@ import {
 } from "../features/user/userSlice";
 import dataTags from "../data/tags.json";
 
+
 function UpdateProfile() {
-  const [profileData, setProfileData] = useState({});
   const {
     currentUser,
     loading,
     error: errorMessage,
   } = useSelector((state) => state.user);
+  const [profileData, setProfileData] = useState({});
 
   const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
   const [updateUserError, setUpdateUserError] = useState(null);
 
+  const [selectedTags, setSelectedTags] = useState([]);
   const dispatch = useDispatch();
+
+ 
+ 
+ useEffect(() => {
+   const getProfileData = async () => {
+     try {
+       const res = await fetch(`/api/user/getUser/${currentUser._id}`);
+       const data = await res.json();
+       if (res.ok) {
+         setProfileData(data);
+       }
+     } catch (error) {
+       console.log(error.message);
+     }
+   };
+   getProfileData();
+ }, []);
+
 
   const handleChange = (e) => {
     setProfileData({
-      ...currentUser,
+      
       ...profileData,
       [e.target.id]: e.target.value,
     });
   };
 
-  console.log(" before currentUser", currentUser);
-
-  const handleTagClick = (tagValue) => {
-    console.log("currentUser", currentUser);
-    if (currentUser.category.includes(tagValue)) {
-      const updatedCategory = currentUser.category.filter(
-        (value) => value !== tagValue
-      );
-
-      setProfileData((prevState) => ({
-        ...prevState,
-        category: updatedCategory,
-      }));
+  const handleClick = (tag) => {
+    
+    const selectedIndex = selectedTags.indexOf(tag);
+    let newSelectedTags = [];
+  
+    if (selectedIndex === -1) {
+      newSelectedTags = [...selectedTags, tag];
     } else {
-      const updatedCategory = [...currentUser.category, tagValue];
-      setProfileData((prevState) => ({
-        ...prevState,
-        category: updatedCategory,
-      }));
+      newSelectedTags = [...selectedTags.slice(0, selectedIndex), ...selectedTags.slice(selectedIndex + 1)];
     }
-    console.log("after click currentUser", currentUser);
-
+  
+    setSelectedTags(newSelectedTags);
+    setProfileData({...profileData,
+      category: newSelectedTags,
+  });
+    console.log("profiledata after click",profileData);
   };
 
   const handleSubmit = async (e) => {
@@ -76,11 +90,13 @@ function UpdateProfile() {
 
     try {
       dispatch(updateStart());
+      console.log("update starting...")
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify(profileData),
       });
       const data = await res.json();
@@ -104,7 +120,7 @@ function UpdateProfile() {
       <Grid container spacing={2} sx={{ mt: 8 }}>
         <Grid item xs={12} md={4} lg={4}>
           <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-            <Avatar
+          <Avatar
               sx={{
                 bgcolor: blue[100],
                 height: "120px",
@@ -113,12 +129,18 @@ function UpdateProfile() {
               }}
               aria-label="resolve"
             >
-              A
+              {profileData && (
+                <img
+                  src={profileData.profilePicture}
+                  alt="profile-picture"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              )}
             </Avatar>
             <Typography sx={{ fontWeight: "medium", mt: 2 }}>
-              {currentUser && currentUser.username}
+              {profileData && profileData.username}
             </Typography>
-            <Typography>{currentUser && currentUser.email}</Typography>
+            <Typography>{profileData && profileData.email}</Typography>
           </Box>
         </Grid>
         <Grid item xs={12} md={4} lg={4}>
@@ -142,7 +164,7 @@ function UpdateProfile() {
                 </Typography>
                 <TextField
                   id="firstname"
-                  label="Firstname"
+                  label={profileData.firstname==="" ? "Firstname" : ""}
                   type="text"
                   size="small"
                   required
@@ -153,7 +175,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="lastname"
-                  label="Lastname"
+                  label={profileData.firstname==="" ? "Lastname" : ""}
                   type="text"
                   size="small"
                   required
@@ -164,7 +186,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="age"
-                  label="Age"
+                  label={profileData.age==="" ? "Age" : ""}
                   type="text"
                   size="small"
                   required
@@ -175,7 +197,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="gender"
-                  label="Gender"
+                  label={profileData.gender==="" ? "Gender" : ""}
                   type="text"
                   size="small"
                   required
@@ -186,7 +208,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="education"
-                  label="Education"
+                  label={profileData.education==="" ? "Education" : ""}
                   type="text"
                   size="small"
                   required
@@ -197,7 +219,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="profession"
-                  label="Profession"
+                  label={profileData.profession==="" ? "Profession" : ""}
                   type="text"
                   size="small"
                   required
@@ -208,7 +230,7 @@ function UpdateProfile() {
 
                 <TextField
                   id="country"
-                  label="Country"
+                  label={profileData.country==="" ? "Country" : ""}
                   type="text"
                   size="small"
                   required
@@ -229,7 +251,7 @@ function UpdateProfile() {
         <Grid item xs={12} md={4} lg={4}>
           <Paper>
             <form onSubmit={handleSubmit}>
-              <Box
+            <Box
                 display="flex"
                 flexDirection="column"
                 alignItems="center"
@@ -245,16 +267,16 @@ function UpdateProfile() {
                 >
                   Add your interests
                 </Typography>
-
+               
                 {dataTags.tags.map((tagObject, index) => {
-                  const tagValue = Object.values(tagObject)[0];
+                  const tagLabel = Object.values(tagObject)[0];
                   return (
                     <Chip
                       key={index}
-                      label={tagValue}
+                      label={tagLabel}
                       id="category"
-                      onClick={() => handleTagClick(tagValue)}
-                      selected={currentUser.category.includes(tagValue)}
+                      onClick={() => handleClick(tagLabel)}
+                      color={selectedTags.includes(tagLabel) ? 'primary' : 'default'}
                     />
                   );
                 })}

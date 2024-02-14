@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 
 function SearchComp(props) {
   const { searchTerm, handleSearch } = props;
-  console.log(searchTerm);
+  
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
   return (

@@ -23,7 +23,7 @@ function User_Dashboard() {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const observerRef = useRef(null);
   const resolvePerPage = 2;
-  let startIndex=0;
+  let startIndex = 0;
   // useEffect(() => {
   //   const fetchResolves = async () => {
   //     try {
@@ -53,7 +53,7 @@ function User_Dashboard() {
         if (res.ok) {
           setLoading(false);
           setFeedResolve(data.resolves);
-          console.log("initialdata", feedResolve);
+          console.log('initialdata', feedResolve);
         }
       } catch (error) {
         setLoading(false);
@@ -66,14 +66,14 @@ function User_Dashboard() {
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       entries => {
-        console.log("entries", entries);
+        console.log('entries', entries);
         entries.forEach(entry => {
-          console.log("entry", entry);
+          console.log('entry', entry);
           if (entry.isIntersecting) {
             const fetchNextResolve = async () => {
               //setStartIndex(startIndex+ 2);
-              startIndex +=2;
-              console.log("startIndex", startIndex);
+              startIndex += resolvePerPage;
+              console.log('startIndex', startIndex);
               setLoading(true);
               try {
                 const res = await fetch(
@@ -198,7 +198,7 @@ function User_Dashboard() {
               <Grid item xs={12}>
                 {feedResolve.map(resolve => (
                   <CardComp
-                    id="card"
+                    id='card'
                     key={resolve._id}
                     resolve={resolve}
                     onLike={handleLike}
