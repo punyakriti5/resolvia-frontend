@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import Navbar from "../components/Navbar";
-import { Link, useNavigate } from "react-router-dom";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateStart,
@@ -32,7 +32,6 @@ function UpdateProfile() {
   const [updateUserError, setUpdateUserError] = useState(null);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setProfileData({
@@ -42,14 +41,15 @@ function UpdateProfile() {
     });
   };
 
-  console.log(" before currentUser",currentUser)
-  
-  
+  console.log(" before currentUser", currentUser);
+
   const handleTagClick = (tagValue) => {
     console.log("currentUser", currentUser);
     if (currentUser.category.includes(tagValue)) {
-      const updatedCategory = currentUser.category.filter((value) => value !== tagValue);
-      // Assuming setProfileData updates only the category field of profileData
+      const updatedCategory = currentUser.category.filter(
+        (value) => value !== tagValue
+      );
+
       setProfileData((prevState) => ({
         ...prevState,
         category: updatedCategory,
@@ -61,9 +61,9 @@ function UpdateProfile() {
         category: updatedCategory,
       }));
     }
+    console.log("after click currentUser", currentUser);
+
   };
-  console.log("after currentUser", currentUser);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ function UpdateProfile() {
       setUpdateUserError("No changes made");
       return;
     }
-   
+
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
@@ -98,8 +98,6 @@ function UpdateProfile() {
     }
   };
 
- 
- 
   return (
     <>
       <Navbar />
@@ -227,50 +225,45 @@ function UpdateProfile() {
             </form>
           </Paper>
         </Grid>
+
         <Grid item xs={12} md={4} lg={4}>
           <Paper>
-          <form onSubmit={handleSubmit}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              p={2}
-            >
-              <Typography
-                variant="body1"
-                color="#034f84"
-                sx={{
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
+            <form onSubmit={handleSubmit}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                p={2}
               >
-                Add your interests
-              </Typography>
-              {/* {dataTags.tags.map((tagObject, index) => {
-              
-                const tagValue = Object.values(tagObject);
-                return <Chip key={index} label={tagValue} id="category" onClick={()=>handleTagClick(tagValue)}
-                selected={currentUser.category.includes(tagValue)}/>;
-              })} */}
+                <Typography
+                  variant="body1"
+                  color="#034f84"
+                  sx={{
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add your interests
+                </Typography>
 
-{dataTags.tags.map((tagObject, index) => {
-    const tagValue = Object.values(tagObject)[0]; // Assuming each tagObject has only one value
-    return (
-      <Chip
-        key={index}
-        label={tagValue}
-        id="category"
-        onClick={() => handleTagClick(tagValue)}
-        selected={currentUser.category.includes(tagValue)}
-      />
-    );
-  })}
+                {dataTags.tags.map((tagObject, index) => {
+                  const tagValue = Object.values(tagObject)[0];
+                  return (
+                    <Chip
+                      key={index}
+                      label={tagValue}
+                      id="category"
+                      onClick={() => handleTagClick(tagValue)}
+                      selected={currentUser.category.includes(tagValue)}
+                    />
+                  );
+                })}
 
-<Button type="submit" variant="contained" sx={{ m: 1 }}>
+                <Button type="submit" variant="contained" sx={{ m: 1 }}>
                   {" "}
                   save
                 </Button>
-            </Box>
+              </Box>
             </form>
           </Paper>
         </Grid>

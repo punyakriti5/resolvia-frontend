@@ -129,6 +129,7 @@ function ResolvePage() {
             })
           }
         />):null}
+
         <CardContent>
           <Typography variant='body2' color='text.primary'>
             {resolve && resolve.title}
