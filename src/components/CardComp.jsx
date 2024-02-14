@@ -68,6 +68,7 @@ function CardComp({ resolve, onLike }) {
 
   return (
     <>
+      {console.log('Profile Picture', user, user.profilePicture)}
       <Card
         sx={{
           maxWidth: 700,
@@ -82,7 +83,7 @@ function CardComp({ resolve, onLike }) {
           avatar={
             <Avatar
               alt='user'
-              img={
+              src={
                 resolve && resolve.post_as === 'anonymous'
                   ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png'
                   : user.profilePicture
