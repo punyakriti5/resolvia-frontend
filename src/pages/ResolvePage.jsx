@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -24,7 +24,9 @@ function ResolvePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [resolve, setResolve] = useState(null);
+  const [user, setUser] = useState({});
   const { currentUser } = useSelector(state => state.user);
+  const navigate = useNavigate();
   //console.log(resolve);
   useEffect(() => {
     const fetchResolve = async () => {
@@ -51,8 +53,57 @@ function ResolvePage() {
     };
     fetchResolve();
   }, [resolveSlug]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await fetch(`/api/user/getUser/${resolve.userId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setUser(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getUser();
+  }, [resolve]);
+
   const images = resolve ? resolve.media_content : [];
   console.log(images[0]);
+
+  const handleLike = async resolveId => {
+    try {
+      if (!currentUser) {
+        navigate('/login');
+        return;
+      }
+
+      const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
+        method: 'PUT',
+      });
+      console.log('response:', res);
+      const data = await res.json();
+      console.log('likesData', data);
+
+      if (res.ok) {
+        setResolve(
+          resolve.map(resolve =>
+            resolve._id === resolveId
+              ? {
+                  ...resolve,
+                  likes: data.likes,
+                  numberOfLikes: data.likes.length,
+                }
+              : resolve
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -67,38 +118,39 @@ function ResolvePage() {
         }}
       >
         {currentUser ? (
-        <CardHeader
-          avatar={
-            <Avatar
-              alt='user'
-              img={
-                resolve && resolve.post_as === 'anonymous'
-                  ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png'
-                  : currentUser.profilePicture
-              }
-              rounded
-            />
-          }
-          title={
-            resolve && resolve.post_as === 'anonymous'
-              ? 'anonymous'
-              : currentUser.username
-          }
-          subheader={
-            resolve &&
-            new Date(resolve.createdAt).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric',
-              year: 'numeric',
-            })
-          }
-        />):null}
+          <CardHeader
+            avatar={
+              <Avatar
+                alt='user'
+                src={
+                  resolve && resolve.post_as === 'anonymous'
+                    ? 'https://i.pinimg.com/originals/07/66/d1/0766d183119ff92920403eb7ae566a85.png'
+                    : user.profilePicture
+                }
+                rounded
+              />
+            }
+            title={
+              resolve && resolve.post_as === 'anonymous'
+                ? 'anonymous'
+                : user.username
+            }
+            subheader={
+              resolve &&
+              new Date(resolve.createdAt).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+              })
+            }
+          />
+        ) : null}
         <CardContent>
           <Typography variant='body2' color='text.primary'>
             {resolve && resolve.title}
           </Typography>
           <Typography sx={{ my: 1 }} variant='body2' color='text.secondary'>
-           {resolve && resolve.category}
+            {resolve && resolve.category}
           </Typography>
           <Typography variant='body2' color='text.primary'>
             {resolve && resolve.content}
@@ -163,10 +215,16 @@ function ResolvePage() {
             variant='outlined'
             sx={{ height: 30, margin: 1 }}
           >
-            <IconButton aria-label='upvote' sx={{ cursor: 'pointer' }}>
+            <IconButton
+              aria-label='upvote'
+              sx={{ cursor: 'pointer' }}
+              onClick={() => handleLike(resolve._id)}
+            >
               <ThumbUpOutlinedIcon />
             </IconButton>
-            <Typography textTransform={'lowercase'}>2k</Typography>
+            <Typography textTransform={'lowercase'}>
+              {resolve && resolve.numberOfLikes}
+            </Typography>
           </Button>
           <Button
             size='small'

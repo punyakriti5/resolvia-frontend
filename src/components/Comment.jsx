@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import SendIcon from "@mui/icons-material/Send";
-import AddMedia from "../components/AddMedia";
-import { useSelector } from "react-redux";
-import { Avatar, Box, IconButton, TextField, Stack } from "@mui/material";
-import CommentSection from "./CommentSection";
+import React, { useState, useEffect } from 'react';
+import SendIcon from '@mui/icons-material/Send';
+import AddMedia from '../components/AddMedia';
+import { useSelector } from 'react-redux';
+import { Avatar, Box, IconButton, TextField, Stack } from '@mui/material';
+import CommentSection from './CommentSection';
 
 function Comment({ resolveId }) {
-  const { currentUser } = useSelector((state) => state.user);
-  const [comment, setComment] = useState({ content: "" });
+  const { currentUser } = useSelector(state => state.user);
+  const [comment, setComment] = useState({ content: '' });
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
- 
-  console.log("commentss", comments);
-  const handleSubmit = async (e) => {
+
+  console.log('commentss', comments);
+  const handleSubmit = async e => {
     e.preventDefault();
     if (comment.content.length > 200) {
       return;
     }
     if (!comment.content) {
-      setCommentError("Comment cannot be empty.");
+      setCommentError('Comment cannot be empty.');
       return;
     }
     try {
-      const res = await fetch("/api/comment/createComment", {
-        method: "POST",
+      const res = await fetch('/api/comment/createComment', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           content: comment.content,
@@ -35,10 +35,10 @@ function Comment({ resolveId }) {
       });
       const data = await res.json();
       if (res.ok) {
-        setComment({ content: "" });
+        setComment({ content: '' });
         setCommentError(null);
 
-        setComments([data,...comments]);
+        setComments([data, ...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
@@ -52,9 +52,8 @@ function Comment({ resolveId }) {
         const data = await res.json();
         if (res.ok) {
           setComments(data);
-          
         } else {
-          console.log("Error:", res.statusText);
+          console.log('Error:', res.statusText);
         }
       } catch (error) {
         console.log(error.message);
@@ -66,22 +65,24 @@ function Comment({ resolveId }) {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <Stack spacing={2} direction="row" p={2}>
-          <Avatar alt={currentUser && currentUser.username} img={currentUser && currentUser.profilePicture} rounded />
+        <Stack spacing={2} direction='row' p={2}>
+          <Avatar
+            alt={currentUser && currentUser.username}
+            src={currentUser && currentUser.profilePicture}
+            rounded
+          />
           <TextField
-            onChange={(e) =>
-              setComment({ ...comment, content: e.target.value })
-            }
+            onChange={e => setComment({ ...comment, content: e.target.value })}
             value={comment.content}
-            label="Be a part of discussion, add your comment..."
-            variant="outlined"
-            size="small"
+            label='Be a part of discussion, add your comment...'
+            variant='outlined'
+            size='small'
             fullWidth
             InputProps={{
               endAdornment: (
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: 'flex' }}>
                   <AddMedia />
-                  <IconButton type="submit">
+                  <IconButton type='submit'>
                     <SendIcon />
                   </IconButton>
                 </Box>
@@ -90,12 +91,9 @@ function Comment({ resolveId }) {
           />
         </Stack>
       </form>
-      {comments.map((comment) => (
-         <CommentSection
-         key={comment._id}
-         comment={comment}
-         /> 
-))}
+      {comments.map(comment => (
+        <CommentSection key={comment._id} comment={comment} />
+      ))}
     </>
   );
 }

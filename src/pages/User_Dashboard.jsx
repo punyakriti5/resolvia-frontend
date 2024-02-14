@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Box, Container, Grid, useMediaQuery } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from '../components/Navbar';
@@ -22,8 +22,8 @@ function User_Dashboard() {
   const [sortOrder, setSortOrder] = useState('desc');
   const [isIntersecting, setIsIntersecting] = useState(false);
   const observerRef = useRef(null);
-  const [page, setPage] = useState(1);
   const resolvePerPage = 2;
+  let startIndex = 0;
   // useEffect(() => {
   //   const fetchResolves = async () => {
   //     try {
@@ -41,38 +41,43 @@ function User_Dashboard() {
 
   //   fetchResolves();
   // }, [sortBy, sortOrder, searchTerm]);
-  const fetchInitialResolve = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
-      );
-      const data = await res.json();
-      //console.log('response data', data);
-      if (res.ok) {
-        setLoading(false);
-        setFeedResolve(data.resolves);
-      }
-    } catch (error) {
-      setLoading(false);
-      setErrorFeed(error.message);
-    }
-  };
   useEffect(() => {
+    const fetchInitialResolve = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+        );
+        const data = await res.json();
+        //console.log('response initialdata', data);
+        if (res.ok) {
+          setLoading(false);
+          setFeedResolve(data.resolves);
+          console.log('initialdata', feedResolve);
+        }
+      } catch (error) {
+        setLoading(false);
+        setErrorFeed(error.message);
+      }
+    };
     fetchInitialResolve();
+  }, [sortBy, sortOrder, searchTerm]);
 
+  useEffect(() => {
     observerRef.current = new IntersectionObserver(
       entries => {
+        console.log('entries', entries);
         entries.forEach(entry => {
+          console.log('entry', entry);
           if (entry.isIntersecting) {
             const fetchNextResolve = async () => {
-              setPage(prevPage => prevPage + 1);
-              const startIndex = page * resolvePerPage;
-
+              //setStartIndex(startIndex+ 2);
+              startIndex += resolvePerPage;
+              console.log('startIndex', startIndex);
               setLoading(true);
               try {
                 const res = await fetch(
-                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}`
+                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
                 );
                 const data = await res.json();
                 if (res.ok) {
@@ -105,7 +110,7 @@ function User_Dashboard() {
         observerRef.current.disconnect();
       }
     };
-  }, []);
+  }, [sortBy, sortOrder, searchTerm]);
 
   const handleSearch = e => {
     setSearchTerm(e.target.value);
@@ -193,11 +198,11 @@ function User_Dashboard() {
               <Grid item xs={12}>
                 {feedResolve.map(resolve => (
                   <CardComp
+                    id='card'
                     key={resolve._id}
                     resolve={resolve}
                     onLike={handleLike}
                     observerRef={observerRef}
-                    isIntersecting={isIntersecting}
                   />
                 ))}
                 <div id='cardEnd'></div>
@@ -211,3 +216,20 @@ function User_Dashboard() {
 }
 
 export default User_Dashboard;
+
+// useEffect(() => {
+//   const fetchResolves = async () => {
+//     try {
+//       const res = await fetch(`/api/resolve/getresolves`);
+//       const data = await res.json();
+//       if (res.ok) {
+//         setFeedResolve(data.resolves);
+//       }
+//     } catch (error) {
+//       console.log(error.message);
+//     }
+//   };
+
+//     fetchResolves();
+
+// }, []);
