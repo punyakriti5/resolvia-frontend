@@ -6,6 +6,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import XIcon from '@mui/icons-material/X';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Connect from '../assets/Connect.jpg';
+import FooterComp from '../components/FooterComp';
 
 function About() {
   return (
@@ -70,6 +71,7 @@ function About() {
           />
         </Grid>
       </Grid>
+      <FooterComp />
     </>
   );
 }

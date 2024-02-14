@@ -22,6 +22,7 @@ import {
   updateFailure,
 } from '../features/user/userSlice';
 import dataTags from '../data/tags.json';
+import FooterComp from '../components/FooterComp';
 
 function UpdateProfile() {
   const {
@@ -306,20 +307,30 @@ function UpdateProfile() {
                   Add your interests
                 </Typography>
 
-                {dataTags.tags.map((tagObject, index) => {
-                  const tagLabel = Object.values(tagObject)[0];
-                  return (
-                    <Chip
-                      key={index}
-                      label={tagLabel}
-                      id='category'
-                      onClick={() => handleClick(tagLabel)}
-                      color={
-                        selectedTags.includes(tagLabel) ? 'primary' : 'default'
-                      }
-                    />
-                  );
-                })}
+                <Grid
+                  container
+                  spacing={{ xs: 2, md: 3 }}
+                  columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                  {dataTags.tags.map((tagObject, index) => {
+                    const tagLabel = Object.values(tagObject)[0];
+                    return (
+                      <Grid item xs={2} sm={4} md={4}>
+                        <Chip
+                          key={index}
+                          label={tagLabel}
+                          id='category'
+                          onClick={() => handleClick(tagLabel)}
+                          color={
+                            selectedTags.includes(tagLabel)
+                              ? 'primary'
+                              : 'default'
+                          }
+                        />
+                      </Grid>
+                    );
+                  })}
+                </Grid>
 
                 <Button type='submit' variant='contained' sx={{ m: 1 }}>
                   {' '}
@@ -330,6 +341,7 @@ function UpdateProfile() {
           </Paper>
         </Grid>
       </Grid>
+      <FooterComp />
     </>
   );
 }
