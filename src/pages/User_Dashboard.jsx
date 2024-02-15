@@ -9,7 +9,7 @@ import CardComp from '../components/CardComp';
 import MyResolveComp from '../components/MyResolveComp';
 import SortingComp from '../components/SortingComp';
 import FooterComp from '../components/FooterComp';
-import {BASE_API_URL} from '../constants'
+import { BASE_API_URL } from '../constants';
 
 function User_Dashboard() {
   const matches = useMediaQuery('(min-width:960px)');
@@ -28,15 +28,14 @@ function User_Dashboard() {
   const resolvePerPage = 2;
   let startIndex = 0;
 
-
-  console.log("fetching env variable....", BASE_API_URL)
+  console.log('fetching env variable....', BASE_API_URL);
   // useEffect(() => {
   //   const fetchResolves = async () => {
   //     try {
   //       const res = await fetch(
   //         `${BASE_API_URL}/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
-    //      credentials:"include",
-    //    }
+  //      credentials:"include",
+  //    }
   //       );
   //       const data = await res.json();
   //       if (res.ok) {
@@ -54,8 +53,9 @@ function User_Dashboard() {
       try {
         setLoading(true);
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
-        ,{credentials:"include",});
+          `${BASE_API_URL}/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,
+          { credentials: 'include' }
+        );
         const data = await res.json();
         //console.log('response initialdata', data);
         if (res.ok) {
@@ -85,8 +85,9 @@ function User_Dashboard() {
               setLoading(true);
               try {
                 const res = await fetch(
-                  `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
-                    credentials:"include",
+                  `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,
+                  {
+                    credentials: 'include',
                   }
                 );
                 const data = await res.json();
@@ -123,6 +124,7 @@ function User_Dashboard() {
   }, [sortBy, sortOrder, searchTerm]);
 
   const handleSearch = e => {
+    window.scrollTo(0, 0);
     setSearchTerm(e.target.value);
   };
   const handleSortBy = e => {
@@ -143,10 +145,13 @@ function User_Dashboard() {
         return;
       }
 
-      const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
-        credentials:"include",
-        method: 'PUT',
-      });
+      const res = await fetch(
+        `${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`,
+        {
+          credentials: 'include',
+          method: 'PUT',
+        }
+      );
       //console.log('response:', res);
       const data = await res.json();
       //console.log('likesData', data);
@@ -222,7 +227,7 @@ function User_Dashboard() {
           </Container>
         </Box>
       </Box>
-      <FooterComp/>
+      <FooterComp />
     </>
   );
 }
@@ -233,8 +238,8 @@ export default User_Dashboard;
 //   const fetchResolves = async () => {
 //     try {
 //       const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves`,{
-     //     credentials:"include",
-    //    });
+//     credentials:"include",
+//    });
 //       const data = await res.json();
 //       if (res.ok) {
 //         setFeedResolve(data.resolves);

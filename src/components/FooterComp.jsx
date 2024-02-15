@@ -9,7 +9,7 @@ function FooterComp() {
       <Box
         sx={{
           background: '#034f84',
-          position: 'absolute',
+          position: 'sticky',
           padding: 1,
           bottom: 0,
           width: '100%',
