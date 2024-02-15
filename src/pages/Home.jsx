@@ -74,11 +74,11 @@ function Home() {
               />
               <h1>
                 The art and science of asking question is the source of all
-                knowledge
+                knowledge!!
               </h1>
             </Stack>
           </Container>
-          <FooterComp/>
+          <FooterComp />
         </>
       )}
     </>
