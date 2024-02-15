@@ -22,6 +22,7 @@ function Home() {
           const res = await fetch(`${BASE_API_URL}/api/auth/refresh`, {
 
             method: 'POST',
+            credentials:"include",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(currentUser),
           });

@@ -53,7 +53,7 @@ function User_Dashboard() {
         setLoading(true);
         const res = await fetch(
           `${BASE_API_URL}/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
-        );
+        ,{credentials:"include",});
         const data = await res.json();
         //console.log('response initialdata', data);
         if (res.ok) {
@@ -83,7 +83,9 @@ function User_Dashboard() {
               setLoading(true);
               try {
                 const res = await fetch(
-                  `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+                  `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
+                    credentials:"include",
+                  }
                 );
                 const data = await res.json();
                 if (res.ok) {
@@ -140,6 +142,7 @@ function User_Dashboard() {
       }
 
       const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
+        credentials:"include",
         method: 'PUT',
       });
       //console.log('response:', res);
