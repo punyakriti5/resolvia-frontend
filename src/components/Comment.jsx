@@ -24,6 +24,7 @@ function Comment({ resolveId }) {
     }
     try {
       const res = await fetch(`${BASE_API_URL}/api/comment/createComment`, {
+        credentials:'include',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +50,9 @@ function Comment({ resolveId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`);
+        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setComments(data);

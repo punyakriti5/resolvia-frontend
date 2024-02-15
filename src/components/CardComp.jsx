@@ -54,7 +54,9 @@ function CardComp({ resolve, onLike }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUser(data);

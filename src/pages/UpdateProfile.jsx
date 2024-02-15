@@ -42,7 +42,9 @@ function UpdateProfile() {
   useEffect(() => {
     const getProfileData = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setProfileData(data);
@@ -61,6 +63,7 @@ function UpdateProfile() {
       try {
         const res = await fetch(`${BASE_API_URL}/api/user/uploadPhoto`, {
           method: 'POST',
+          credentials:'include',
           body: form,
         });
         const data = await res.json();
@@ -113,6 +116,7 @@ function UpdateProfile() {
       console.log('update starting...');
       const res = await fetch(`${BASE_API_URL}/api/user/update/${currentUser._id}`, {
         method: 'PUT',
+        credentials:'include',
         headers: {
           'Content-Type': 'application/json',
         },

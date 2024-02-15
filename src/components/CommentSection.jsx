@@ -12,7 +12,9 @@ function CommentSection({ comment }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUser(data);

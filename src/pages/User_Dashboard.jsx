@@ -34,7 +34,9 @@ function User_Dashboard() {
   //   const fetchResolves = async () => {
   //     try {
   //       const res = await fetch(
-  //         `${BASE_API_URL}/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+  //         `${BASE_API_URL}/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
+    //      credentials:"include",
+    //    }
   //       );
   //       const data = await res.json();
   //       if (res.ok) {
@@ -230,7 +232,9 @@ export default User_Dashboard;
 // useEffect(() => {
 //   const fetchResolves = async () => {
 //     try {
-//       const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves`);
+//       const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves`,{
+     //     credentials:"include",
+    //    });
 //       const data = await res.json();
 //       if (res.ok) {
 //         setFeedResolve(data.resolves);

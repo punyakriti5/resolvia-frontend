@@ -27,7 +27,9 @@ function UserProfile() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUserData(data);

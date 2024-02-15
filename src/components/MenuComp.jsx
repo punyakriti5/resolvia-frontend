@@ -27,6 +27,7 @@ function MenuComp() {
     try {
       const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: "POST",
+        credentials:'include'
       });
       const data = await res.json();
       if (!res.ok) {

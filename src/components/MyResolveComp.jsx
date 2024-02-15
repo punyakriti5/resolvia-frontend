@@ -34,7 +34,9 @@ function MyResolveComp() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`
+          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,{
+            credentials:"include",
+          }
         );
         const data = await res.json();
         if (res.ok) {
@@ -63,7 +65,9 @@ function MyResolveComp() {
     setLoading(true);
     try {
       const res = await fetch(
-        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`
+        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,{
+          credentials:"include",
+        }
       );
       const data = await res.json();
       if (res.ok) {

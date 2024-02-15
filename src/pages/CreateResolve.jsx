@@ -64,6 +64,7 @@ function CreateResolve() {
     try {
       const res = await fetch(`${BASE_API_URL}/api/resolve/create`, {
         method: "POST",
+        credentials :'include',
         body: formData,
       });
       const data = await res.json();

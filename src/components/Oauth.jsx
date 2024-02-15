@@ -21,6 +21,7 @@ function Oauth(props) {
       //console.log(resultsFromGoogle);
       const res = await fetch(`${BASE_API_URL}/api/auth/google`, {
         method: 'POST',
+        credentials:'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,

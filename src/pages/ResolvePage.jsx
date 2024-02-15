@@ -34,7 +34,9 @@ function ResolvePage() {
     const fetchResolve = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`);
+        const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,{
+          credentials:"include",
+        });
         const data = await res.json();
 
         if (!res.ok) {
@@ -59,7 +61,9 @@ function ResolvePage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
+          credentials:"include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -83,6 +87,7 @@ function ResolvePage() {
 
       const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
         method: 'PUT',
+        credentials:'include',
       });
       console.log('response:', res);
       const data = await res.json();
