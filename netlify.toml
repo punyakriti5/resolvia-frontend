@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://resolvia-backend.onrender.com"
+  status = 200
+  force = true
