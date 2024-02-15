@@ -42,9 +42,12 @@ function UpdateProfile() {
   useEffect(() => {
     const getProfileData = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`,{
-          credentials:"include",
-        });
+        const res = await fetch(
+          `${BASE_API_URL}/api/user/getUser/${currentUser._id}`,
+          {
+            credentials: 'include',
+          }
+        );
         const data = await res.json();
         if (res.ok) {
           setProfileData(data);
@@ -63,7 +66,7 @@ function UpdateProfile() {
       try {
         const res = await fetch(`${BASE_API_URL}/api/user/uploadPhoto`, {
           method: 'POST',
-          credentials:'include',
+          credentials: 'include',
           body: form,
         });
         const data = await res.json();
@@ -114,15 +117,18 @@ function UpdateProfile() {
     try {
       dispatch(updateStart());
       console.log('update starting...');
-      const res = await fetch(`${BASE_API_URL}/api/user/update/${currentUser._id}`, {
-        method: 'PUT',
-        credentials:'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const res = await fetch(
+        `${BASE_API_URL}/api/user/update/${currentUser._id}`,
+        {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
 
-        body: JSON.stringify(profileData),
-      });
+          body: JSON.stringify(profileData),
+        }
+      );
       const data = await res.json();
       console.log('data', data);
       if (!res.ok) {
@@ -214,7 +220,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.firstname}
-                  sx={{ my: 2 }}
+                  sx={{ my: 3 }}
                 />
 
                 <TextField
@@ -225,7 +231,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.lastname}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -236,7 +242,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.age}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -247,7 +253,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.gender}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -258,7 +264,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.education}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -269,7 +275,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.profession}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -280,7 +286,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.country}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <Button type='submit' variant='contained' sx={{ m: 1 }}>
