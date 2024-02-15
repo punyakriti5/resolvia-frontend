@@ -20,6 +20,7 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import SearchComp from './SearchComp';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../features/user/userSlice';
+import { BASE_API_URL } from '../constants';
 
 function Navbar(props) {
   const theme = useTheme();
@@ -30,7 +31,7 @@ function Navbar(props) {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch('/api/user/signout', {
+      const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: 'POST',
       });
       const data = await res.json();

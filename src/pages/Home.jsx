@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../features/user/userSlice';
 import Navbar from '../components/Navbar';
 import FooterComp from '../components/FooterComp';
+import {BASE_API_URL} from '../constants'
 
 function Home() {
   const { currentUser } = useSelector(state => state.user);
@@ -17,7 +18,9 @@ function Home() {
     async function fetchUser() {
       if (currentUser) {
         try {
-          const res = await fetch('/api/auth/refresh', {
+          
+          const res = await fetch(`${BASE_API_URL}/api/auth/refresh`, {
+
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(currentUser),

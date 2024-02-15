@@ -23,6 +23,8 @@ import {
   signInSuccess,
   signInFailure,
 } from '../features/user/userSlice';
+import { BASE_API_URL } from '../constants';
+
 
 function Login() {
   const [formData, setFormData] = useState({});
@@ -42,7 +44,7 @@ function Login() {
     }
     try {
       dispatch(signInStart());
-      const res = await fetch('/api/auth/signin', {
+      const res = await fetch(`${BASE_API_URL}/api/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

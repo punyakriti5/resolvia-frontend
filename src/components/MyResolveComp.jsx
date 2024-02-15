@@ -17,6 +17,7 @@ import myResolve from '../assets/myResolvee.jpg';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { BASE_API_URL } from '../constants';
 
 function MyResolveComp() {
   const { currentUser } = useSelector(state => state.user);
@@ -33,7 +34,7 @@ function MyResolveComp() {
       setLoading(true);
       try {
         const res = await fetch(
-          `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`
+          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`
         );
         const data = await res.json();
         if (res.ok) {
@@ -62,7 +63,7 @@ function MyResolveComp() {
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`
+        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`
       );
       const data = await res.json();
       if (res.ok) {

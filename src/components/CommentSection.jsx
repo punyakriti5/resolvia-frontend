@@ -2,6 +2,7 @@ import { Avatar,Box , Divider, Stack, Typography } from "@mui/material";
 import React,{useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import { blue } from "@mui/material/colors";
+import { BASE_API_URL } from "../constants";
 
 function CommentSection({ comment }) {
   const [user, setUser] = useState({});
@@ -11,7 +12,7 @@ function CommentSection({ comment }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`/api/user/getUser/${comment.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`);
         const data = await res.json();
         if (res.ok) {
           setUser(data);

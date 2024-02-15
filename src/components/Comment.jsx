@@ -4,6 +4,7 @@ import AddMedia from '../components/AddMedia';
 import { useSelector } from 'react-redux';
 import { Avatar, Box, IconButton, TextField, Stack } from '@mui/material';
 import CommentSection from './CommentSection';
+import { BASE_API_URL } from '../constants';
 
 function Comment({ resolveId }) {
   const { currentUser } = useSelector(state => state.user);
@@ -22,7 +23,7 @@ function Comment({ resolveId }) {
       return;
     }
     try {
-      const res = await fetch('/api/comment/createComment', {
+      const res = await fetch(`${BASE_API_URL}/api/comment/createComment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ function Comment({ resolveId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getResolveComments/${resolveId}`);
+        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`);
         const data = await res.json();
         if (res.ok) {
           setComments(data);

@@ -16,6 +16,7 @@ import { blue } from '@mui/material/colors';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import defaultImage from '../assets/imageAI.jpg';
+import { BASE_API_URL } from '../constants';
 
 function CardComp({ resolve, onLike }) {
   const { currentUser } = useSelector(state => state.user);
@@ -53,7 +54,7 @@ function CardComp({ resolve, onLike }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`/api/user/getUser/${resolve.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`);
         const data = await res.json();
         if (res.ok) {
           setUser(data);

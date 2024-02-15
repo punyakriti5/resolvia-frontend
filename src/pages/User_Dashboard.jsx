@@ -9,6 +9,8 @@ import CardComp from '../components/CardComp';
 import MyResolveComp from '../components/MyResolveComp';
 import SortingComp from '../components/SortingComp';
 import FooterComp from '../components/FooterComp';
+import {BASE_API_URL} from '../constants'
+
 function User_Dashboard() {
   const matches = useMediaQuery('(min-width:960px)');
   const { userId } = useParams();
@@ -25,11 +27,14 @@ function User_Dashboard() {
   const observerRef = useRef(null);
   const resolvePerPage = 2;
   let startIndex = 0;
+
+
+  console.log("fetching env variable....", BASE_API_URL)
   // useEffect(() => {
   //   const fetchResolves = async () => {
   //     try {
   //       const res = await fetch(
-  //         `/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+  //         `${BASE_API_URL}/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
   //       );
   //       const data = await res.json();
   //       if (res.ok) {
@@ -47,7 +52,7 @@ function User_Dashboard() {
       try {
         setLoading(true);
         const res = await fetch(
-          `/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+          `${BASE_API_URL}/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
         );
         const data = await res.json();
         //console.log('response initialdata', data);
@@ -78,7 +83,7 @@ function User_Dashboard() {
               setLoading(true);
               try {
                 const res = await fetch(
-                  `/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
+                  `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
                 );
                 const data = await res.json();
                 if (res.ok) {
@@ -134,7 +139,7 @@ function User_Dashboard() {
         return;
       }
 
-      const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
+      const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
         method: 'PUT',
       });
       //console.log('response:', res);
@@ -222,7 +227,7 @@ export default User_Dashboard;
 // useEffect(() => {
 //   const fetchResolves = async () => {
 //     try {
-//       const res = await fetch(`/api/resolve/getresolves`);
+//       const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves`);
 //       const data = await res.json();
 //       if (res.ok) {
 //         setFeedResolve(data.resolves);

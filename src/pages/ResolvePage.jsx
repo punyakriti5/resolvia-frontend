@@ -19,6 +19,7 @@ import docImage from '../assets/doc_image.png';
 import { Carousel } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import FooterComp from '../components/FooterComp';
+import { BASE_API_URL } from '../constants';
 
 function ResolvePage() {
   const { resolveSlug } = useParams();
@@ -33,7 +34,7 @@ function ResolvePage() {
     const fetchResolve = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/resolve/getresolves?slug=${resolveSlug}`);
+        const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -58,7 +59,7 @@ function ResolvePage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`/api/user/getUser/${resolve.userId}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`);
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -80,7 +81,7 @@ function ResolvePage() {
         return;
       }
 
-      const res = await fetch(`/api/resolve/likeResolve/${resolveId}`, {
+      const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
         method: 'PUT',
       });
       console.log('response:', res);

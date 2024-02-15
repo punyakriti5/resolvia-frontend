@@ -4,6 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector, useDispatch } from "react-redux";
 import { signoutSuccess } from "../features/user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { BASE_API_URL } from "../constants";
 
 function MenuComp() {
   const { currentUser } = useSelector((state) => state.user);
@@ -24,7 +25,7 @@ function MenuComp() {
 
   const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();

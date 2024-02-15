@@ -21,6 +21,7 @@ import imgMen from "../assets/workingMen.webp";
 import AddMedia from "../components/AddMedia";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { BASE_API_URL } from "../constants";
 
 function CreateResolve() {
   const navigate = useNavigate();
@@ -61,7 +62,7 @@ function CreateResolve() {
     }
 
     try {
-      const res = await fetch("/api/resolve/create", {
+      const res = await fetch(`${BASE_API_URL}/api/resolve/create`, {
         method: "POST",
         body: formData,
       });

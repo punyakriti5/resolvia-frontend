@@ -23,6 +23,7 @@ import {
 } from '../features/user/userSlice';
 import dataTags from '../data/tags.json';
 import FooterComp from '../components/FooterComp';
+import { BASE_API_URL } from '../constants';
 
 function UpdateProfile() {
   const {
@@ -41,7 +42,7 @@ function UpdateProfile() {
   useEffect(() => {
     const getProfileData = async () => {
       try {
-        const res = await fetch(`/api/user/getUser/${currentUser._id}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
           setProfileData(data);
@@ -58,7 +59,7 @@ function UpdateProfile() {
       const form = new FormData();
       form.append('photo', profilePhoto);
       try {
-        const res = await fetch(`/api/user/uploadPhoto`, {
+        const res = await fetch(`${BASE_API_URL}/api/user/uploadPhoto`, {
           method: 'POST',
           body: form,
         });
@@ -110,7 +111,7 @@ function UpdateProfile() {
     try {
       dispatch(updateStart());
       console.log('update starting...');
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`${BASE_API_URL}/api/user/update/${currentUser._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

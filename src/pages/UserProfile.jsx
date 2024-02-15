@@ -18,6 +18,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import BadgeIcon from "@mui/icons-material/Badge";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import { Button } from "react-bootstrap";
+import { BASE_API_URL } from "../constants";
 
 function UserProfile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -26,7 +27,7 @@ function UserProfile() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch(`/api/user/getUser/${currentUser._id}`);
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
           setUserData(data);

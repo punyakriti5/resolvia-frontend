@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import CloseIcon from '@mui/icons-material/Close';
-import fs from 'fs';
+
 import {
   Box,
   Dialog,
