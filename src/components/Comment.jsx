@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import AddMedia from '../components/AddMedia';
 import { useSelector } from 'react-redux';
-import { Avatar, Box, IconButton, TextField, Stack } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  IconButton,
+  TextField,
+  Stack,
+  Tooltip,
+} from '@mui/material';
 import CommentSection from './CommentSection';
 import { BASE_API_URL } from '../constants';
 
@@ -11,9 +18,9 @@ function Comment({ resolveId }) {
   const [comment, setComment] = useState({ content: '' });
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
-  const token=sessionStorage.getItem("token");
+  const [mediaUrl, setMediaUrl] = useState(null);
+  const token = sessionStorage.getItem('token');
 
-  console.log('commentss', comments);
   const handleSubmit = async e => {
     e.preventDefault();
     if (comment.content.length > 200) {
@@ -23,19 +30,18 @@ function Comment({ resolveId }) {
       setCommentError('Comment cannot be empty.');
       return;
     }
+    const form = new FormData();
+    form.append('userId', currentUser._id);
+    form.append('resolveId', resolveId);
+    form.append('content', comment.content);
+    form.append('media', mediaUrl);
     try {
       const res = await fetch(`${BASE_API_URL}/api/comment/createComment`, {
-       
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          content: comment.content,
-          resolveId,
-          userId: currentUser._id,
-        }),
+        body: form,
       });
       const data = await res.json();
       if (res.ok) {
@@ -52,9 +58,13 @@ function Comment({ resolveId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`,{headers: {Authorization: `Bearer ${token}`}});
+        const res = await fetch(
+          `${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const data = await res.json();
         if (res.ok) {
+          console.log(data);
           setComments(data);
         } else {
           console.log('Error:', res.statusText);
@@ -68,7 +78,7 @@ function Comment({ resolveId }) {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType='multipart/form-data'>
         <Stack spacing={2} direction='row' p={2}>
           <Avatar
             alt={currentUser && currentUser.username}
@@ -85,10 +95,17 @@ function Comment({ resolveId }) {
             InputProps={{
               endAdornment: (
                 <Box sx={{ display: 'flex' }}>
-                  <AddMedia />
-                  <IconButton type='submit'>
-                    <SendIcon />
-                  </IconButton>
+                  <AddMedia setMediaUrl={setMediaUrl} />
+                  <Tooltip
+                    title={
+                      mediaUrl ? 'Submit with file' : 'Submit without file'
+                    }
+                    arrow
+                  >
+                    <IconButton type='submit'>
+                      <SendIcon />
+                    </IconButton>
+                  </Tooltip>
                 </Box>
               ),
             }}
