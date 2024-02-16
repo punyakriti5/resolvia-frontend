@@ -1,5 +1,5 @@
 .typing-effect+p{
-    color: black;
+    color: "#034f84";
     display: inline-block;
     overflow: hidden;
     animation: typing 0.1s steps(1, end) infinite;

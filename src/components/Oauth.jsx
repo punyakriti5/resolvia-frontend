@@ -38,7 +38,7 @@ function Oauth(props) {
         sessionStorage.setItem('token', data.accessToken);
         dispatch(signInSuccess(data));
         console.log(data);
-        navigate(`/user/${data._id}`);
+        navigate(`/user/${data.user._id}`);
       }
     } catch (error) {
       console.log(error);
