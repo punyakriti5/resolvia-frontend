@@ -1,24 +1,22 @@
-import React, { useState, useRef } from "react";
-import { Divider, IconButton, Menu, MenuItem} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { useSelector, useDispatch } from "react-redux";
-import { signoutSuccess } from "../features/user/userSlice";
-import { Link, useNavigate } from "react-router-dom";
-import { BASE_API_URL } from "../constants";
+import React, { useState, useRef } from 'react';
+import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useSelector, useDispatch } from 'react-redux';
+import { signoutSuccess } from '../features/user/userSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { BASE_API_URL } from '../constants';
 
 function MenuComp() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
 
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
 
-  const token=sessionStorage.getItem("token");
+  const token = sessionStorage.getItem('token');
 
-
-  const handleClick = (event) => {
+  const handleClick = event => {
     setOpen(true);
     anchorRef.current = event.currentTarget;
   };
@@ -30,15 +28,15 @@ function MenuComp() {
   const handleSignout = async () => {
     try {
       const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
-        method: "POST",
-        headers: {Authorization: `Bearer ${token}`}
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
       console.log(error.message);
@@ -47,16 +45,16 @@ function MenuComp() {
   return (
     <>
       <IconButton
-        onClick={(event) => {
+        onClick={event => {
           handleClick(event);
           anchorRef.current = event.currentTarget;
         }}
-        size="large"
+        size='large'
         sx={{ ml: 2 }}
-        aria-controls={open ? "account-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        color="inherit"
+        aria-controls={open ? 'account-menu' : undefined}
+        aria-haspopup='true'
+        aria-expanded={open ? 'true' : undefined}
+        color='inherit'
       >
         <MenuIcon />
       </IconButton>
@@ -70,25 +68,41 @@ function MenuComp() {
           PaperProps={{
             elevation: 0,
             sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
             },
           }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-          <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
-            <Link to="/create-resolve" style={{ textDecoration: 'none', color: 'black' }}> Create Resolve </Link>
+          <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            <Link
+              to='/create-resolve'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              {' '}
+              Create Resolve{' '}
+            </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
-            <Link to="/about" style={{ textDecoration: 'none', color: 'black' }}>About</Link>
+          <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            <Link
+              to='/about'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              About
+            </Link>
           </MenuItem>
-          <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
-            <Link to="/user-profile" style={{ textDecoration: 'none', color: 'black' }}>User Profile</Link>
+          <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            <Link
+              to='/user-profile'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              User Profile
+            </Link>
           </MenuItem>
 
-          <MenuItem onClick={handleSignout} >Logout</MenuItem>
+          <MenuItem onClick={handleSignout}>Logout</MenuItem>
         </Menu>
       ) : (
         <Menu
@@ -99,20 +113,30 @@ function MenuComp() {
           PaperProps={{
             elevation: 0,
             sx: {
-              overflow: "visible",
-              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
               mt: 1.5,
             },
           }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
-          <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
-            <Link to="/login" style={{ textDecoration: 'none', color: 'black'}} >Login</Link>
+          <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            <Link
+              to='/login'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              Login
+            </Link>
           </MenuItem>
-          
-          <MenuItem onClick={handleClose} sx={{ cursor: "pointer" }}>
-            <Link to="/about" style={{ textDecoration: 'none', color: 'black' }}>About</Link>
+
+          <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
+            <Link
+              to='/about'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              About
+            </Link>
           </MenuItem>
         </Menu>
       )}

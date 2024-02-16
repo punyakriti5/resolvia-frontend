@@ -1,18 +1,20 @@
-import { Avatar,Box , Divider, Stack, Typography } from "@mui/material";
-import React,{useState, useEffect} from "react";
-import { useSelector } from "react-redux";
-import { blue } from "@mui/material/colors";
-import { BASE_API_URL } from "../constants";
+import { Avatar, Box, Divider, Stack, Typography } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { blue } from '@mui/material/colors';
+import { BASE_API_URL } from '../constants';
 
 function CommentSection({ comment }) {
   const [user, setUser] = useState({});
-  const token=sessionStorage.getItem("token");
- 
- 
+  const token = sessionStorage.getItem('token');
+
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`,{headers: {Authorization: `Bearer ${token}`}});
+        const res = await fetch(
+          `${BASE_API_URL}/api/user/getUser/${comment.userId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -24,23 +26,20 @@ function CommentSection({ comment }) {
     getUser();
   }, [comment]);
 
-  const formatDistance = (date) => {
+  const formatDistance = date => {
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     const oneWeek = 7 * oneDay;
     const oneMonth = 30 * oneDay;
-  
+
     const diffInMilliseconds = Date.now() - date.getTime();
-  
+
     if (diffInMilliseconds < oneDay) {
-      return " today";
-    }
-    else if(diffInMilliseconds> oneDay && diffInMilliseconds < 2* oneDay){
-      return "yesterday";
-    }
-     else if (diffInMilliseconds < oneWeek  ) {
+      return ' today';
+    } else if (diffInMilliseconds > oneDay && diffInMilliseconds < 2 * oneDay) {
+      return 'yesterday';
+    } else if (diffInMilliseconds < oneWeek) {
       return `${Math.floor(diffInMilliseconds / oneDay)} days ago`;
-    } 
-    else if (diffInMilliseconds < oneMonth) {
+    } else if (diffInMilliseconds < oneMonth) {
       return `${Math.floor(diffInMilliseconds / oneWeek)} weeks ago`;
     } else {
       return `${Math.floor(diffInMilliseconds / oneMonth)} months ago`;
@@ -48,15 +47,32 @@ function CommentSection({ comment }) {
   };
 
   return (
-    <><Box margin="15px">
-      <Stack spacing={2} direction="row" alignItems="center">
-      <Avatar src={user.profilePicture} alt={user.username} rounded />
-      <Typography variant="body2">{user.username}</Typography>
-      <Typography  sx={{ color: 'gray', fontSize: '0.75rem' }}>{formatDistance(new Date(comment.createdAt))}</Typography>
-      </Stack>
-      <Typography variant="body1" marginLeft="55px"color={blue}>{comment.content}</Typography>
+    <>
+      <Box margin='15px'>
+        <Stack spacing={2} direction='row' alignItems='center'>
+          <Avatar src={user.profilePicture} alt={user.username} rounded />
+          <Typography variant='body2'>{user.username}</Typography>
+          <Typography sx={{ color: 'gray', fontSize: '0.75rem' }}>
+            {formatDistance(new Date(comment.createdAt))}
+          </Typography>
+        </Stack>
+        <Typography variant='body1' marginLeft='55px' color={blue}>
+          {comment.content}
+        </Typography>
+        {comment.mediaContent.length > 0 && (
+          <Box
+            component='img'
+            sx={{
+              height: 100,
+              width: 100,
+              ml: 5,
+            }}
+            alt='commentImage'
+            src={comment.mediaContent}
+          />
+        )}
+        <Divider sx={{ marginTop: '10px', marginBottom: '10px' }} />
       </Box>
-      <Divider sx={{ marginTop: '10px', marginBottom: '10px' }}/>
     </>
   );
 }

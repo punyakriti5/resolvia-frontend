@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -13,19 +13,19 @@ import {
   Alert,
   Stack,
   Input,
-} from "@mui/material";
-import dataTags from "../data/tags.json";
-import Navbar from "../components/Navbar";
-import FooterComp from "../components/FooterComp";
-import imgMen from "../assets/workingMen.webp";
-import AddMedia from "../components/AddMedia";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { BASE_API_URL } from "../constants";
+} from '@mui/material';
+import dataTags from '../data/tags.json';
+import Navbar from '../components/Navbar';
+import FooterComp from '../components/FooterComp';
+import imgMen from '../assets/workingMen.webp';
+import AddMedia from '../components/AddMedia';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { BASE_API_URL } from '../constants';
 
 function CreateResolve() {
   const navigate = useNavigate();
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector(state => state.user);
   const [resolveData, setResolveData] = useState({
     post_as: currentUser.username,
   });
@@ -34,38 +34,38 @@ function CreateResolve() {
 
   const [file, setFile] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
-  const token=sessionStorage.getItem("token");
+  const token = sessionStorage.getItem('token');
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = e => {
     setFile(e.target.files);
   };
-  const handleCategory = (e) => {
+  const handleCategory = e => {
     const selectedValues = e.target.value;
     setSelectedTags(selectedValues);
     setResolveData({ ...resolveData, category: selectedValues });
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setResolveData({ ...resolveData, post_as: e.target.value });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     const formData = new FormData();
     files.forEach((newfile, i) => {
       formData.append(`document`, newfile);
     });
-    formData.append("title", resolveData.title);
-    formData.append("category", resolveData.category);
-    formData.append("content", resolveData.content);
-    formData.append("post_as", resolveData.post_as);
+    formData.append('title', resolveData.title);
+    formData.append('category', resolveData.category);
+    formData.append('content', resolveData.content);
+    formData.append('post_as', resolveData.post_as);
     if (file.length > 3) {
-      return setErrorMessage("No more than 3 files can be uploaded");
+      return setErrorMessage('No more than 3 files can be uploaded');
     }
 
     try {
       const res = await fetch(`${BASE_API_URL}/api/resolve/create`, {
-        method: "POST",
-        headers: {Authorization: `Bearer ${token}`},
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const data = await res.json();
@@ -73,7 +73,7 @@ function CreateResolve() {
         return setErrorMessage(data.message);
       }
       if (res.ok) {
-        navigate(`/resolve/${data.slug}`);
+        navigate(`/resolve/${data._id}/${data.slug}`);
       }
     } catch (error) {
       setErrorMessage(error.message);
@@ -86,72 +86,72 @@ function CreateResolve() {
       <Navbar />
       <Grid container spacing={2}>
         <Grid item xs={8} sx={{ mt: 10 }}>
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <form onSubmit={handleSubmit} encType='multipart/form-data'>
             <Typography
-              variant="body1"
-              paddingLeft="15px"
-              sx={{ fontWeight: "bold" }}
+              variant='body1'
+              paddingLeft='15px'
+              sx={{ fontWeight: 'bold' }}
             >
               Get you query resolved here :
             </Typography>
-            <Stack spacing={2} direction="row">
+            <Stack spacing={2} direction='row'>
               <Typography
-                variant="body1"
-                padding="15px"
-                sx={{ fontWeight: "normal", mt: 10 }}
+                variant='body1'
+                padding='15px'
+                sx={{ fontWeight: 'normal', mt: 10 }}
               >
-                {" "}
-                username{" "}
+                {' '}
+                username{' '}
               </Typography>
 
               <FormControl
-                variant="standard"
-                size="small"
+                variant='standard'
+                size='small'
                 sx={{ minWidth: 120 }}
               >
-                <InputLabel id="sortBy">Post as : </InputLabel>
+                <InputLabel id='sortBy'>Post as : </InputLabel>
                 <Select
-                  labelId="post as"
-                  id="postAsOptions"
+                  labelId='post as'
+                  id='postAsOptions'
                   defaultValue={resolveData.post_as.toString()}
                   onChange={handleChange}
                 >
                   <MenuItem value={currentUser && currentUser.username}>
                     {currentUser && currentUser.username}
                   </MenuItem>
-                  <MenuItem value="anonymous">Anonymous</MenuItem>
+                  <MenuItem value='anonymous'>Anonymous</MenuItem>
                 </Select>
               </FormControl>
               {/* <AddMedia formData={resolveData} setformData={setResolveData} /> */}
-              <input type="file" multiple onChange={handleFileUpload} />
+              <input type='file' multiple onChange={handleFileUpload} />
             </Stack>
             <TextField
-              type="text"
+              type='text'
               fullWidth
-              label="Add your question title"
-              id="title"
+              label='add your question title'
+              id='title'
               required
-              sx={{ m: 1, bgcolor: "#bed8ec" }}
-              onChange={(e) =>
+              sx={{ m: 1, bgcolor: '#bed8ec' }}
+              onChange={e =>
                 setResolveData({ ...resolveData, title: e.target.value })
               }
             />
 
             <FormControl fullWidth>
-              <InputLabel id="multiple-options-label" sx={{m:1}}>
+              <InputLabel id='multiple-options-label' sx={{ m: 1 }}>
                 Select multiple tags
               </InputLabel>
               <Select
                 fullWidth
-                label="Add relatable tags"
-                id="tags"
-                sx={{ m: 1, bgcolor: "#bed8ec" }}
+                label='Add relatable tags'
+                id='tags'
+                sx={{ m: 1, bgcolor: '#bed8ec' }}
                 multiple
                 value={selectedTags}
                 onChange={handleCategory}
-                renderValue={(selected) => (
+                renderValue={selected => (
                   <div>
-                    {selected.map((value) => (
+                    {selected.map(value => (
                       <Chip key={value} label={value} />
                     ))}
                   </div>
@@ -175,22 +175,22 @@ function CreateResolve() {
 
             <TextField
               fullWidth
-              label="Add your description here ..."
-              id="content"
-              sx={{ m: 1, bgcolor: "#bed8ec" }}
+              label='Add your description here ...'
+              id='content'
+              sx={{ m: 1, bgcolor: '#bed8ec' }}
               multiline
               required
               rows={8}
-              onChange={(e) =>
+              onChange={e =>
                 setResolveData({ ...resolveData, content: e.target.value })
               }
             />
-            <Button variant="contained" type="submit" sx={{ m: 1 }}>
-              {" "}
+            <Button variant='contained' type='submit' sx={{ m: 1 }}>
+              {' '}
               Post
             </Button>
             {errorMessage && (
-              <Alert severity="error" variant="filled" sx={{ width: "70%" }}>
+              <Alert severity='error' variant='filled' sx={{ width: '70%' }}>
                 {errorMessage}
               </Alert>
             )}
@@ -198,30 +198,34 @@ function CreateResolve() {
         </Grid>
         <Grid item xs={4} sx={{ mt: 10 }}>
           <Stack>
-            <Typography variant="h5" sx={{
-  fontStyle: 'italic',
-  borderLeft: '2px solid #034f84',
-  paddingLeft: '10px',
-  marginTop: '10px',
-  color:"#034f84",
-  fontWeight:"bold"}}>
-              {" "}
+            <Typography
+              variant='h5'
+              sx={{
+                fontStyle: 'italic',
+                borderLeft: '2px solid #034f84',
+                paddingLeft: '10px',
+                marginTop: '10px',
+                color: '#034f84',
+                fontWeight: 'bold',
+              }}
+            >
+              {' '}
               The smart ones ask when they don't know, and sometimes when they
               do !
             </Typography>
             <Box
-              component="img"
+              component='img'
               sx={{
-                width: "30vw",
-                height: "70vh",
+                width: '30vw',
+                height: '70vh',
               }}
-              alt="Men asking his query from Resolvia"
+              alt='Men asking his query from Resolvia'
               src={imgMen}
             />
           </Stack>
         </Grid>
       </Grid>
-      <FooterComp/>
+      <FooterComp />
     </>
   );
 }

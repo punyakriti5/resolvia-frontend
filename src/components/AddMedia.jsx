@@ -16,9 +16,8 @@ import {
 } from '@mui/material';
 
 function AddMedia(props) {
-  const { formData, setformData = () => {} } = props;
+  const { setMediaUrl } = props;
   const [openDialog, setOpenDialog] = useState(false);
-  const [file, setFile] = useState(null);
   const handleClick = () => {
     setOpenDialog(true);
   };
@@ -29,12 +28,11 @@ function AddMedia(props) {
   return (
     <>
       <Input
+        accept='image/*'
         type='file'
         style={{ display: 'none' }}
         id='add-file'
-        onChange={e => setFile(e.target.files[0])}
-        //onClick={handlefileUpload}
-        value={''}
+        onChange={e => setMediaUrl(e.target.files[0])}
       />
       <IconButton
         sx={{
@@ -85,9 +83,6 @@ function AddMedia(props) {
                   <CloudUploadOutlinedIcon fontSize='large' />
                 </IconButton>
               </DialogActions>
-              {file
-                ? console.log('file Recieved')
-                : console.log('file Not recieved')}
             </label>
             <Typography padding={2}>
               Click here to browse and upload any documents/pictures/videos or

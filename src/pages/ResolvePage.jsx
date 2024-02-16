@@ -16,6 +16,7 @@ import {
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import Comment from '../components/Comment';
+import UpdateMenu from '../components/UpdateMenu';
 import docImage from '../assets/doc_image.png';
 import { Carousel } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -23,7 +24,7 @@ import FooterComp from '../components/FooterComp';
 import { BASE_API_URL } from '../constants';
 
 function ResolvePage() {
-  const { resolveSlug } = useParams();
+  const { resolveId, resolveSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [resolve, setResolve] = useState(null);
@@ -37,7 +38,7 @@ function ResolvePage() {
       try {
         setLoading(true);
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,
+          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}&resolveId=${resolveId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -46,7 +47,6 @@ function ResolvePage() {
 
         if (!res.ok) {
           setError(true);
-
           setLoading(false);
           return;
         }
@@ -61,7 +61,7 @@ function ResolvePage() {
       }
     };
     fetchResolve();
-  }, [resolveSlug]);
+  }, [resolveId, resolveSlug]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -85,6 +85,31 @@ function ResolvePage() {
 
   const images = resolve ? resolve.media_content : [];
   console.log(images[0]);
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(
+        `${BASE_API_URL}/api/resolve/delete/${resolveId}/${user._id}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        navigate(`/user/${user._id}`);
+      }
+      if (data.success === false) {
+        setError(true);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      console.log(error.message);
+      setError(true);
+      setLoading(false);
+    }
+  };
 
   const handleLike = async resolveId => {
     try {
@@ -160,6 +185,16 @@ function ResolvePage() {
                 day: 'numeric',
                 year: 'numeric',
               })
+            }
+            action={
+              //console.log(resolveId, resolve.userId)
+              resolve && currentUser._id === resolve.userId ? (
+                <UpdateMenu
+                  resolveId={resolveId}
+                  resolveSlug={resolveSlug}
+                  handleDelete={handleDelete}
+                />
+              ) : null
             }
           />
         ) : null}
