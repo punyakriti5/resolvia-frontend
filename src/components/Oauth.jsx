@@ -13,7 +13,7 @@ function Oauth(props) {
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token=sessionStorage.getItem("token");
+  const token = sessionStorage.getItem('token');
   const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
@@ -22,8 +22,11 @@ function Oauth(props) {
       //console.log(resultsFromGoogle);
       const res = await fetch(`${BASE_API_URL}/api/auth/google`, {
         method: 'POST',
-        
-        headers: { 'Content-Type': 'application/json',  Authorization: `Bearer ${token}` },
+
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
@@ -32,10 +35,10 @@ function Oauth(props) {
       });
       const data = await res.json();
       if (res.ok) {
-        sessionStorage.setItem("token", data.accessToken)
+        sessionStorage.setItem('token', data.accessToken);
         dispatch(signInSuccess(data));
         console.log(data);
-        navigate('/user/:username');
+        navigate(`/user/${data._id}`);
       }
     } catch (error) {
       console.log(error);

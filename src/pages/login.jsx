@@ -25,7 +25,6 @@ import {
 } from '../features/user/userSlice';
 import { BASE_API_URL } from '../constants';
 
-
 function Login() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector(state => state.user);
@@ -33,7 +32,7 @@ function Login() {
   const isMatch = useMediaQuery(theme.breakpoints.up('md'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token=sessionStorage.getItem("token");
+  const token = sessionStorage.getItem('token');
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -47,8 +46,11 @@ function Login() {
       dispatch(signInStart());
       const res = await fetch(`${BASE_API_URL}/api/auth/signin`, {
         method: 'POST',
-        
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -57,9 +59,9 @@ function Login() {
       }
 
       if (res.ok) {
-        sessionStorage.setItem("token", data.accessToken)
+        sessionStorage.setItem('token', data.accessToken);
         dispatch(signInSuccess(data));
-        navigate('/user/:username');
+        navigate(`/user/${data._id}`);
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

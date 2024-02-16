@@ -28,16 +28,16 @@ function MyResolveComp() {
   const [showMore, setShowMore] = useState(true);
   const [page, setPage] = useState(1);
   const rowsPerPage = 6;
-  const token=sessionStorage.getItem("token");
-
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
     const fetchResolves = async () => {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-            headers: {Authorization: `Bearer ${token}`}
+          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         const data = await res.json();
@@ -67,8 +67,9 @@ function MyResolveComp() {
     setLoading(true);
     try {
       const res = await fetch(
-        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-          headers: {Authorization: `Bearer ${token}`}
+        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       const data = await res.json();
@@ -161,7 +162,7 @@ function MyResolveComp() {
                 {resolve.title}
               </AccordionSummary>
               <AccordionDetails>{resolve.content}</AccordionDetails>
-              <Link to={`/resolve/${resolve.slug}`}>
+              <Link to={`/resolve/${resolve._id}/${resolve.slug}`}>
                 <AccordionActions>
                   <Button variant='contained' sx={{ height: 30 }}>
                     learn more

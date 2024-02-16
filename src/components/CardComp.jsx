@@ -27,7 +27,7 @@ function CardComp({ resolve, onLike }) {
   const [isContentjpg, setIsContentjpg] = useState(false);
   const [user, setUser] = useState({});
   let index = 0;
-  const token=sessionStorage.getItem("token");
+  const token = sessionStorage.getItem('token');
 
   const lookupMediaContent = resolve => {
     const media = resolve.media_content.length;
@@ -55,9 +55,12 @@ function CardComp({ resolve, onLike }) {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
-          headers: {Authorization: `Bearer ${token}`}
-        });
+        const res = await fetch(
+          `${BASE_API_URL}/api/user/getUser/${resolve.userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -72,7 +75,6 @@ function CardComp({ resolve, onLike }) {
 
   return (
     <>
-
       <Card
         sx={{
           maxWidth: 700,
@@ -155,7 +157,7 @@ function CardComp({ resolve, onLike }) {
               <ThumbDownOutlinedIcon />
             </IconButton>
           </Button>
-          <Link to={`/resolve/${resolve.slug}`}>
+          <Link to={`/resolve/${resolve._id}/${resolve.slug}`}>
             <Button variant='contained' sx={{ height: 30, cursor: 'pointer' }}>
               learn more
             </Button>
