@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Container, Stack } from '@mui/material';
+import { Box, Container, Stack, Typography } from '@mui/material';
 import question from '../assets/query.jpg';
 import ask from '../assets/discussions.jpg';
 import resolution from '../assets/resolution.jpg';
@@ -8,20 +8,27 @@ import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../features/user/userSlice';
 import Navbar from '../components/Navbar';
 import FooterComp from '../components/FooterComp';
+import { styled } from '@mui/system';
+
 import { BASE_API_URL } from '../constants';
+import TypingEffect from '../components/TypingEffect';
 
 function Home() {
   const { currentUser } = useSelector(state => state.user);
   const dispatch = useDispatch();
   const [isCurrentUser, setCurrentUser] = useState(false);
+  const token = sessionStorage.getItem('token');
   useEffect(() => {
     async function fetchUser() {
       if (currentUser) {
         try {
           const res = await fetch(`${BASE_API_URL}/api/auth/refresh`, {
             method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
+
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
             body: JSON.stringify(currentUser),
           });
           const data = await res.json();
@@ -37,6 +44,7 @@ function Home() {
     }
     fetchUser();
   }, []);
+
   return (
     <>
       {isCurrentUser ? (
@@ -48,7 +56,14 @@ function Home() {
       ) : (
         <>
           <Navbar />
-          <Container
+          <Container sx={{ mt: 8 }}>
+            <Box
+              component='img'
+              alt='Have query ?'
+              src={question}
+              sx={{ width: '90vw', height: '70vh' }}
+            />
+            {/* <Container
             component='div'
             sx={{ mt: 12, borderRadius: 5, p: 5, background: '#bed8ec' }}
           >
@@ -83,6 +98,11 @@ function Home() {
                 knowledge
               </h1>
             </Stack>
+          </Container> */}
+
+            <Typography variant='h5'>
+              <TypingEffect text='Have Query? -> Ask -> Get it Resolve ! ' />
+            </Typography>
           </Container>
           <FooterComp />
         </>

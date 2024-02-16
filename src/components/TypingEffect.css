@@ -1,0 +1,13 @@
+.typing-effect+p{
+    color: black;
+    display: inline-block;
+    overflow: hidden;
+    animation: typing 0.1s steps(1, end) infinite;
+  }
+  
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+  }
+  

@@ -38,16 +38,14 @@ function UpdateProfile() {
 
   const [selectedTags, setSelectedTags] = useState([]);
   const dispatch = useDispatch();
+  const token=sessionStorage.getItem("token");
 
   useEffect(() => {
     const getProfileData = async () => {
       try {
-        const res = await fetch(
-          `${BASE_API_URL}/api/user/getUser/${currentUser._id}`,
-          {
-            credentials: 'include',
-          }
-        );
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${currentUser._id}`,{
+          headers: {Authorization: `Bearer ${token}`}
+        });
         const data = await res.json();
         if (res.ok) {
           setProfileData(data);
@@ -66,7 +64,7 @@ function UpdateProfile() {
       try {
         const res = await fetch(`${BASE_API_URL}/api/user/uploadPhoto`, {
           method: 'POST',
-          credentials: 'include',
+          headers: {Authorization: `Bearer ${token}`},
           body: form,
         });
         const data = await res.json();
@@ -117,14 +115,13 @@ function UpdateProfile() {
     try {
       dispatch(updateStart());
       console.log('update starting...');
-      const res = await fetch(
-        `${BASE_API_URL}/api/user/update/${currentUser._id}`,
-        {
-          method: 'PUT',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const res = await fetch(`${BASE_API_URL}/api/user/update/${currentUser._id}`, {
+        method: 'PUT',
+        
+        headers: {
+          'Content-Type': 'application/json',
+         Authorization: `Bearer ${token}`
+        },
 
           body: JSON.stringify(profileData),
         }

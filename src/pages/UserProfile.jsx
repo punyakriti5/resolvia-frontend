@@ -23,6 +23,7 @@ import { BASE_API_URL } from '../constants';
 function UserProfile() {
   const { currentUser } = useSelector(state => state.user);
   const [userData, setUserData] = useState({});
+  const token = sessionStorage.getItem('token');
 
   useEffect(() => {
     const getUserData = async () => {
@@ -30,7 +31,7 @@ function UserProfile() {
         const res = await fetch(
           `${BASE_API_URL}/api/user/getUser/${currentUser._id}`,
           {
-            credentials: 'include',
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
         const data = await res.json();
