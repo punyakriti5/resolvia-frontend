@@ -123,8 +123,9 @@ function UpdateProfile() {
          Authorization: `Bearer ${token}`
         },
 
-        body: JSON.stringify(profileData),
-      });
+          body: JSON.stringify(profileData),
+        }
+      );
       const data = await res.json();
       console.log('data', data);
       if (!res.ok) {
@@ -216,7 +217,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.firstname}
-                  sx={{ my: 2 }}
+                  sx={{ my: 3 }}
                 />
 
                 <TextField
@@ -227,7 +228,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.lastname}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -238,7 +239,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.age}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -249,7 +250,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.gender}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -260,7 +261,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.education}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -271,7 +272,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.profession}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <TextField
@@ -282,7 +283,7 @@ function UpdateProfile() {
                   required
                   onChange={handleChange}
                   value={profileData.country}
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 3 }}
                 />
 
                 <Button type='submit' variant='contained' sx={{ m: 1 }}>

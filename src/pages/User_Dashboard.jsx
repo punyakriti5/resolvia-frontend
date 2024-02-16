@@ -9,7 +9,7 @@ import CardComp from '../components/CardComp';
 import MyResolveComp from '../components/MyResolveComp';
 import SortingComp from '../components/SortingComp';
 import FooterComp from '../components/FooterComp';
-import {BASE_API_URL} from '../constants'
+import { BASE_API_URL } from '../constants';
 
 function User_Dashboard() {
   const matches = useMediaQuery('(min-width:960px)');
@@ -29,8 +29,7 @@ function User_Dashboard() {
   let startIndex = 0;
   const token=sessionStorage.getItem("token");
 
-
-  console.log("fetching env variable....", BASE_API_URL)
+  console.log('fetching env variable....', BASE_API_URL);
   // useEffect(() => {
   //   const fetchResolves = async () => {
   //     try {
@@ -124,6 +123,7 @@ function User_Dashboard() {
   }, [sortBy, sortOrder, searchTerm]);
 
   const handleSearch = e => {
+    window.scrollTo(0, 0);
     setSearchTerm(e.target.value);
   };
   const handleSortBy = e => {
@@ -223,7 +223,7 @@ function User_Dashboard() {
           </Container>
         </Box>
       </Box>
-      <FooterComp/>
+      <FooterComp />
     </>
   );
 }
