@@ -138,8 +138,8 @@ function CreateResolve() {
             />
 
             <FormControl fullWidth>
-              <InputLabel id="multiple-options-label">
-                Select Multiple Tags
+              <InputLabel id="multiple-options-label" sx={{m:1}}>
+                select multiple tags
               </InputLabel>
               <Select
                 fullWidth
@@ -198,7 +198,13 @@ function CreateResolve() {
         </Grid>
         <Grid item xs={4} sx={{ mt: 10 }}>
           <Stack>
-            <Typography variant="h5">
+            <Typography variant="h5" sx={{
+  fontStyle: 'italic',
+  borderLeft: '2px solid #034f84',
+  paddingLeft: '10px',
+  marginTop: '10px',
+  color:"#034f84",
+  fontWeight:"bold"}}>
               {" "}
               The smart ones ask when they don't know, and sometimes when they
               do !
