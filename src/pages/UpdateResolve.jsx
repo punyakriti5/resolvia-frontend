@@ -1,17 +1,68 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Grid,
+  Select,
+  TextField,
+  Typography,
+  Alert,
+  Stack,
+  Input,
+} from '@mui/material';
+import dataTags from '../data/tags.json';
+import Navbar from '../components/Navbar';
+import FooterComp from '../components/FooterComp';
+import imgMen from '../assets/workingMen.webp';
+import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { BASE_API_URL } from '../constants';
 
 function UpdateResolve() {
   const navigate = useNavigate();
+  const { resolveId, resolveSlug } = useParams();
   const { currentUser } = useSelector(state => state.user);
   const [resolveData, setResolveData] = useState({
     post_as: currentUser.username,
   });
-
+  const [loading, setLoading] = useState(true);
   const [selectedTags, setSelectedTags] = useState([]);
-
   const [file, setFile] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const token = sessionStorage.getItem('token');
 
+  useEffect(() => {
+    const fetchResolve = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}&resolveId=${resolveId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const data = await res.json();
+        if (!res.ok) {
+          setErrorMessage(data.message);
+          setLoading(false);
+          return;
+        }
+        if (res.ok) {
+          setResolveData(data.resolves[0]);
+          setSelectedTags(resolveData.category);
+          setLoading(false);
+        }
+      } catch (error) {
+        setErrorMessage(error.message);
+        setLoading(false);
+      }
+    };
+    fetchResolve();
+  }, [resolveId, resolveSlug]);
   const handleFileUpload = e => {
     setFile(e.target.files);
   };
@@ -49,7 +100,7 @@ function UpdateResolve() {
         return setErrorMessage(data.message);
       }
       if (res.ok) {
-        navigate(`/resolve/${data.slug}`);
+        navigate(`/resolve/${data._id}/${data.slug}`);
       }
     } catch (error) {
       setErrorMessage(error.message);
@@ -99,7 +150,12 @@ function UpdateResolve() {
                 </Select>
               </FormControl>
               {/* <AddMedia formData={resolveData} setformData={setResolveData} /> */}
-              <input type='file' multiple onChange={handleFileUpload} />
+              <input
+                type='file'
+                multiple
+                onChange={handleFileUpload}
+                value={`${resolveData.media_content.length} Files`}
+              />
             </Stack>
             <TextField
               type='text'
@@ -111,6 +167,7 @@ function UpdateResolve() {
               onChange={e =>
                 setResolveData({ ...resolveData, title: e.target.value })
               }
+              value={resolveData.title}
             />
 
             <FormControl fullWidth>
@@ -160,6 +217,7 @@ function UpdateResolve() {
               onChange={e =>
                 setResolveData({ ...resolveData, content: e.target.value })
               }
+              value={resolveData.content}
             />
             <Button variant='contained' type='submit' sx={{ m: 1 }}>
               {' '}

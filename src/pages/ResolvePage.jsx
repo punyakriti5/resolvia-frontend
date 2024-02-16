@@ -23,7 +23,7 @@ import FooterComp from '../components/FooterComp';
 import { BASE_API_URL } from '../constants';
 
 function ResolvePage() {
-  const { resolveSlug } = useParams();
+  const { resolveId, resolveSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [resolve, setResolve] = useState(null);
@@ -37,7 +37,7 @@ function ResolvePage() {
       try {
         setLoading(true);
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,
+          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}&resolveId=${resolveId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -46,7 +46,6 @@ function ResolvePage() {
 
         if (!res.ok) {
           setError(true);
-
           setLoading(false);
           return;
         }
@@ -61,7 +60,7 @@ function ResolvePage() {
       }
     };
     fetchResolve();
-  }, [resolveSlug]);
+  }, [resolveId, resolveSlug]);
 
   useEffect(() => {
     const getUser = async () => {
