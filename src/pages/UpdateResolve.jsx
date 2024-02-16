@@ -1,4 +1,28 @@
-import React from 'react';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Grid,
+  Select,
+  TextField,
+  Typography,
+  Alert,
+  Stack,
+  Input,
+} from "@mui/material";
+import dataTags from "../data/tags.json";
+import Navbar from "../components/Navbar";
+import FooterComp from "../components/FooterComp";
+import imgMen from "../assets/workingMen.webp";
+import AddMedia from "../components/AddMedia";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { BASE_API_URL } from '../constants';
+
 
 function UpdateResolve() {
   const navigate = useNavigate();
