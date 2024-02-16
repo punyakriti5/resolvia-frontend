@@ -20,6 +20,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { Button } from 'react-bootstrap';
 import { BASE_API_URL } from '../constants';
+import TypingEffect from '../components/TypingEffect';
 
 function UserProfile() {
   const { currentUser } = useSelector(state => state.user);
@@ -50,15 +51,15 @@ function UserProfile() {
   return (
     <>
       <Navbar />
-      <Grid container spacing={2} sx={{ mt: 8, mb: 22 }}>
+      <Grid container spacing={2} sx={{ mt: 7, mb: 8}}>
         <Grid item xs={12} md={4} lg={4}>
           <Box display='flex' flexDirection='column' alignItems='center' p={2}>
             <Avatar
               sx={{
                 bgcolor: blue[100],
-                height: '120px',
-                width: '120px',
-                mt: 1,
+                height: '110px',
+                width: '110px',
+               
               }}
               aria-label='resolve'
             >
@@ -70,7 +71,7 @@ function UserProfile() {
                 />
               )}
             </Avatar>
-            <Typography sx={{ fontWeight: 'medium', mt: 2 }}>
+            <Typography sx={{ fontWeight: 'medium', mt: 1 }}>
               {userData && userData.username}
             </Typography>
             <Typography> {userData && userData.email}</Typography>
@@ -81,14 +82,13 @@ function UserProfile() {
               <Button variant='contained'>Update your profile</Button>
             </Link>
           </Box>
-        </Grid>
-        <Grid item xs={12} md={4} lg={4}>
+
           <Paper>
             <Box
               display='flex'
               flexDirection='column'
               //alignItems='stretch'
-              p={2}
+              p={1}
             >
               <Typography
                 variant='body1'
@@ -97,80 +97,85 @@ function UserProfile() {
                   textAlign: 'center',
                   textTransform: 'capitalize',
                   fontWeight: 'bold',
-                  mb: 2,
+                  pb:1,
+                  mb:1,
+               borderBottom: 1,
+              borderColor: '#034f84',
                 }}
               >
                 Highlights
               </Typography>
-              <Divider />
-              <Box display='flex' flexDirection='row' sx={{ ml: 3 }}>
+             
+              <Box display='flex' flexDirection='row' alignItems="center"  mx={15} my={0.5}>
                 <Tooltip title='Fullname' placement='left-start' arrow>
                   <BadgeIcon
                     fontSize='medium'
-                    sx={{ color: theme => theme.palette.grey[500] }}
+                    sx={{ color: theme => theme.palette.grey[500], mx:1, }}
                   />
                 </Tooltip>
                 {/* <Typography>`${currentUser.firstName} ${currentUser.lastName}`</Typography> */}
 
-                <Typography sx={{ ml: 2 }}>
+                <Typography variant='body2'>
                   {' '}
                   {userData && userData.firstname}{' '}
                   {userData && userData.lastname}
                 </Typography>
               </Box>
 
-              <Box display='flex' flexDirection='row' sx={{ ml: 3 }}>
+              <Box display='flex' flexDirection='row' alignItems="center" mx={15} my={0.5}>
                 <Tooltip title='Education' placement='left-start' arrow>
                   <SchoolIcon
                     fontSize='medium'
-                    sx={{ color: theme => theme.palette.grey[500] }}
+                    sx={{ color: theme => theme.palette.grey[500],mx:1 }}
                   />
                 </Tooltip>
                 {/* <Typography>{currentUser.education}</Typography> */}
 
-                <Typography sx={{ ml: 2 }}>
+                <Typography variant='body2' >
                   {' '}
                   {userData && userData.education}
                 </Typography>
               </Box>
 
-              <Box display='flex' flexDirection='row' sx={{ ml: 3 }}>
+              <Box display='flex' flexDirection='row' alignItems="center" mx={15} my={0.5}>
                 <Tooltip title='Profession' placement='left-start' arrow>
                   <BusinessCenterIcon
                     fontSize='medium'
-                    sx={{ color: theme => theme.palette.grey[500] }}
+                    sx={{ color: theme => theme.palette.grey[500] , mx:1}}
                   />
                 </Tooltip>
 
-                <Typography sx={{ ml: 2 }}>
+                <Typography variant="body2">
                   {' '}
                   {userData && userData.profession}
                 </Typography>
               </Box>
 
-              <Box display='flex' flexDirection='row' sx={{ ml: 3 }}>
+              <Box display='flex' flexDirection='row'alignItems="center" mx={15} my={0.5}>
                 <Tooltip title='Country' placement='left-start' arrow>
                   <LocationOnIcon
                     fontSize='medium'
-                    sx={{ color: theme => theme.palette.grey[500] }}
+                    sx={{ color: theme => theme.palette.grey[500],mx:1 }}
                   />
                 </Tooltip>
 
-                <Typography sx={{ ml: 2 }}>
+                <Typography variant="body2">
                   {' '}
                   {userData && userData.country}
                 </Typography>
               </Box>
             </Box>
           </Paper>
+
         </Grid>
+      
         <Grid item xs={12} md={4} lg={4}>
           <Paper>
             <Box
               display='flex'
               flexDirection='column'
-              alignItems='center'
-              p={2}
+              
+              p={1}
             >
               <Typography
                 variant='body1'
@@ -179,29 +184,46 @@ function UserProfile() {
                   textAlign: 'center',
                   textTransform: 'capitalize',
                   fontWeight: 'bold',
+                  mb:1,
+                  pb:1,
+                  borderBottom: 1,
+                 borderColor: '#034f84',
                 }}
               >
                 Your interests
               </Typography>
-              <Divider />
+            
               {userData &&
                 userData.category &&
                 userData.category.map(category => (
-                  <p key={category}>{category}</p>
+                  <Typography variant="body2" mx={15} my={0.5} key={category}>{category}</Typography>
                 ))}
             </Box>
           </Paper>
         </Grid>
-      </Grid>
-      {/* <Box
+
+        <Grid item xs={12} md={4} lg={4}>
+        <Typography
+            variant="body1"
+            sx={{
+              color: "#034f84",
+              fontWeight:'bold'
+            }}
+          >
+            <TypingEffect text="Meet with the best at Resolvia Community!"/>
+          </Typography>
+        
+  <Box
               component="img"
               sx={{
-                width: "30vw",
-                height: "70vh",
+                width: "35vw",
+                height: "78vh",
               }}
-              alt="Men asking his query from Resolvia"
+              alt="connecting with people"
               src={network}
-            /> */}
+            />
+      </Grid>
+      </Grid>
       <FooterComp />
     </>
   );

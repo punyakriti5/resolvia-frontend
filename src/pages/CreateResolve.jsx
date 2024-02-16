@@ -128,7 +128,7 @@ function CreateResolve() {
             <TextField
               type="text"
               fullWidth
-              label="add your question title"
+              label="Add your question title"
               id="title"
               required
               sx={{ m: 1, bgcolor: "#bed8ec" }}
@@ -139,11 +139,11 @@ function CreateResolve() {
 
             <FormControl fullWidth>
               <InputLabel id="multiple-options-label" sx={{m:1}}>
-                select multiple tags
+                Select multiple tags
               </InputLabel>
               <Select
                 fullWidth
-                label="add relatable tags"
+                label="Add relatable tags"
                 id="tags"
                 sx={{ m: 1, bgcolor: "#bed8ec" }}
                 multiple
@@ -175,7 +175,7 @@ function CreateResolve() {
 
             <TextField
               fullWidth
-              label="add your description here ..."
+              label="Add your description here ..."
               id="content"
               sx={{ m: 1, bgcolor: "#bed8ec" }}
               multiline

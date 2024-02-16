@@ -91,7 +91,7 @@ function MyResolveComp() {
 
   return (
     <>
-      <Container sx={{ mt: 10 }}>
+      <Container sx={{ mt: 10 }} >
         <Stack spacing={2}>
           <Typography
             variant='body1'

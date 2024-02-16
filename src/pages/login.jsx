@@ -27,18 +27,19 @@ import { BASE_API_URL } from '../constants';
 
 function Login() {
   const [formData, setFormData] = useState({});
-  const { loading, error: errorMessage } = useSelector(state => state.user);
+  const { error } = useSelector(state => state.user);
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.up('md'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = sessionStorage.getItem('token');
+
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
   const handleSubmit = async e => {
     e.preventDefault();
-    //console.log(errorMessage);
+   
     if (!formData.username || !formData.password) {
       return dispatch(signInFailure('Please fill all the fields'));
     }
@@ -56,6 +57,7 @@ function Login() {
       const data = await res.json();
       if (data.success === false) {
         dispatch(signInFailure(data.message));
+        
       }
 
       if (res.ok) {
@@ -136,19 +138,14 @@ function Login() {
                   Don't have an account ? <Link to='/signup'>Sign Up</Link>
                 </Typography>
               </Stack>
-              {errorMessage && (
-                <Alert severity='error' variant='filled' sx={{ width: '63%' }}>
-                  {errorMessage}
+              {console.log("error",error)}
+              {error && (
+                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
+                  {error.message}
                 </Alert>
               )}
             </form>
-            {/* {errorMessage && (
-              <Snackbar autoHideDuration={6000}>
-                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
-                  {errorMessage}
-                </Alert>
-              </Snackbar>
-            )} */}
+           
           </Container>
         </Grid>
       </Grid>
