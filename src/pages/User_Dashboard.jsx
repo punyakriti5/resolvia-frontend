@@ -27,6 +27,7 @@ function User_Dashboard() {
   const observerRef = useRef(null);
   const resolvePerPage = 2;
   let startIndex = 0;
+  const token=sessionStorage.getItem("token");
 
 
   console.log("fetching env variable....", BASE_API_URL)
@@ -35,7 +36,7 @@ function User_Dashboard() {
   //     try {
   //       const res = await fetch(
   //         `${BASE_API_URL}/api/resolve/getresolves?sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
-    //      credentials:"include",
+    //      headers: {Authorization: `Bearer ${token}`},
     //    }
   //       );
   //       const data = await res.json();
@@ -55,7 +56,7 @@ function User_Dashboard() {
         setLoading(true);
         const res = await fetch(
           `${BASE_API_URL}/api/resolve/getresolves?startIndex=0&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`
-        ,{credentials:"include",});
+        , {headers: {Authorization: `Bearer ${token}`}});
         const data = await res.json();
         //console.log('response initialdata', data);
         if (res.ok) {
@@ -86,7 +87,7 @@ function User_Dashboard() {
               try {
                 const res = await fetch(
                   `${BASE_API_URL}/api/resolve/getresolves?startIndex=${startIndex}&limit=${resolvePerPage}&sortBy=${sortBy}&sortOrder=${sortOrder}&searchTerm=${searchTerm}`,{
-                    credentials:"include",
+                    headers: {Authorization: `Bearer ${token}`},
                   }
                 );
                 const data = await res.json();
@@ -144,7 +145,7 @@ function User_Dashboard() {
       }
 
       const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
-        credentials:"include",
+        headers: {Authorization: `Bearer ${token}`},
         method: 'PUT',
       });
       //console.log('response:', res);
@@ -233,7 +234,7 @@ export default User_Dashboard;
 //   const fetchResolves = async () => {
 //     try {
 //       const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves`,{
-     //     credentials:"include",
+     //     headers: {Authorization: `Bearer ${token}`}
     //    });
 //       const data = await res.json();
 //       if (res.ok) {

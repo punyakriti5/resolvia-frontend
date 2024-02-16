@@ -33,6 +33,7 @@ function Login() {
   const isMatch = useMediaQuery(theme.breakpoints.up('md'));
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token=sessionStorage.getItem("token");
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -46,8 +47,8 @@ function Login() {
       dispatch(signInStart());
       const res = await fetch(`${BASE_API_URL}/api/auth/signin`, {
         method: 'POST',
-        credentials:"include",
-        headers: { 'Content-Type': 'application/json' },
+        
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
@@ -56,6 +57,7 @@ function Login() {
       }
 
       if (res.ok) {
+        sessionStorage.setItem("token", data.accessToken)
         dispatch(signInSuccess(data));
         navigate('/user/:username');
       }

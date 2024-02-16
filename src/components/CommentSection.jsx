@@ -6,15 +6,13 @@ import { BASE_API_URL } from "../constants";
 
 function CommentSection({ comment }) {
   const [user, setUser] = useState({});
+  const token=sessionStorage.getItem("token");
  
-  console.log("comment section ",comment);
- console.log("userId",comment.userId);
+ 
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`,{
-          credentials:"include",
-        });
+        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${comment.userId}`,{headers: {Authorization: `Bearer ${token}`}});
         const data = await res.json();
         if (res.ok) {
           setUser(data);

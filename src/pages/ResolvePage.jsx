@@ -29,13 +29,14 @@ function ResolvePage() {
   const [user, setUser] = useState({});
   const { currentUser } = useSelector(state => state.user);
   const navigate = useNavigate();
+  const token=sessionStorage.getItem("token");
   //console.log(resolve);
   useEffect(() => {
     const fetchResolve = async () => {
       try {
         setLoading(true);
         const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,{
-          credentials:"include",
+          headers: {Authorization: `Bearer ${token}`}
         });
         const data = await res.json();
 
@@ -62,7 +63,7 @@ function ResolvePage() {
     const getUser = async () => {
       try {
         const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
-          credentials:"include",
+          headers: {Authorization: `Bearer ${token}`}
         });
         const data = await res.json();
         if (res.ok) {
@@ -87,7 +88,7 @@ function ResolvePage() {
 
       const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
         method: 'PUT',
-        credentials:'include',
+        headers: {Authorization: `Bearer ${token}`}
       });
       console.log('response:', res);
       const data = await res.json();

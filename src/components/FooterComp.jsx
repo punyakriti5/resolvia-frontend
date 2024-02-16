@@ -12,7 +12,7 @@ function FooterComp() {
           position: 'absolute',
           padding: 1,
           bottom: 0,
-          width: '100%',
+          width: '100vw',
           display: 'flex',
           justifyContent: 'space-around',
           paddingTop: 2,

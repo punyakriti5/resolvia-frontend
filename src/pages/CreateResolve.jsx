@@ -34,6 +34,7 @@ function CreateResolve() {
 
   const [file, setFile] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const token=sessionStorage.getItem("token");
 
   const handleFileUpload = (e) => {
     setFile(e.target.files);
@@ -64,7 +65,7 @@ function CreateResolve() {
     try {
       const res = await fetch(`${BASE_API_URL}/api/resolve/create`, {
         method: "POST",
-        credentials :'include',
+        headers: {Authorization: `Bearer ${token}`},
         body: formData,
       });
       const data = await res.json();

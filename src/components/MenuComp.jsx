@@ -11,8 +11,12 @@ function MenuComp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+
+  const token=sessionStorage.getItem("token");
+
 
   const handleClick = (event) => {
     setOpen(true);
@@ -27,7 +31,7 @@ function MenuComp() {
     try {
       const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: "POST",
-        credentials:'include'
+        headers: {Authorization: `Bearer ${token}`}
       });
       const data = await res.json();
       if (!res.ok) {

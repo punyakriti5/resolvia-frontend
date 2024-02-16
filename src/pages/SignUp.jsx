@@ -26,7 +26,7 @@ function SignUp() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isLarge = useMediaQuery(theme.breakpoints.up('md'));
-
+  const token=sessionStorage.getItem("token");
   const handleChange = e => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
   };
@@ -41,8 +41,8 @@ function SignUp() {
       setErrorMessage(null);
       const res = await fetch(`${BASE_API_URL}/api/auth/signup`, {
         method: 'POST',
-        credentials:'include',
-        headers: { 'Content-Type': 'application/json' },
+        
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(formData),
       });
       const data = await res.json();

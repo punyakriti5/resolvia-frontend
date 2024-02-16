@@ -28,6 +28,8 @@ function MyResolveComp() {
   const [showMore, setShowMore] = useState(true);
   const [page, setPage] = useState(1);
   const rowsPerPage = 6;
+  const token=sessionStorage.getItem("token");
+
 
   useEffect(() => {
     const fetchResolves = async () => {
@@ -35,7 +37,7 @@ function MyResolveComp() {
       try {
         const res = await fetch(
           `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-            credentials:"include",
+            headers: {Authorization: `Bearer ${token}`}
           }
         );
         const data = await res.json();
@@ -66,7 +68,7 @@ function MyResolveComp() {
     try {
       const res = await fetch(
         `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-          credentials:"include",
+          headers: {Authorization: `Bearer ${token}`}
         }
       );
       const data = await res.json();

@@ -11,6 +11,7 @@ function Comment({ resolveId }) {
   const [comment, setComment] = useState({ content: '' });
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
+  const token=sessionStorage.getItem("token");
 
   console.log('commentss', comments);
   const handleSubmit = async e => {
@@ -24,9 +25,10 @@ function Comment({ resolveId }) {
     }
     try {
       const res = await fetch(`${BASE_API_URL}/api/comment/createComment`, {
-        credentials:'include',
+       
         method: 'POST',
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -50,9 +52,7 @@ function Comment({ resolveId }) {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`,{
-          credentials:"include",
-        });
+        const res = await fetch(`${BASE_API_URL}/api/comment/getResolveComments/${resolveId}`,{headers: {Authorization: `Bearer ${token}`}});
         const data = await res.json();
         if (res.ok) {
           setComments(data);

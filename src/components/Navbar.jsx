@@ -28,17 +28,19 @@ function Navbar(props) {
   const navigate = useNavigate();
   const { currentUser } = useSelector(state => state.user);
   const isMatch = useMediaQuery(theme.breakpoints.down('md'));
+  const token=sessionStorage.getItem("token");
 
   const handleSignout = async () => {
     try {
       const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: 'POST',
-        credentials:"include",
+        headers: {Authorization: `Bearer ${token}`}
       });
       const data = await res.json();
       if (!res.ok) {
         console.log(data.message);
       } else {
+        sessionStorage.removeItem("token")
         dispatch(signoutSuccess());
         navigate('/');
       }

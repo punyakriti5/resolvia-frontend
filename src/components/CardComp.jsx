@@ -27,6 +27,7 @@ function CardComp({ resolve, onLike }) {
   const [isContentjpg, setIsContentjpg] = useState(false);
   const [user, setUser] = useState({});
   let index = 0;
+  const token=sessionStorage.getItem("token");
 
   const lookupMediaContent = resolve => {
     const media = resolve.media_content.length;
@@ -55,7 +56,7 @@ function CardComp({ resolve, onLike }) {
     const getUser = async () => {
       try {
         const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
-          credentials:"include",
+          headers: {Authorization: `Bearer ${token}`}
         });
         const data = await res.json();
         if (res.ok) {
