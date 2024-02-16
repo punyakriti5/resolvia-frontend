@@ -9,6 +9,7 @@ import {
   Grid,
   Select,
   TextField,
+  Tooltip,
   Typography,
   Alert,
   Stack,
@@ -53,7 +54,6 @@ function UpdateResolve() {
         }
         if (res.ok) {
           setResolveData(data.resolves[0]);
-          setSelectedTags(resolveData.category);
           setLoading(false);
         }
       } catch (error) {
@@ -63,6 +63,14 @@ function UpdateResolve() {
     };
     fetchResolve();
   }, [resolveId, resolveSlug]);
+
+  useEffect(() => {
+    if (!loading && resolveData.category[0]) {
+      setSelectedTags(resolveData.category[0].split(','));
+      console.log(selectedTags);
+    }
+  }, [loading]);
+
   const handleFileUpload = e => {
     setFile(e.target.files);
   };
@@ -85,16 +93,22 @@ function UpdateResolve() {
     formData.append('category', resolveData.category);
     formData.append('content', resolveData.content);
     formData.append('post_as', resolveData.post_as);
-    if (file.length > 3) {
+    if (
+      resolveData.media_content &&
+      file.length + resolveData.media_content.length > 3
+    ) {
       return setErrorMessage('No more than 3 files can be uploaded');
     }
 
     try {
-      const res = await fetch(`${BASE_API_URL}/api/resolve/create`, {
-        method: 'POST',
-        credentials: 'include',
-        body: formData,
-      });
+      const res = await fetch(
+        `${BASE_API_URL}/api/resolve/update/${resolveId}`,
+        {
+          method: 'PUT',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         return setErrorMessage(data.message);
@@ -119,7 +133,7 @@ function UpdateResolve() {
               paddingLeft='15px'
               sx={{ fontWeight: 'bold' }}
             >
-              Get you query resolved here :
+              Get you resolve Updated here :
             </Typography>
             <Stack spacing={2} direction='row'>
               <Typography
@@ -149,19 +163,25 @@ function UpdateResolve() {
                   <MenuItem value='anonymous'>Anonymous</MenuItem>
                 </Select>
               </FormControl>
-              {/* <AddMedia formData={resolveData} setformData={setResolveData} /> */}
-              <input
-                type='file'
-                multiple
-                onChange={handleFileUpload}
-                value={`${resolveData.media_content.length} Files`}
-              />
+              {resolveData.media_content &&
+              resolveData.media_content.length < 3 ? (
+                <>
+                  <Tooltip
+                    title={`${3 - file.length} file can be
+                    added`}
+                    arrow
+                  >
+                    <input type='file' multiple onChange={handleFileUpload} />
+                  </Tooltip>
+                </>
+              ) : null}
             </Stack>
             <TextField
               type='text'
               fullWidth
-              label='add your question title'
+              placeholder='add your question title'
               id='title'
+              disabled={true}
               required
               sx={{ m: 1, bgcolor: '#bed8ec' }}
               onChange={e =>
@@ -169,14 +189,13 @@ function UpdateResolve() {
               }
               value={resolveData.title}
             />
-
             <FormControl fullWidth>
               <InputLabel id='multiple-options-label'>
                 Select Multiple Tags
               </InputLabel>
               <Select
                 fullWidth
-                label='add relatable tags'
+                placeholder='add relatable tags'
                 id='tags'
                 sx={{ m: 1, bgcolor: '#bed8ec' }}
                 multiple
@@ -192,7 +211,6 @@ function UpdateResolve() {
               >
                 {dataTags.tags.map((tagObject, index) => {
                   const tagValue = Object.values(tagObject)[0];
-
                   if (!selectedTags.includes(tagValue)) {
                     return (
                       <MenuItem key={index} value={tagValue}>
@@ -208,7 +226,8 @@ function UpdateResolve() {
 
             <TextField
               fullWidth
-              label='add your description here ...'
+              //label='add your description here ...'
+              placeholder='add your description here ...'
               id='content'
               sx={{ m: 1, bgcolor: '#bed8ec' }}
               multiline
@@ -221,7 +240,7 @@ function UpdateResolve() {
             />
             <Button variant='contained' type='submit' sx={{ m: 1 }}>
               {' '}
-              Post
+              Update
             </Button>
             {errorMessage && (
               <Alert severity='error' variant='filled' sx={{ width: '70%' }}>

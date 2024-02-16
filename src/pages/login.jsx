@@ -61,7 +61,7 @@ function Login() {
       if (res.ok) {
         sessionStorage.setItem('token', data.accessToken);
         dispatch(signInSuccess(data));
-        navigate(`/user/${data._id}`);
+        navigate(`/user/${data.user._id}`);
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

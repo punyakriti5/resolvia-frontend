@@ -16,6 +16,7 @@ import {
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import Comment from '../components/Comment';
+import UpdateMenu from '../components/UpdateMenu';
 import docImage from '../assets/doc_image.png';
 import { Carousel } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -84,6 +85,31 @@ function ResolvePage() {
 
   const images = resolve ? resolve.media_content : [];
   console.log(images[0]);
+
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(
+        `${BASE_API_URL}/api/resolve/delete/${resolveId}/${user._id}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        navigate(`/user/${user._id}`);
+      }
+      if (data.success === false) {
+        setError(true);
+        setLoading(false);
+        return;
+      }
+    } catch {
+      console.log(error.message);
+      setError(true);
+      setLoading(false);
+    }
+  };
 
   const handleLike = async resolveId => {
     try {
@@ -159,6 +185,16 @@ function ResolvePage() {
                 day: 'numeric',
                 year: 'numeric',
               })
+            }
+            action={
+              //console.log(resolveId, resolve.userId)
+              resolve && currentUser._id === resolve.userId ? (
+                <UpdateMenu
+                  resolveId={resolveId}
+                  resolveSlug={resolveSlug}
+                  handleDelete={handleDelete}
+                />
+              ) : null
             }
           />
         ) : null}
