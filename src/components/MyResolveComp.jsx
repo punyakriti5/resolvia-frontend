@@ -34,8 +34,9 @@ function MyResolveComp() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-            credentials:"include",
+          `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=0&limit=${rowsPerPage}&mySearch=${mySearch}`,
+          {
+            credentials: 'include',
           }
         );
         const data = await res.json();
@@ -65,8 +66,9 @@ function MyResolveComp() {
     setLoading(true);
     try {
       const res = await fetch(
-        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,{
-          credentials:"include",
+        `${BASE_API_URL}/api/resolve/getresolves?userId=${currentUser._id}&startIndex=${startIndex}&limit=${rowsPerPage}&mySearch=${mySearch}`,
+        {
+          credentials: 'include',
         }
       );
       const data = await res.json();
@@ -159,7 +161,7 @@ function MyResolveComp() {
                 {resolve.title}
               </AccordionSummary>
               <AccordionDetails>{resolve.content}</AccordionDetails>
-              <Link to={`/resolve/${resolve.slug}`}>
+              <Link to={`/resolve/${resolve._id}/${resolve.slug}`}>
                 <AccordionActions>
                   <Button variant='contained' sx={{ height: 30 }}>
                     learn more

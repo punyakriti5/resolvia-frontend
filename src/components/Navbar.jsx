@@ -33,7 +33,7 @@ function Navbar(props) {
     try {
       const res = await fetch(`${BASE_API_URL}/api/user/signout`, {
         method: 'POST',
-        credentials:"include",
+        credentials: 'include',
       });
       const data = await res.json();
       if (!res.ok) {
@@ -49,7 +49,7 @@ function Navbar(props) {
 
   const handleDashboard = () => {
     {
-      currentUser ? navigate('/user/:userId') : navigate('/');
+      currentUser ? navigate(`/user/${currentUser._id}`) : navigate('/');
     }
   };
   return (
@@ -119,7 +119,7 @@ function Navbar(props) {
                 </Tooltip>
               </Link>
               {currentUser ? (
-                <Link to='/user-profile'>
+                <Link to={`/user-profile/${currentUser._id}`}>
                   <Tooltip title={`${currentUser.username}'s profile`} arrow>
                     <Avatar sx={{ height: '25px', width: '25px' }}>
                       {currentUser && (

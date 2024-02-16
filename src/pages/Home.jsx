@@ -40,7 +40,11 @@ function Home() {
   return (
     <>
       {isCurrentUser ? (
-        <Navigate to='user/:userId' state={currentUser} replace={true} />
+        <Navigate
+          to={`user/${currentUser._id}`}
+          state={currentUser}
+          replace={true}
+        />
       ) : (
         <>
           <Navbar />

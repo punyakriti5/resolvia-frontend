@@ -5,6 +5,7 @@ import {
   Avatar,
   Button,
   Card,
+  Box,
   CardActions,
   CardContent,
   CardHeader,
@@ -34,9 +35,12 @@ function ResolvePage() {
     const fetchResolve = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,{
-          credentials:"include",
-        });
+        const res = await fetch(
+          `${BASE_API_URL}/api/resolve/getresolves?slug=${resolveSlug}`,
+          {
+            credentials: 'include',
+          }
+        );
         const data = await res.json();
 
         if (!res.ok) {
@@ -61,9 +65,12 @@ function ResolvePage() {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`${BASE_API_URL}/api/user/getUser/${resolve.userId}`,{
-          credentials:"include",
-        });
+        const res = await fetch(
+          `${BASE_API_URL}/api/user/getUser/${resolve.userId}`,
+          {
+            credentials: 'include',
+          }
+        );
         const data = await res.json();
         if (res.ok) {
           setUser(data);
@@ -85,10 +92,13 @@ function ResolvePage() {
         return;
       }
 
-      const res = await fetch(`${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`, {
-        method: 'PUT',
-        credentials:'include',
-      });
+      const res = await fetch(
+        `${BASE_API_URL}/api/resolve/likeResolve/${resolveId}`,
+        {
+          method: 'PUT',
+          credentials: 'include',
+        }
+      );
       console.log('response:', res);
       const data = await res.json();
       console.log('likesData', data);
@@ -196,7 +206,7 @@ function ResolvePage() {
                       src={docImage}
                       alt=''
                       style={{
-                        maxWidth: '100%',
+                        width: '50%',
                         maxHeight: '100%',
                         objectFit: 'cover',
                         display: 'block',
@@ -204,11 +214,13 @@ function ResolvePage() {
                         marginRight: 'auto',
                       }}
                     />
-                    <Carousel.Caption>
-                      <p style={{ color: 'black' }}>
-                        {image.substr(1 + image.lastIndexOf('/'))}
-                      </p>
-                    </Carousel.Caption>
+                    <Box sx={{ mt: 10, ml: 'auto' }}>
+                      <Carousel.Caption>
+                        <p style={{ color: 'black' }}>
+                          {image.substr(1 + image.lastIndexOf('/'))}
+                        </p>
+                      </Carousel.Caption>
+                    </Box>
                   </a>
                 )}
               </Carousel.Item>
@@ -245,7 +257,7 @@ function ResolvePage() {
         </CardActions>
         <Comment resolveId={resolve && resolve._id} />
       </Card>
-      <FooterComp/>
+      <FooterComp />
     </>
   );
 }

@@ -25,7 +25,6 @@ import {
 } from '../features/user/userSlice';
 import { BASE_API_URL } from '../constants';
 
-
 function Login() {
   const [formData, setFormData] = useState({});
   const { loading, error: errorMessage } = useSelector(state => state.user);
@@ -46,7 +45,7 @@ function Login() {
       dispatch(signInStart());
       const res = await fetch(`${BASE_API_URL}/api/auth/signin`, {
         method: 'POST',
-        credentials:"include",
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
@@ -57,7 +56,7 @@ function Login() {
 
       if (res.ok) {
         dispatch(signInSuccess(data));
-        navigate('/user/:username');
+        navigate(`/user/${data._id}`);
       }
     } catch (error) {
       dispatch(signInFailure(error.message));

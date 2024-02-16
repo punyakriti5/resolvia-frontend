@@ -21,7 +21,7 @@ function Oauth(props) {
       //console.log(resultsFromGoogle);
       const res = await fetch(`${BASE_API_URL}/api/auth/google`, {
         method: 'POST',
-        credentials:'include',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
@@ -33,7 +33,7 @@ function Oauth(props) {
       if (res.ok) {
         dispatch(signInSuccess(data));
         console.log(data);
-        navigate('/user/:username');
+        navigate(`/user/${data._id}`);
       }
     } catch (error) {
       console.log(error);
