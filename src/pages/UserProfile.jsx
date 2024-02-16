@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import network from "../assets/network.png";
 import {
   Avatar,
   Box,
@@ -192,6 +193,15 @@ function UserProfile() {
           </Paper>
         </Grid>
       </Grid>
+      {/* <Box
+              component="img"
+              sx={{
+                width: "30vw",
+                height: "70vh",
+              }}
+              alt="Men asking his query from Resolvia"
+              src={network}
+            /> */}
       <FooterComp />
     </>
   );
