@@ -86,7 +86,7 @@ function Navbar(props) {
               handleSearch={props.handleSearch}
             />
           ) : (
-            <SearchComp />
+            null
           )}
 
           {isMatch ? (

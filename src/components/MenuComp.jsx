@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { IconButton, Menu, MenuItem } from '@mui/material';
+import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector, useDispatch } from 'react-redux';
 import { signoutSuccess } from '../features/user/userSlice';
@@ -77,13 +77,29 @@ function MenuComp() {
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            <Link to='/create-resolve'> Create Resolve </Link>
+            <Link
+              to='/create-resolve'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              {' '}
+              Create Resolve{' '}
+            </Link>
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            <Link to='/about'>About</Link>
+            <Link
+              to='/about'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              About
+            </Link>
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            <Link to={`/user-profile/${currentUser._id}`}>User Profile</Link>
+            <Link
+              to='/user-profile'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              User Profile
+            </Link>
           </MenuItem>
 
           <MenuItem onClick={handleSignout}>Logout</MenuItem>
@@ -106,10 +122,21 @@ function MenuComp() {
           anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         >
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            <Link to='/login'>Login</Link>
+            <Link
+              to='/login'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              Login
+            </Link>
           </MenuItem>
+
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
-            <Link to='/about'>About</Link>
+            <Link
+              to='/about'
+              style={{ textDecoration: 'none', color: 'black' }}
+            >
+              About
+            </Link>
           </MenuItem>
         </Menu>
       )}

@@ -147,7 +147,7 @@ function SignUp() {
                 </Typography>
               </Stack>
               {errorMessage && (
-                <Alert severity='error' variant='filled' sx={{ width: '63%' }}>
+                <Alert severity='error' variant='filled' sx={{ width: '100%' }}>
                   {errorMessage}
                 </Alert>
               )}

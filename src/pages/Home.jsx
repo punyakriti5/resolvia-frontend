@@ -1,32 +1,31 @@
-import { useState, useEffect } from 'react';
-import { Box, Container, Stack, Typography } from '@mui/material';
-import question from '../assets/query.jpg';
-import ask from '../assets/discussions.jpg';
-import resolution from '../assets/resolution.jpg';
-import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { signoutSuccess } from '../features/user/userSlice';
-import Navbar from '../components/Navbar';
-import FooterComp from '../components/FooterComp';
-import { styled } from '@mui/system';
+import { useState, useEffect } from "react";
+import { Box, Container, Stack, Typography } from "@mui/material";
+import question from "../assets/query.jpg";
+import ask from "../assets/discussions.jpg";
+import resolution from "../assets/resolution.jpg";
+import { Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signoutSuccess } from "../features/user/userSlice";
+import Navbar from "../components/Navbar";
+import FooterComp from "../components/FooterComp";
 
-import { BASE_API_URL } from '../constants';
-import TypingEffect from '../components/TypingEffect';
+import { BASE_API_URL } from "../constants";
+import TypingEffect from "../components/TypingEffect";
 
 function Home() {
-  const { currentUser } = useSelector(state => state.user);
+  const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [isCurrentUser, setCurrentUser] = useState(false);
-  const token = sessionStorage.getItem('token');
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
     async function fetchUser() {
       if (currentUser) {
         try {
           const res = await fetch(`${BASE_API_URL}/api/auth/refresh`, {
-            method: 'POST',
+            method: "POST",
 
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(currentUser),
@@ -56,54 +55,96 @@ function Home() {
       ) : (
         <>
           <Navbar />
-          <Container sx={{ mt: 8 }}>
-            <Box
-              component='img'
-              alt='Have query ?'
-              src={question}
-              sx={{ width: '90vw', height: '70vh' }}
-            />
-            {/* <Container
-            component='div'
-            sx={{ mt: 12, borderRadius: 5, p: 5, background: '#bed8ec' }}
+
+          <Box
+            component="div"
+            sx={{
+              mt: 8,
+              width: "100%",
+              p: 5,
+              background: "#bed8ec",
+              display: "flex",
+            }}
           >
             <Stack
-              direction='row'
-              justifyContent='center'
-              alignItems='center'
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Typography
+                variant="h4"
+                color="#034f84"
+                fontWeight={"bold"}
+                px={5}
+              >
+                Welcome to Resolvia
+              </Typography>
+              <Typography
+                variant="body1"
+                color="#034f84"
+                fontWeight={"bold"}
+                px={5}
+              >
+                where connectivity meets innovation and the future of technical
+                discussions and resource sharing unfolds.
+              </Typography>
+            </Stack>
+
+            <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
               spacing={2}
             >
               <Box
-                component='img'
-                alt='Have query ?'
+                component="img"
+                alt="Have query ?"
                 src={question}
-                sx={{ height: 150, width: 250, borderRadius: 5, boxShadow: 5 }}
+                sx={{
+                  height: 135,
+                  width: 250,
+                  borderRadius: 5,
+                  boxShadow: 5,
+                  display: { md: "flex", lg: "flex", xs: "none" },
+                }}
               />
 
               <Box
-                component='img'
-                alt=' Ask here ...'
+                component="img"
+                alt=" Ask here..."
                 src={ask}
-                sx={{ height: 250, width: 300, borderRadius: 5, boxShadow: 5 }}
+                sx={{
+                  height: 225,
+                  width: 300,
+                  borderRadius: 5,
+                  boxShadow: 5,
+                  display: { md: "flex", lg: "flex", xs: "none" },
+                }}
               />
 
               <Box
-                component='img'
-                alt='Get answer !'
+                component="img"
+                alt="Get answer"
                 src={resolution}
-                sx={{ height: 350, width: 350, borderRadius: 5, boxShadow: 5 }}
+                sx={{ height: 300, width: 325, borderRadius: 5, boxShadow: 5 }}
               />
-              <h1>
-                The art and science of asking question is the source of all
-                knowledge
-              </h1>
             </Stack>
-          </Container> */}
+          </Box>
 
-            <Typography variant='h5'>
-              <TypingEffect text='Have Query? -> Ask -> Get it Resolve ! ' />
-            </Typography>
-          </Container>
+          <Typography
+            variant="h5"
+            sx={{
+              color: "#034f84",
+              px: "26%",
+              pb:8,
+              background: "#bed8ec",
+              display: "flex",
+            }}
+          >
+            <TypingEffect text="Have a query? -> Ask to Resolvia  -> Get it resolved ! " />
+          </Typography>
+
           <FooterComp />
         </>
       )}
