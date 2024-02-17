@@ -7,19 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Stack, Modal, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
+import { popupStyle } from '../constants';
 
 function UpdateMenu(props) {
   const { resolveId, resolveSlug, handleDelete } = props;
@@ -94,7 +82,7 @@ function UpdateMenu(props) {
         aria-labelledby='child-modal-title'
         aria-describedby='child-modal-description'
       >
-        <Box sx={{ ...style, width: 300 }}>
+        <Box sx={{ ...popupStyle, width: 300 }}>
           <h2 id='child-modal-title'>Alert</h2>
           <p id='child-modal-description'>
             Are you Sure, that you want to delete?
