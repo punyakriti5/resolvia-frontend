@@ -188,7 +188,8 @@ function ResolvePage() {
             }
             action={
               //console.log(resolveId, resolve.userId)
-              resolve && currentUser._id === resolve.userId ? (
+              (resolve && currentUser._id === resolve.userId) ||
+              (resolve && currentUser.isAdmin) ? (
                 <UpdateMenu
                   resolveId={resolveId}
                   resolveSlug={resolveSlug}
