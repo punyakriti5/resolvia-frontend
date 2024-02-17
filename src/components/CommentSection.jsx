@@ -1,13 +1,31 @@
-import { Avatar, Box, Divider, Stack, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Stack,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { blue } from '@mui/material/colors';
-import { BASE_API_URL } from '../constants';
+import { BASE_API_URL, popupStyle } from '../constants';
 
 function CommentSection({ comment }) {
   const [user, setUser] = useState({});
   const token = sessionStorage.getItem('token');
-
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleClick = () => {
+    setOpenDialog(true);
+  };
+  const handleClose = () => {
+    setOpenDialog(false);
+  };
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -67,12 +85,48 @@ function CommentSection({ comment }) {
               width: 100,
               ml: 5,
             }}
+            onClick={handleClick}
             alt='commentImage'
             src={comment.mediaContent}
           />
         )}
         <Divider sx={{ marginTop: '10px', marginBottom: '10px' }} />
       </Box>
+      <Dialog
+        onClose={handleClose}
+        open={openDialog}
+        sx={{ ...popupStyle, width: '40%', height: '50%' }}
+      >
+        <DialogTitle
+          id='dialog-title'
+          sx={{ textAlign: 'center', fontSize: '1rem', fontWeight: 'bold' }}
+        >
+          {comment.mediaContent.substr(
+            1 + comment.mediaContent.lastIndexOf('/')
+          )}
+        </DialogTitle>
+        <IconButton
+          aria-label='close'
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: theme => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        <DialogContent dividers>
+          <Box
+            component='img'
+            sx={{ objectFit: 'fill', width: '100%', height: '100%' }}
+            alt='commentImage'
+            src={comment.mediaContent}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
