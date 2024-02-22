@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import question from '../assets/query.jpg';
 import ask from '../assets/discussions.jpg';
 import resolution from '../assets/resolution.jpg';
@@ -65,6 +65,9 @@ function Home() {
               p: 5,
               background: '#bed8ec',
               display: 'flex',
+    //           justifyContent: 'center', // Center the content horizontally
+    // alignItems: 'center', // Center the content vertically
+
             }}
           >
             <Stack
@@ -127,6 +130,7 @@ function Home() {
               <Box
                 component='img'
                 alt='Get answer'
+                display= 'flex'
                 src={resolution}
                 sx={{ height: 300, width: 325, borderRadius: 5, boxShadow: 5 }}
               />

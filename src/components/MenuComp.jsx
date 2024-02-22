@@ -95,7 +95,7 @@ function MenuComp() {
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ cursor: 'pointer' }}>
             <Link
-              to='/user-profile'
+              to={`/user-profile/${currentUser.__id}`}
               style={{ textDecoration: 'none', color: 'black' }}
             >
               User Profile
